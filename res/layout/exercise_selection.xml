@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent" android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:id="@+id/select_exercise_fragment">
+
+	<TextView android:id="@+id/textView1" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="Select Exercise"
+		android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	<LinearLayout android:id="@+id/exercise_list"
+		android:layout_width="match_parent" android:layout_height="wrap_content"
+		android:orientation="vertical" />
+
+
+	<Button android:id="@+id/bench_button" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="@string/bench" />
+
+	<Button android:id="@+id/squat_button" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="@string/squat" />
+
+	<Button android:id="@+id/press_button" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="@string/press" />
+
+	<Button android:id="@+id/end_workout" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="End Workout" />
+
+</LinearLayout>
