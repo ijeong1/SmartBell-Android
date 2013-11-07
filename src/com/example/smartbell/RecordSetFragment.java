@@ -5,6 +5,7 @@ import com.example.smartbell.SelectExerciseFragment.OnFragmentInteractionListene
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +36,8 @@ public class RecordSetFragment extends Fragment {
 	private android.support.v4.app.FragmentManager fragmentManager;
 	
 	private OnFragmentInteractionListener mListener;
-
+	private SensorDataHandler sensorDataHandler;
+	private boolean is_polling = false;
 	/**
 	 * Use this factory method to create a new instance of this fragment using
 	 * the provided parameters.
@@ -63,6 +65,12 @@ public class RecordSetFragment extends Fragment {
 		if (getArguments() != null) {
 			exerciseName = getArguments().getString(ARG_PARAM1);
 		}
+		sensorDataHandler = new SensorDataHandler();
+   		//Start the sensor updating
+        Message start_again_message = new Message();
+    	start_again_message.what = 287;
+    	sensorDataHandler.sendMessage(start_again_message);
+        is_polling = true;
 	}
 
 	@Override
@@ -89,6 +97,14 @@ public class RecordSetFragment extends Fragment {
 		endSetButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(is_polling)
+		    	{
+			    	Message stop_message = new Message();
+			    	stop_message.what = -1;
+			    	sensorDataHandler.sendMessage(stop_message);
+			    	is_polling = false;
+		    	}
+				
 				fragmentManager = getFragmentManager();
 				SetQuestionFragment setQuestionFragment = SetQuestionFragment.newInstance(exerciseName);
 				
