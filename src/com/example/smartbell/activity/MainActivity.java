@@ -1,10 +1,8 @@
 package com.example.smartbell.activity;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
+import com.parse.ParseObject;
 import com.example.smartbell.R;
-import com.example.smartbell.R.id;
-import com.example.smartbell.R.layout;
-import com.example.smartbell.R.menu;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -25,6 +23,12 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		initLayout();
 		ctx = this;
+		
+		Parse.initialize(this, "6YKFkBFeURXqEB3cK9YvPLzRDiMHYvqGsHZy5YMt", "YukuM4BgD5YT1jsV9npeU7iLnUjolmvmNz1bNONX");
+		
+//		ParseObject testObject = new ParseObject("TestObject");
+//		testObject.put("foo", "bar");
+//		testObject.saveInBackground();
 	}
 
 	@Override
@@ -36,7 +40,7 @@ public class MainActivity extends Activity {
 	}
 	
 	private void initLayout(){
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.athlete_home);
 		
 		startWorkoutButton = (Button)this.findViewById(R.id.start_workout_button);
 		viewPrevWorkoutsButton = (Button)this.findViewById(R.id.view_previous_workouts_button);

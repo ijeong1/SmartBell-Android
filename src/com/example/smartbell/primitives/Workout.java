@@ -4,25 +4,25 @@ import java.util.ArrayList;
 
 public class Workout {
 
-	Long timeStarted;
+	Long timeStamp;
 	ArrayList<LiftingSet> sets;
 	
 	public Workout() {
-		timeStarted = System.currentTimeMillis();
+		timeStamp = System.currentTimeMillis();
 		sets = new ArrayList<LiftingSet>();
 	}
 
 	public Workout(Long timeStarted, ArrayList<LiftingSet> sets) {
-		this.timeStarted = timeStarted;
+		this.timeStamp = timeStarted;
 		this.sets = sets;
 	}
 
 	public Long getTimeStarted() {
-		return timeStarted;
+		return timeStamp;
 	}
 
 	public void setTimeStarted(Long timeStarted) {
-		this.timeStarted = timeStarted;
+		this.timeStamp = timeStarted;
 	}
 
 	public ArrayList<LiftingSet> getSets() {

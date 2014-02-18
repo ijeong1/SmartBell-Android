@@ -10,7 +10,7 @@ import android.util.Log;
 public class WorkoutTable {
 	
 	/** WORKOUT table in the database. */
-	public static final String DATABASE_TABLE_WORKOUT = "set_table";
+	public static final String DATABASE_TABLE_WORKOUT = "workout_table";
 	
 	/** WORKOUT table column names and IDs for database access. */
 	public static final String WORKOUT_KEY_ID = "_id";
