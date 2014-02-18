@@ -1,10 +1,18 @@
-package com.example.smartbell;
+package com.example.smartbell.fragment;
 
-import com.example.smartbell.SelectExerciseFragment.OnFragmentInteractionListener;
+import java.util.ArrayList;
+
+import com.example.smartbell.R;
+import com.example.smartbell.R.id;
+import com.example.smartbell.R.layout;
+import com.example.smartbell.fragment.SelectExerciseFragment.OnFragmentInteractionListener;
+import com.example.smartbell.primitives.Moment;
+import com.example.smartbell.sensor.SensorDataHandler;
 
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,46 +26,43 @@ import android.widget.TextView;
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
  * contain this fragment must implement the
- * {@link ExerciseDetailFragment.OnFragmentInteractionListener} interface to
- * handle interaction events. Use the {@link ExerciseDetailFragment#newInstance}
- * factory method to create an instance of this fragment.
+ * {@link RecordSetFragment.OnFragmentInteractionListener} interface to handle
+ * interaction events. Use the {@link RecordSetFragment#newInstance} factory
+ * method to create an instance of this fragment.
  * 
  */
-public class ExerciseDetailFragment extends Fragment {
+public class RecordSetFragment extends Fragment {
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "exerciseName"; 
+	private static final String ARG_PARAM1 = "param1";
 
 	// TODO: Rename and change types of parameters
 	private String exerciseName;
-	private OnFragmentInteractionListener mListener;
-	
-	private TextView exerciseDetailTitle;
-	private Button instructionsButton;
-	private Button startSetButton;
-	private Button endExerciseButton;
+	private TextView recordTextView;
+	private Button endSetButton;
 	private android.support.v4.app.FragmentManager fragmentManager;
 	
+	private OnFragmentInteractionListener mListener;
+	private SensorDataHandler sensorDataHandler;
+	private boolean is_polling = false;
 	/**
 	 * Use this factory method to create a new instance of this fragment using
 	 * the provided parameters.
 	 * 
 	 * @param param1
 	 *            Parameter 1.
-	 * @param param2
-	 *            Parameter 2.
-	 * @return A new instance of fragment ExerciseDetailFragment.
+	 * @return A new instance of fragment RecordSetFragment.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static ExerciseDetailFragment newInstance(String param1) {
-		ExerciseDetailFragment fragment = new ExerciseDetailFragment();
+	public static RecordSetFragment newInstance(String param1) {
+		RecordSetFragment fragment = new RecordSetFragment();
 		Bundle args = new Bundle();
 		args.putString(ARG_PARAM1, param1);
 		fragment.setArguments(args);
 		return fragment;
 	}
 
-	public ExerciseDetailFragment() {
+	public RecordSetFragment() {
 		// Required empty public constructor
 	}
 
@@ -67,14 +72,20 @@ public class ExerciseDetailFragment extends Fragment {
 		if (getArguments() != null) {
 			exerciseName = getArguments().getString(ARG_PARAM1);
 		}
+		sensorDataHandler = new SensorDataHandler(); // make new thread?
+   		//Start the sensor updating
+        Message start_again_message = new Message();
+    	start_again_message.what = 287;
+    	sensorDataHandler.sendMessage(start_again_message);
+        is_polling = true;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return (LinearLayout) inflater.inflate(R.layout.exercise_detail, container, false);
+		return (LinearLayout) inflater.inflate(R.layout.record_set, container, false);
 	}
-
+	
 	@Override
 	public void onStart(){
 		super.onStart();
@@ -82,60 +93,39 @@ public class ExerciseDetailFragment extends Fragment {
 	}
 	
 	private void initLayout(){
-		
-		exerciseDetailTitle = (TextView)this.getView().findViewById(R.id.exercise_detail_title);
-		exerciseDetailTitle.setText(exerciseName);
-		
-		instructionsButton = (Button)this.getView().findViewById(R.id.instructions_button);
-		startSetButton = (Button)this.getView().findViewById(R.id.start_set_button);
-		endExerciseButton = (Button)this.getView().findViewById(R.id.end_exercise_button);
-		
+		recordTextView = (TextView)this.getView().findViewById(R.id.record_exercise_text);
+		recordTextView.setText(exerciseName);
+		endSetButton = (Button)this.getView().findViewById(R.id.end_set_button);
+
 		setClickListeners();
 	}
 	
 	private void setClickListeners(){
-		instructionsButton.setOnClickListener(new OnClickListener() {
+		endSetButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(is_polling)
+		    	{
+			    	Message stop_message = new Message();
+			    	stop_message.what = -1;
+			    	sensorDataHandler.sendMessage(stop_message);
+			    	is_polling = false;
+		    	}
+				ArrayList<Moment> moments = sensorDataHandler.getMoments();
+				Log.d("ML", "num moments: "+moments.size());
+				
 				fragmentManager = getFragmentManager();
-				ExerciseInstructionFragment exerciseInstructionFragment = ExerciseInstructionFragment.newInstance(exerciseName);
+				SetQuestionFragment setQuestionFragment = SetQuestionFragment.newInstance(exerciseName);
 				
 				android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-				fragmentTransaction.replace(R.id.start_workout_activity_layout, exerciseInstructionFragment);
-				String exerciseDetailTag = getResources().getString(R.string.exercise_detail_tag);
-				fragmentTransaction.addToBackStack(exerciseDetailTag);
-				fragmentTransaction.commit();
-				Log.d("exerciseDetailFragment", "after instruction fragment commit");
-			}
-		});
-		
-		startSetButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				fragmentManager = getFragmentManager();
-				RecordSetFragment recordSetFragment = RecordSetFragment.newInstance(exerciseName);
-				
-				android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-				fragmentTransaction.replace(R.id.start_workout_activity_layout, recordSetFragment);
-				String exerciseDetailTag = getResources().getString(R.string.exercise_detail_tag);
-				fragmentTransaction.addToBackStack(exerciseDetailTag);
+				fragmentTransaction.replace(R.id.start_workout_activity_layout, setQuestionFragment);
+				fragmentTransaction.addToBackStack(null);
 				fragmentTransaction.commit();
 			}
 		});
 		
-		endExerciseButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				fragmentManager = getFragmentManager();
-				
-				//save set data to database
-				String selectExerciseTag = getResources().getString(R.string.select_exercise_tag);
-				fragmentManager.popBackStackImmediate(selectExerciseTag, 1);
-				
-			}
-		});
 	}
-	
+
 	// TODO: Rename method, update argument and hook method into UI event
 	public void onButtonPressed(Uri uri) {
 		if (mListener != null) {

@@ -1,4 +1,4 @@
-package com.example.smartbell;
+package com.example.smartbell.sensor;
 
 import java.io.File;
 import java.io.FileNotFoundException;

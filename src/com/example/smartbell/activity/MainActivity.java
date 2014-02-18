@@ -1,4 +1,10 @@
-package com.example.smartbell;
+package com.example.smartbell.activity;
+import com.parse.Parse;
+import com.parse.ParseAnalytics;
+import com.example.smartbell.R;
+import com.example.smartbell.R.id;
+import com.example.smartbell.R.layout;
+import com.example.smartbell.R.menu;
 
 import android.os.Bundle;
 import android.app.Activity;

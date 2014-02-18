@@ -1,6 +1,12 @@
-package com.example.smartbell;
+package com.example.smartbell.activity;
 
-import com.example.smartbell.SelectExerciseFragment.OnFragmentInteractionListener;
+import com.example.smartbell.R;
+import com.example.smartbell.R.id;
+import com.example.smartbell.R.layout;
+import com.example.smartbell.R.menu;
+import com.example.smartbell.R.string;
+import com.example.smartbell.fragment.SelectExerciseFragment;
+import com.example.smartbell.fragment.SelectExerciseFragment.OnFragmentInteractionListener;
 
 import android.net.Uri;
 import android.os.Bundle;

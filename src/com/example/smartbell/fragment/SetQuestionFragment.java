@@ -1,39 +1,44 @@
-package com.example.smartbell;
+package com.example.smartbell.fragment;
 
-import com.example.smartbell.SelectExerciseFragment.OnFragmentInteractionListener;
+import com.example.smartbell.R;
+import com.example.smartbell.R.id;
+import com.example.smartbell.R.layout;
+import com.example.smartbell.R.string;
+import com.example.smartbell.fragment.SelectExerciseFragment.OnFragmentInteractionListener;
 
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
  * contain this fragment must implement the
- * {@link ExerciseInstructionFragment.OnFragmentInteractionListener} interface
- * to handle interaction events. Use the
- * {@link ExerciseInstructionFragment#newInstance} factory method to create an
- * instance of this fragment.
+ * {@link SetQuestionFragment.OnFragmentInteractionListener} interface to handle
+ * interaction events. Use the {@link SetQuestionFragment#newInstance} factory
+ * method to create an instance of this fragment.
  * 
  */
-public class ExerciseInstructionFragment extends Fragment {
+public class SetQuestionFragment extends Fragment {
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "exerciseName";
+	private static final String ARG_PARAM1 = "param1";
 
 	// TODO: Rename and change types of parameters
 	private String exerciseName;
-	private TextView exerciseInstructionTitle;
-	private TextView exerciseInstructionBody;
-//	private Button exerciseInstructionBack;
+	private TextView setQuestionTextView;
+	private EditText setQuestionEditText;
+	private Button setQuestionNextButton;
 	private android.support.v4.app.FragmentManager fragmentManager;
 	
 	private OnFragmentInteractionListener mListener;
@@ -46,18 +51,18 @@ public class ExerciseInstructionFragment extends Fragment {
 	 *            Parameter 1.
 	 * @param param2
 	 *            Parameter 2.
-	 * @return A new instance of fragment ExerciseInstructionFragment.
+	 * @return A new instance of fragment SetQuestionFragment.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static ExerciseInstructionFragment newInstance(String param1) {
-		ExerciseInstructionFragment fragment = new ExerciseInstructionFragment();
+	public static SetQuestionFragment newInstance(String param1) {
+		SetQuestionFragment fragment = new SetQuestionFragment();
 		Bundle args = new Bundle();
 		args.putString(ARG_PARAM1, param1);
 		fragment.setArguments(args);
 		return fragment;
 	}
 
-	public ExerciseInstructionFragment() {
+	public SetQuestionFragment() {
 		// Required empty public constructor
 	}
 
@@ -72,43 +77,47 @@ public class ExerciseInstructionFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return (LinearLayout) inflater.inflate(R.layout.exercise_instructions, container, false);
+		return (LinearLayout) inflater.inflate(R.layout.set_question, container, false);
 	}
-
+	
 	@Override
 	public void onStart(){
 		super.onStart();
-		Log.d("instruction","before initLayout");
 		initLayout();
 	}
 	
 	private void initLayout(){
-		Log.d("instruction", "this.getView(): "+this.getView());
-		exerciseInstructionTitle = (TextView)this.getView().findViewById(R.id.instruction_title);
-		Log.d("instruction", "exerciseInstructionTitle = "+exerciseInstructionTitle);
-		exerciseInstructionTitle.setText(exerciseName);
-		exerciseInstructionBody = (TextView)this.getView().findViewById(R.id.instruction_body);
-//		exerciseInstructionBack = (Button)this.getView().findViewById(R.id.instruction_back);
+		setQuestionTextView = (TextView)this.getView().findViewById(R.id.set_question_text);
+		setQuestionTextView.setText(exerciseName + " question");
+		setQuestionEditText = (EditText)this.getView().findViewById(R.id.set_question_edittext);
 		
+		setQuestionNextButton = (Button)this.getView().findViewById(R.id.set_question_next_button);
+
 		setClickListeners();
 	}
 	
 	private void setClickListeners(){
-//		exerciseInstructionBack.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				fragmentManager = getFragmentManager();
-//				ExerciseInstructionFragment exerciseInstructionFragment = ExerciseInstructionFragment.newInstance(exerciseName);
+		setQuestionNextButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				fragmentManager = getFragmentManager();
+				
+				//logic for figuring out what question is next, or to close out set
+				//if last question, close out set and go back to exercise detail
+				String exerciseDetailTag = getResources().getString(R.string.exercise_detail_tag);
+				fragmentManager.popBackStackImmediate(exerciseDetailTag, 1);
+				
+//				SetQuestionFragment setQuestionFragment = SetQuestionFragment.newInstance(exerciseName);
 //				
 //				android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//				fragmentTransaction.replace(R.id.select_exercise_fragment, exerciseInstructionFragment);
+//				fragmentTransaction.replace(R.id.start_workout_activity_layout, setQuestionFragment);
+//				fragmentTransaction.addToBackStack(null);
 //				fragmentTransaction.commit();
-//				
-//			}
-//		});
+			}
+		});
 		
 	}
-	
+
 	// TODO: Rename method, update argument and hook method into UI event
 	public void onButtonPressed(Uri uri) {
 		if (mListener != null) {

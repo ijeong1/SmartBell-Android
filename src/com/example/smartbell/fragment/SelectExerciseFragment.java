@@ -1,4 +1,9 @@
-package com.example.smartbell;
+package com.example.smartbell.fragment;
+
+import com.example.smartbell.R;
+import com.example.smartbell.R.id;
+import com.example.smartbell.R.layout;
+import com.example.smartbell.R.string;
 
 import android.app.Activity;
 import android.net.Uri;

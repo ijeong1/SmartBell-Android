@@ -1,4 +1,4 @@
-package com.example.smartbell;
+package com.example.smartbell.sensor;
 
 public class AxisDirectionStruct {
 	public String axis_order = "XYZ";

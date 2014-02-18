@@ -1,4 +1,4 @@
-package com.example.smartbell;
+package com.example.smartbell.sensor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +8,7 @@ import java.nio.FloatBuffer;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
+
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -121,13 +122,13 @@ public class TSSBTSensor{
     	}
     }
 
-    public float[] binToFloat(byte[] b)
+    public Float[] binToFloat(byte[] b)
     {
     	if (b.length % 4 != 0)
     	{
-    		return new float[0];
+    		return new Float[0];
     	}
-    	float[] return_array = new float[b.length / 4];
+    	Float[] return_array = new Float[b.length / 4];
     	for (int i = 0; i < b.length; i += 4)
     	{
     		//We account for endieness here
@@ -196,7 +197,7 @@ public class TSSBTSensor{
     	call_lock.unlock();
     }
     
-    public float[] getLEDColor()
+    public Float[] getLEDColor()
     {
     	call_lock.lock();
     	byte[] send_data = new byte[]{(byte)0xef};
@@ -206,15 +207,7 @@ public class TSSBTSensor{
     	return binToFloat(float_data);
     }
 
-    public float[] getFiltTaredOrientMat()
-    {
-    	call_lock.lock();
-    	byte[] send_data = new byte[]{(byte)0x02};
-    	write(send_data);
-    	byte[] response = read(36);
-    	call_lock.unlock();
-    	return binToFloat(response);
-    }
+
     
     public void setTareCurrentOrient()
     {
@@ -389,7 +382,7 @@ public class TSSBTSensor{
     	return (int)binToShort(response)[0];
     }
 
-    public float[] getFiltTaredOrientQuat()
+ /*   public float[] getFiltTaredOrientQuat()
     {
     	call_lock.lock();
     	byte[] send_data = new byte[]{(byte)0x00};
@@ -398,8 +391,8 @@ public class TSSBTSensor{
     	call_lock.unlock();
     	return binToFloat(response);
     }
-
-    public float[] getFiltTaredOrientEuler()
+*/
+    public Float[] getEulerAngles()
     {
     	call_lock.lock();
     	byte[] send_data = new byte[]{(byte)0x01};
@@ -409,7 +402,7 @@ public class TSSBTSensor{
     	return binToFloat(response);
     }
     
-    public float[] getFiltTaredOrientRot()
+ /*   public float[] getFiltTaredOrientRot()
     {
     	call_lock.lock();
     	byte[] send_data = new byte[]{(byte)0x02};
@@ -488,8 +481,8 @@ public class TSSBTSensor{
     	call_lock.unlock();
     	return binToFloat(response);
     }
-    
-    public float[] getCorrectedLinAcc()
+*/    
+    public Float[] getLinAcc()
     {
     	call_lock.lock();
     	byte[] send_data = new byte[]{(byte)0x29};
@@ -498,7 +491,7 @@ public class TSSBTSensor{
     	call_lock.unlock();
     	return binToFloat(response);
     }
-    
+ /*   
     public float[] getRawComponentData()
     {
     	call_lock.lock();
@@ -508,5 +501,5 @@ public class TSSBTSensor{
     	call_lock.unlock();
     	return binToFloat(response);
     }
-
+*/
 }
