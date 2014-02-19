@@ -77,7 +77,7 @@ public class SetQuestionFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return (LinearLayout) inflater.inflate(R.layout.set_question, container, false);
+		return (LinearLayout) inflater.inflate(R.layout.view_set_question, container, false);
 	}
 	
 	@Override

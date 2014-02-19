@@ -1,4 +1,4 @@
-package com.example.smartbell.db;
+package com.example.smartbell.db.table;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;

@@ -2,7 +2,7 @@ package com.example.smartbell.sensor;
 
 import java.util.ArrayList;
 
-import com.example.smartbell.activity.MainActivity;
+import com.example.smartbell.activity.SelectWorkoutActivity;
 import com.example.smartbell.primitives.Moment;
 
 import android.os.Handler;
@@ -25,7 +25,7 @@ public class SensorDataHandler extends Handler {
 	@Override
     public void handleMessage(Message msg) {
 //		if(csv == null)
-//			csv = new CSVWriter(MainActivity.ctx);
+//			csv = new CSVWriter(SelectWorkoutActivity.ctx);
 		
 		try {
 			euler = TSSBTSensor.getInstance().getEulerAngles();

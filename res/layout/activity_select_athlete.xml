@@ -10,7 +10,6 @@
 
 	<Button android:id="@+id/new_athlete_button" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:text="New Athlete" />
-
 		
 	<LinearLayout android:id="@+id/athlete_list"
 		android:layout_width="match_parent" android:layout_height="wrap_content"

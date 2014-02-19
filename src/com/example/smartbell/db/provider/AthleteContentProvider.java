@@ -1,7 +1,10 @@
-package com.example.smartbell.db;
+package com.example.smartbell.db.provider;
 
 import java.util.Arrays;
 import java.util.HashSet;
+
+import com.example.smartbell.db.SmartBellDatabaseHelper;
+import com.example.smartbell.db.table.AthleteTable;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -14,30 +17,29 @@ import android.database.sqlite.SQLiteQueryBuilder;
 
 /**
  * Class that provides content from a SQLite database to the application.
- * Provides moment information to a ListView through a CursorAdapter. The database stores
- * moments in a two-dimensional table, where each row is a moment and each column is a property
- * of a moment (ID, moment text, moment rating, moment author).
+ * Provides athlete information to a ListView through a CursorAdapter. The database stores
+ * athletes in a two-dimensional table, where each row is a athlete and each column is a property
+ * of a athlete (ID, athlete text, athlete rating, athlete author).
  * 
  * Note that CursorLoaders require a ContentProvider, which is why this application wraps a
  * SQLite database into a content provider instead of managing the database<-->application
  * transactions manually.
  */
-public class MomentContentProvider extends ContentProvider {
+public class AthleteContentProvider extends ContentProvider {
 
-	/** The moment database. */
-	private MomentDatabaseHelper database;
+	/** The athlete database. */
+	private SmartBellDatabaseHelper database;
 
 	/** Values for the URIMatcher. */
-	private static final int MOMENT_ID = 1;
-	private static final int JOKE_FILTER = 2;
+	private static final int ATHLETE_ID = 1;
 
 	/** The authority for this content provider. */
-	private static final String AUTHORITY = "com.example.smarbell.contentprovider";
+	private static final String AUTHORITY = "com.example.smarbell.athletecontentprovider";
 
 	/** The database table to read from and write to, and also the root path for use in the URI matcher.
-	 * This is essentially a label to a two-dimensional array in the database filled with rows of moments
-	 * whose columns contain moment data. */
-	private static final String BASE_PATH = "moment_table";
+	 * This is essentially a label to a two-dimensional array in the database filled with rows of athletes
+	 * whose columns contain athlete data. */
+	private static final String BASE_PATH = "athlete_table";
 
 	/** This provider's content location. Used by accessing applications to
 	 * interact with this provider. */
@@ -47,18 +49,18 @@ public class MomentContentProvider extends ContentProvider {
 	 * expected content URI formats to take specific actions in this provider. */
 	private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 	static {
-		sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/moments/#", MOMENT_ID);
+		sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/athletes/#", ATHLETE_ID);
 	}
 
 	@Override
 	public boolean onCreate() {
-		database = new MomentDatabaseHelper(this.getContext(), MomentDatabaseHelper.DATABASE_NAME, null, MomentDatabaseHelper.DATABASE_VERSION);
+		database = new SmartBellDatabaseHelper(this.getContext(), SmartBellDatabaseHelper.DATABASE_NAME, null, SmartBellDatabaseHelper.DATABASE_VERSION);
 		return true;
 	}
 
 	/**
-	 * Fetches rows from the moment table. Given a specified URI that contains a
-	 * filter, returns a list of moments from the moment table matching that filter in the
+	 * Fetches rows from the athlete table. Given a specified URI that contains a
+	 * filter, returns a list of athletes from the athlete table matching that filter in the
 	 * form of a Cursor.<br><br>
 	 * 
 	 * Overrides the built-in version of <b>query(...)</b> provided by ContentProvider.<br><br>
@@ -76,8 +78,8 @@ public class MomentContentProvider extends ContentProvider {
 		/** Make sure the projection is proper before querying. */
 		checkColumns(projection);
 
-		/** Set up helper to query our moments table. */
-		queryBuilder.setTables(MomentTable.DATABASE_TABLE_MOMENT);
+		/** Set up helper to query our athletes table. */
+		queryBuilder.setTables(AthleteTable.DATABASE_TABLE_ATHLETE);
 
 		/** Perform the database query. */
 		SQLiteDatabase db = this.database.getWritableDatabase();
@@ -96,10 +98,10 @@ public class MomentContentProvider extends ContentProvider {
 	}
 
 	/**
-	 * Inserts a moment into the moment table. Given a specific URI that contains a
-	 * moment and the values of that moment, writes a new row in the table filled
-	 * with that moment's information and gives the moment a new ID, then returns a URI
-	 * containing the ID of the inserted moment.<br><br>
+	 * Inserts a athlete into the athlete table. Given a specific URI that contains a
+	 * athlete and the values of that athlete, writes a new row in the table filled
+	 * with that athlete's information and gives the athlete a new ID, then returns a URI
+	 * containing the ID of the inserted athlete.<br><br>
 	 * 
 	 * Overrides the built-in version of <b>insert(...)</b> provided by ContentProvider.<br><br>
 	 * 
@@ -113,7 +115,7 @@ public class MomentContentProvider extends ContentProvider {
 		/** Open the database for writing. */
 		SQLiteDatabase sqlDB = this.database.getWritableDatabase();
 
-		/** Will contain the ID of the inserted moment. */
+		/** Will contain the ID of the inserted athlete. */
 		long id = 0;
 
 		/** Match the passed-in URI to an expected URI format. */
@@ -121,14 +123,14 @@ public class MomentContentProvider extends ContentProvider {
 
 		switch(uriType)	{
 
-		/** Expects a moment ID, but we will do nothing with the passed-in ID since
+		/** Expects a athlete ID, but we will do nothing with the passed-in ID since
 		 * the database will automatically handle ID assignment and incrementation.
-		 * IMPORTANT: moment ID cannot be set to -1 in passed-in URI; -1 is not interpreted
+		 * IMPORTANT: athlete ID cannot be set to -1 in passed-in URI; -1 is not interpreted
 		 * as a numerical value by the URIMatcher. */
-		case MOMENT_ID:
+		case ATHLETE_ID:
 
-			/** Perform the database insert, placing the moment at the bottom of the table. */
-			id = sqlDB.insert(MomentTable.DATABASE_TABLE_MOMENT, null, values);
+			/** Perform the database insert, placing the athlete at the bottom of the table. */
+			id = sqlDB.insert(AthleteTable.DATABASE_TABLE_ATHLETE, null, values);
 			break;
 
 		default:
@@ -142,10 +144,10 @@ public class MomentContentProvider extends ContentProvider {
 	}
 
 	/**
-	 * Removes a row from the moment table. Given a specific URI containing a moment ID,
+	 * Removes a row from the athlete table. Given a specific URI containing a athlete ID,
 	 * removes rows in the table that match the ID and returns the number of rows removed.
 	 * Since IDs are automatically incremented on insertion, this will only ever remove
-	 * a single row from the moment table.<br><br>
+	 * a single row from the athlete table.<br><br>
 	 * 
 	 * Overrides the built-in version of <b>delete(...)</b> provided by ContentProvider.<br><br>
 	 * 
@@ -163,9 +165,9 @@ public class MomentContentProvider extends ContentProvider {
 		int uriType = sURIMatcher.match(uri);
 
 		switch(uriType)	{
-		case MOMENT_ID:
+		case ATHLETE_ID:
 			String id = uri.getLastPathSegment();
-			rowsDeleted = sqlDB.delete(MomentTable.DATABASE_TABLE_MOMENT, MomentTable.MOMENT_KEY_ID+"="+id, null);
+			rowsDeleted = sqlDB.delete(AthleteTable.DATABASE_TABLE_ATHLETE, AthleteTable.ATHLETE_KEY_ID+"="+id, null);
 		}
 		
 		if(rowsDeleted > 0)
@@ -175,10 +177,10 @@ public class MomentContentProvider extends ContentProvider {
 	}
 
 	/**
-	 * Updates a row in the moment table. Given a specific URI containing a moment ID and the
-	 * new moment values, updates the values in the row with the matching ID in the table. 
+	 * Updates a row in the athlete table. Given a specific URI containing a athlete ID and the
+	 * new athlete values, updates the values in the row with the matching ID in the table. 
 	 * Since IDs are automatically incremented on insertion, this will only ever update
-	 * a single row in the moment table.<br><br>
+	 * a single row in the athlete table.<br><br>
 	 * 
 	 * Overrides the built-in version of <b>update(...)</b> provided by ContentProvider.<br><br>
 	 * 
@@ -197,11 +199,11 @@ public class MomentContentProvider extends ContentProvider {
 		int uriType = sURIMatcher.match(uri);
 
 		switch(uriType)	{
-		case MOMENT_ID:
+		case ATHLETE_ID:
 			String id = uri.getLastPathSegment();
-			Log.d("mlady","id: "+id);
-			Log.d("mlady","values: "+values);
-			rowsUpdated = sqlDB.update(MomentTable.DATABASE_TABLE_MOMENT, values, MomentTable.MOMENT_KEY_ID+"="+id, null);
+//			Log.d("mlady","id: "+id);
+//			Log.d("mlady","values: "+values);
+			rowsUpdated = sqlDB.update(AthleteTable.DATABASE_TABLE_ATHLETE, values, AthleteTable.ATHLETE_KEY_ID+"="+id, null);
 		}
 		
 		if(rowsUpdated > 0)
@@ -218,9 +220,9 @@ public class MomentContentProvider extends ContentProvider {
 	 */
 	private void checkColumns(String[] projection)
 	{
-		String[] available = { MomentTable.MOMENT_KEY_ID, MomentTable.MOMENT_TIMESTAMP, MomentTable.MOMENT_EULER_X, 
-				MomentTable.MOMENT_EULER_Y, MomentTable.MOMENT_EULER_Z, MomentTable.MOMENT_LINACC_X, MomentTable.MOMENT_LINACC_Y,
-				MomentTable.MOMENT_LINACC_Z };
+		String[] available = { AthleteTable.ATHLETE_KEY_ID, AthleteTable.ATHLETE_IS_MALE, AthleteTable.ATHLETE_FOREARM, 
+				AthleteTable.ATHLETE_HEIGHT, AthleteTable.ATHLETE_SHIN, AthleteTable.ATHLETE_THIGH, AthleteTable.ATHLETE_TORSO,
+				AthleteTable.ATHLETE_TORSO, AthleteTable.ATHLETE_UPPER_ARM, AthleteTable.ATHLETE_WEIGHT };
 
 		if(projection != null) {
 			HashSet<String> requestedColumns = new HashSet<String>(Arrays.asList(projection));

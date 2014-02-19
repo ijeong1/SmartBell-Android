@@ -1,4 +1,4 @@
-package com.example.smartbell.db;
+package com.example.smartbell.db.adapter;
 
 public class OnLiftingSetChangeListener {
 

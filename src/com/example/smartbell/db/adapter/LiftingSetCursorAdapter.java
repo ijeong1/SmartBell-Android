@@ -1,4 +1,4 @@
-package com.example.smartbell.db;
+package com.example.smartbell.db.adapter;
 
 import com.example.smartbell.primitives.LiftingSet;
 
@@ -13,7 +13,7 @@ import android.view.ViewGroup;
  * database and a ViewGroup (in this case, a SQLite database table containing rows
  * of jokes and a ListView containing LiftingSetViews).
  */
-public class SetCursorAdapter extends android.support.v4.widget.CursorAdapter {
+public class LiftingSetCursorAdapter extends android.support.v4.widget.CursorAdapter {
 
 	/** The OnLiftingSetChangeListener that should be connected to each of the
 	 * LiftingSetViews created/managed by this Adapter. */
@@ -34,7 +34,7 @@ public class SetCursorAdapter extends android.support.v4.widget.CursorAdapter {
 	 * @param flags
 	 * 			  A list of flags that decide this adapter's behavior.
 	 */
-	public SetCursorAdapter(Context context, Cursor jokeCursor, int flags) {
+	public LiftingSetCursorAdapter(Context context, Cursor jokeCursor, int flags) {
 		super(context, jokeCursor, flags);
 	}
 

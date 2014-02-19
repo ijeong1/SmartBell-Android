@@ -1,7 +1,8 @@
-package com.example.smartbell.db;
+package com.example.smartbell.db.adapter;
 
 import java.util.List;
 
+import com.example.smartbell.db.LiftingSetView;
 import com.example.smartbell.primitives.LiftingSet;
 
 import android.content.Context;

@@ -83,7 +83,7 @@ public class RecordSetFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return (LinearLayout) inflater.inflate(R.layout.record_set, container, false);
+		return (LinearLayout) inflater.inflate(R.layout.fragment_record_set, container, false);
 	}
 	
 	@Override

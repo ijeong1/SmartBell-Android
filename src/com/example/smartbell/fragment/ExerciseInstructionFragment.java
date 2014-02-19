@@ -75,7 +75,7 @@ public class ExerciseInstructionFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return (LinearLayout) inflater.inflate(R.layout.exercise_instructions, container, false);
+		return (LinearLayout) inflater.inflate(R.layout.fragment_exercise_instructions, container, false);
 	}
 
 	@Override

@@ -1,4 +1,6 @@
 package com.example.smartbell.db;
+import com.example.smartbell.db.table.*;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
@@ -7,10 +9,10 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
  * Class that hooks up to the MomentContentProvider for initialization and
  * maintenance. Uses MomentTable for assistance.
  */
-public class MomentDatabaseHelper extends android.database.sqlite.SQLiteOpenHelper {
+public class SmartBellDatabaseHelper extends android.database.sqlite.SQLiteOpenHelper {
 
 	/** The name of the database. */
-	public static final String DATABASE_NAME = "momentdatabase.db";
+	public static final String DATABASE_NAME = "smartbell_database.db";
 	
 	/** The starting database version. */
 	public static final int DATABASE_VERSION = 1;
@@ -27,18 +29,24 @@ public class MomentDatabaseHelper extends android.database.sqlite.SQLiteOpenHelp
 	 * @param version
 	 * 					The starting database version.
 	 */
-	public MomentDatabaseHelper(Context context, String name,
+	public SmartBellDatabaseHelper(Context context, String name,
 		CursorFactory factory, int version) {
 		super(context, name, null, version);
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		AthleteTable.onCreate(db);
+		WorkoutTable.onCreate(db);
+		SetTable.onCreate(db);
 		MomentTable.onCreate(db);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		AthleteTable.onUpgrade(db, oldVersion, newVersion);
+		WorkoutTable.onUpgrade(db, oldVersion, newVersion);
+		SetTable.onUpgrade(db, oldVersion, newVersion);
 		MomentTable.onUpgrade(db, oldVersion, newVersion);
 	}
 }
