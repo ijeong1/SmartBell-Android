@@ -3,7 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.example.smartbell.barpath.BarPathView
+   
+    
+    
+</FrameLayout>
+<!--  <com.mikelady.smartbell.barpath.BarPathView
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:background="#ccc"
@@ -12,6 +16,4 @@
         app:exampleColor="#33b5e5"
         app:exampleDimension="24sp"
         app:exampleDrawable="@android:drawable/ic_menu_add"
-        app:exampleString="Hello, BarPathView" />
-
-</FrameLayout>
+        app:exampleString="Hello, BarPathView" />  -->
