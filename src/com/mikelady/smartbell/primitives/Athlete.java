@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Athlete {
 	public final static int MAX_PRESS = 0;
 	public final static int MAX_BENCH = 1;
-	public final static int MAX_BACK_SQUAT = 1;
+	public final static int MAX_BACK_SQUAT = 2;
 
 	int id;
 	ArrayList<Workout> workouts;

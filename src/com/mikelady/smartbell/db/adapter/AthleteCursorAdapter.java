@@ -1,5 +1,6 @@
 package com.mikelady.smartbell.db.adapter;
 
+import com.mikelady.smartbell.db.table.AthleteTable;
 import com.mikelady.smartbell.primitives.LiftingSet;
 
 import android.content.Context;
@@ -27,15 +28,15 @@ public class AthleteCursorAdapter extends android.support.v4.widget.CursorAdapte
 	 *            The application Context in which this LiftingSetListAdapter is being
 	 *            used.
 	 * 
-	 * @param jokeCursor
+	 * @param athleteCursor
 	 *            A Database Cursor containing a result set of LiftingSets which
 	 *            should be bound to LiftingSetViews.
 	 *            
 	 * @param flags
 	 * 			  A list of flags that decide this adapter's behavior.
 	 */
-	public AthleteCursorAdapter(Context context, Cursor jokeCursor, int flags) {
-		super(context, jokeCursor, flags);
+	public AthleteCursorAdapter(Context context, Cursor athleteCursor, int flags) {
+		super(context, athleteCursor, flags);
 	}
 
 	/**
@@ -64,6 +65,9 @@ public class AthleteCursorAdapter extends android.support.v4.widget.CursorAdapte
 		((LiftingSetView)view).setLiftingSet(retrievedLiftingSet);
 		((LiftingSetView)view).setOnLiftingSetChangeListener(m_listener);*/
 		
+		int athleteID = cursor.getInt(AthleteTable.ATHLETE_COL_ID);
+//		int 
+//		(AthleteView(view)).set
 		
 	}
 

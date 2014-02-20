@@ -49,7 +49,7 @@ public class AthleteContentProvider extends ContentProvider {
 	 * expected content URI formats to take specific actions in this provider. */
 	private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 	static {
-		sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/athletes/#", ATHLETE_ID);
+		sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/athlete/#", ATHLETE_ID);
 	}
 
 	@Override
