@@ -91,7 +91,7 @@ public class ExerciseDetailFragment extends Fragment {
 		exerciseDetailTitle = (TextView)this.getView().findViewById(R.id.exercise_detail_title);
 		exerciseDetailTitle.setText(exerciseName);
 		
-		instructionsButton = (Button)this.getView().findViewById(R.id.instructions_button);
+//		instructionsButton = (Button)this.getView().findViewById(R.id.instructions_button);
 		startSetButton = (Button)this.getView().findViewById(R.id.start_set_button);
 		endExerciseButton = (Button)this.getView().findViewById(R.id.end_exercise_button);
 		showBarpathButton = (Button)this.getView().findViewById(R.id.bar_path_button);
@@ -100,20 +100,20 @@ public class ExerciseDetailFragment extends Fragment {
 	}
 	
 	private void setClickListeners(){
-		instructionsButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				fragmentManager = getFragmentManager();
-				ExerciseInstructionFragment exerciseInstructionFragment = ExerciseInstructionFragment.newInstance(exerciseName);
-				
-				android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-				fragmentTransaction.replace(R.id.start_workout_activity_layout, exerciseInstructionFragment);
-				String exerciseDetailTag = getResources().getString(R.string.exercise_detail_tag);
-				fragmentTransaction.addToBackStack(exerciseDetailTag);
-				fragmentTransaction.commit();
-				Log.d("exerciseDetailFragment", "after instruction fragment commit");
-			}
-		});
+//		instructionsButton.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				fragmentManager = getFragmentManager();
+//				ExerciseInstructionFragment exerciseInstructionFragment = ExerciseInstructionFragment.newInstance(exerciseName);
+//				
+//				android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//				fragmentTransaction.replace(R.id.start_workout_activity_layout, exerciseInstructionFragment);
+//				String exerciseDetailTag = getResources().getString(R.string.exercise_detail_tag);
+//				fragmentTransaction.addToBackStack(exerciseDetailTag);
+//				fragmentTransaction.commit();
+//				Log.d("exerciseDetailFragment", "after instruction fragment commit");
+//			}
+//		});
 		
 		startSetButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -144,14 +144,14 @@ public class ExerciseDetailFragment extends Fragment {
 		showBarpathButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				fragmentManager = getFragmentManager();
-				BarPathFragment barPathFragment = BarPathFragment.newInstance();
-				
-				android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-				fragmentTransaction.replace(R.id.start_workout_activity_layout, barPathFragment);
-				String barPathTag = getResources().getString(R.string.bar_path_tag);
-				fragmentTransaction.addToBackStack(barPathTag);
-				fragmentTransaction.commit();
+//				fragmentManager = getFragmentManager();
+//				BarPathFragment barPathFragment = BarPathFragment.newInstance();
+//				
+//				android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//				fragmentTransaction.replace(R.id.start_workout_activity_layout, barPathFragment);
+//				String barPathTag = getResources().getString(R.string.bar_path_tag);
+//				fragmentTransaction.addToBackStack(barPathTag);
+//				fragmentTransaction.commit();
 			}
 		});
 	}

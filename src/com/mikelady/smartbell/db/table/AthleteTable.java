@@ -40,6 +40,9 @@ public class AthleteTable {
 	public static final String ATHLETE_SHIN = "shin";
 	public static final int ATHLETE_COL_SHIN = ATHLETE_COL_ID + 8;
 	
+	public static final String[] ATHLETE_COL_NAMES = {ATHLETE_KEY_ID, ATHLETE_IS_MALE, ATHLETE_HEIGHT, ATHLETE_WEIGHT,
+		ATHLETE_FOREARM, ATHLETE_UPPER_ARM, ATHLETE_TORSO, ATHLETE_THIGH, ATHLETE_SHIN};
+	
 	/** SQLite database creation statement. Auto-increments IDs of inserted jokes.
 	 * Joke IDs are set after insertion into the database. */
 	public static final String DATABASE_CREATE = "create table " + DATABASE_TABLE_ATHLETE + " (" + 
@@ -51,7 +54,7 @@ public class AthleteTable {
 			ATHLETE_UPPER_ARM	+ " integer not null, " + 
 			ATHLETE_TORSO	+ " integer not null, " + 
 			ATHLETE_THIGH	+ " integer not null, " + 
-			ATHLETE_SHIN	+ " integer not null, " + ");";
+			ATHLETE_SHIN	+ " integer not null " + ");";
 	
 	/** SQLite database table removal statement. Only used if upgrading database. */
 	public static final String DATABASE_DROP = "drop table if exists " + DATABASE_TABLE_ATHLETE;

@@ -5,11 +5,17 @@ import java.util.ArrayList;
 import com.mikelady.smartbell.R;
 import com.mikelady.smartbell.R.id;
 import com.mikelady.smartbell.R.layout;
+import com.mikelady.smartbell.activity.BarPathActivity;
+import com.mikelady.smartbell.activity.SelectWorkoutActivity;
+import com.mikelady.smartbell.activity.StartWorkoutActivity;
+import com.mikelady.smartbell.barpath.BarPathTracker;
 import com.mikelady.smartbell.fragment.SelectExerciseFragment.OnFragmentInteractionListener;
 import com.mikelady.smartbell.primitives.Moment;
 import com.mikelady.smartbell.sensor.SensorDataHandler;
+import com.mikelady.smartbell.sensor.TSSBTSensor;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Message;
@@ -45,6 +51,9 @@ public class RecordSetFragment extends Fragment {
 	private OnFragmentInteractionListener mListener;
 	private SensorDataHandler sensorDataHandler;
 	private boolean is_polling = false;
+	
+	public static ArrayList<Double[]> positions;
+	
 	/**
 	 * Use this factory method to create a new instance of this fragment using
 	 * the provided parameters.
@@ -72,12 +81,17 @@ public class RecordSetFragment extends Fragment {
 		if (getArguments() != null) {
 			exerciseName = getArguments().getString(ARG_PARAM1);
 		}
-		sensorDataHandler = new SensorDataHandler(); // make new thread?
-   		//Start the sensor updating
-        Message start_again_message = new Message();
-    	start_again_message.what = 287;
-    	sensorDataHandler.sendMessage(start_again_message);
-        is_polling = true;
+		
+		if(!Moment.TEST){
+			//1 is default
+			sensorDataHandler = new SensorDataHandler(1); // make new thread?
+			
+	   		//Start the sensor updating
+	        Message start_again_message = new Message();
+	    	start_again_message.what = 287;
+	    	sensorDataHandler.sendMessage(start_again_message);
+	        is_polling = true;
+        }
 	}
 
 	@Override
@@ -104,23 +118,52 @@ public class RecordSetFragment extends Fragment {
 		endSetButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(is_polling)
-		    	{
-			    	Message stop_message = new Message();
-			    	stop_message.what = -1;
-			    	sensorDataHandler.sendMessage(stop_message);
-			    	is_polling = false;
-		    	}
-				ArrayList<Moment> moments = sensorDataHandler.getMoments();
-				Log.d("ML", "num moments: "+moments.size());
+				if(!Moment.TEST){
+					if(is_polling)
+			    	{
+				    	Message stop_message = new Message();
+				    	stop_message.what = -1;
+				    	sensorDataHandler.sendMessage(stop_message);
+				    	is_polling = false;
+			    	}
+					ArrayList<Moment> moments = sensorDataHandler.getMoments();
+					Log.d("ML", "num moments: "+moments.size());
 				
-				fragmentManager = getFragmentManager();
-				SetQuestionFragment setQuestionFragment = SetQuestionFragment.newInstance(exerciseName);
-				
-				android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-				fragmentTransaction.replace(R.id.start_workout_activity_layout, setQuestionFragment);
-				fragmentTransaction.addToBackStack(null);
-				fragmentTransaction.commit();
+					BarPathTracker barPathTracker = new BarPathTracker(moments);
+					positions = barPathTracker.determinePosition();
+					
+	
+					
+					fragmentManager = getFragmentManager();
+	//				SetQuestionFragment setQuestionFragment = SetQuestionFragment.newInstance(exerciseName);
+					
+	//				BarPathFragment barPathFragment = BarPathFragment.newInstance(moments);
+	//				
+	//				android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+	//				fragmentTransaction.replace(R.id.start_workout_activity_layout, barPathFragment); //setQuestionFragment
+	//				fragmentTransaction.addToBackStack(null);
+	//				fragmentTransaction.commit();
+					
+	//				String selectExerciseTag = getResources().getString(R.string.exercise_detail_tag);
+	//				fragmentManager.popBackStackImmediate(selectExerciseTag, 1);
+					Intent intent = new Intent(getActivity(), BarPathActivity.class);
+					
+					startActivity(intent);
+				}
+				else{
+					ArrayList<Moment> moments = new ArrayList<Moment>();
+					Float[] test = {(float) 1.0, (float) 2.0, (float) 3.0};
+					Float[] test1 = {(float) 4.0, (float) 5.0, (float) 6.0};
+					moments.add(new Moment((long) 10, test, test1));
+					
+//					android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//					fragmentTransaction.replace(R.id.start_workout_activity_layout, barPathFragment); //setQuestionFragment
+//					fragmentTransaction.addToBackStack(null);
+//					fragmentTransaction.commit();
+					
+					String selectExerciseTag = getResources().getString(R.string.exercise_detail_tag);
+					fragmentManager.popBackStackImmediate(selectExerciseTag, 1);
+				}
 			}
 		});
 		

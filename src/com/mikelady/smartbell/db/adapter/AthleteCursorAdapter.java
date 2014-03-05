@@ -1,6 +1,9 @@
 package com.mikelady.smartbell.db.adapter;
 
 import com.mikelady.smartbell.db.table.AthleteTable;
+import com.mikelady.smartbell.db.view.AthleteView;
+import com.mikelady.smartbell.db.view.AthleteView.OnAthleteChangeListener;
+import com.mikelady.smartbell.primitives.Athlete;
 import com.mikelady.smartbell.primitives.LiftingSet;
 
 import android.content.Context;
@@ -17,7 +20,7 @@ import android.view.ViewGroup;
 public class AthleteCursorAdapter extends android.support.v4.widget.CursorAdapter {
 
 	/** The OnLiftingSetChangeListener that should be connected to each of the
-	 * LiftingSetViews created/managed by this Adapter. */
+	 * AthleteViews created/managed by this Adapter. */
 	private OnAthleteChangeListener m_listener;
 
 	/**
@@ -47,7 +50,7 @@ public class AthleteCursorAdapter extends android.support.v4.widget.CursorAdapte
 	 *            internal state of any LiftingSet contained in one of this Adapters
 	 *            LiftingSetViews is changed.
 	 */
-	public void setOnLiftingSetChangeListener(OnAthleteChangeListener mListener) {
+	public void setOnAthleteChangeListener(OnAthleteChangeListener mListener) {
 		this.m_listener = mListener;
 	}
 
@@ -66,8 +69,18 @@ public class AthleteCursorAdapter extends android.support.v4.widget.CursorAdapte
 		((LiftingSetView)view).setOnLiftingSetChangeListener(m_listener);*/
 		
 		int athleteID = cursor.getInt(AthleteTable.ATHLETE_COL_ID);
-//		int 
-//		(AthleteView(view)).set
+		boolean athleteIsMale = Boolean.getBoolean(
+				cursor.getString(AthleteTable.ATHLETE_COL_IS_MALE));
+		Athlete retrievedAthlete = new Athlete();
+		retrievedAthlete.setId(athleteID);
+		retrievedAthlete.setMale(athleteIsMale);
+		((AthleteView)view).setOnAthleteChangeListener(null);
+		((AthleteView)view).setAthlete(retrievedAthlete);
+		((AthleteView)view).setOnAthleteChangeListener(m_listener);
+//		int athleteHeight = cursor.getInt(AthleteTable.ATHLETE_COL_HEIGHT);
+//		int athleteWeight = cursor.getInt(AthleteTable.ATHLETE_COL_WEIGHT);
+//		int athleteForearm = cursor.getInt(AthleteTable.ATHLETE_COL_FOREARM);
+//		int athleteUpperArm = cursor.getInt(AthleteTable.ATHLETE_COL_UPPER_ARM);
 		
 	}
 
@@ -89,6 +102,17 @@ public class AthleteCursorAdapter extends android.support.v4.widget.CursorAdapte
 		//add LiftingSetview to vg?
 		return view;
 		*/
-		return null;
+		
+		int athleteID = cursor.getInt(AthleteTable.ATHLETE_COL_ID);
+		boolean athleteIsMale = Boolean.getBoolean(
+				cursor.getString(AthleteTable.ATHLETE_COL_IS_MALE));
+		Athlete retrievedAthlete = new Athlete();
+		retrievedAthlete.setId(athleteID);
+		retrievedAthlete.setMale(athleteIsMale);
+		
+		AthleteView view = new AthleteView(context, retrievedAthlete);
+		((AthleteView)view).setOnAthleteChangeListener(m_listener);
+		
+		return view;
 	}
 }

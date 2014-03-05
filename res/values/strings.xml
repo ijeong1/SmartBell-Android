@@ -11,7 +11,11 @@
     <string name="press">Press</string>
     <string name="start_workout_activity_tag">StartWorkoutActivityTag</string>
     <string name="select_exercise_tag">SelectExerciseTag</string>
-	<string name="exercise_detail_tag">ExerciseDetailTag</string>
-	<string name="bar_path_tag">BarPathTag</string>
-	<string name="bar_path">Bar Path</string>
+    <string name="exercise_detail_tag">ExerciseDetailTag</string>
+    <string name="bar_path_tag">BarPathTag</string>
+    <string name="bar_path">Bar Path</string>
+    <string name="title_activity_bar_path">BarPathActivity</string>
+    <string name="athlete_id">AthleteId</string>
+    <string name="title_activity_set_user_details">SetUserDetails</string>
+
 </resources>

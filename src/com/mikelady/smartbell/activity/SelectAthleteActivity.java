@@ -1,8 +1,15 @@
 package com.mikelady.smartbell.activity;
+import java.util.ArrayList;
+
 import com.mikelady.smartbell.R;
 import com.mikelady.smartbell.db.adapter.AthleteCursorAdapter;
-import com.mikelady.smartbell.db.provider.AthleteContentProvider;
+import com.mikelady.smartbell.db.adapter.AthleteListAdapter;
+import com.mikelady.smartbell.db.provider.SmartBellContentProvider;
 import com.mikelady.smartbell.db.table.AthleteTable;
+import com.mikelady.smartbell.db.view.AthleteView;
+import com.mikelady.smartbell.db.view.AthleteView.OnAthleteChangeListener;
+import com.mikelady.smartbell.primitives.Athlete;
+import com.mikelady.smartbell.primitives.Moment;
 import com.parse.Parse;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
@@ -10,26 +17,32 @@ import com.parse.ParseObject;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-public class SelectAthleteActivity extends FragmentActivity implements android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor> {
+public class SelectAthleteActivity extends FragmentActivity implements android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor>, OnAthleteChangeListener {
 	
 	private static final int LOADER_ID = 1;
 	
 	protected Button newAthleteButton;
 	protected ListView athleteListViewGroup;
+	protected Cursor athleteCursor;
 	protected AthleteCursorAdapter athleteCursorAdapter;
+//	protected AthleteListAdapter athleteListAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +51,11 @@ public class SelectAthleteActivity extends FragmentActivity implements android.s
 		
 		athleteCursorAdapter = new AthleteCursorAdapter(this, null, 0);
 		
+		
 		getSupportLoaderManager().initLoader(LOADER_ID, null, this);
 		
 		initLayout();
+		Log.d("ml", "after oncreate");
 //		ParseObject testObject = new ParseObject("TestObject");
 //		testObject.put("foo", "bar");
 //		testObject.saveInBackground();
@@ -54,22 +69,62 @@ public class SelectAthleteActivity extends FragmentActivity implements android.s
 		return true;
 	}
 	
+	protected void fillData(){
+		getSupportLoaderManager().restartLoader(0, null, this);
+		this.athleteListViewGroup.setAdapter(athleteCursorAdapter);
+		athleteListViewGroup.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+		        Intent intent = new Intent(SelectAthleteActivity.this, SelectWorkoutActivity.class);
+		        intent.putExtra(getString(R.string.athlete_id), position);
+		        startActivity(intent);
+            }
+        });
+	}
+	
 	private void initLayout(){
 		setContentView(R.layout.activity_select_athlete);
 		
-		newAthleteButton = (Button)this.findViewById(R.id.start_workout_button);
+		newAthleteButton = (Button)this.findViewById(R.id.new_athlete_button);
 		athleteListViewGroup = (ListView)this.findViewById(R.id.athlete_list_view_group);
+		athleteCursorAdapter = new AthleteCursorAdapter(this, null, 0);
 		athleteListViewGroup.setAdapter(athleteCursorAdapter);
-		
+
 		newAthleteButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(SelectAthleteActivity.this, StartWorkoutActivity.class);
-				startActivity(intent);
+				addAthlete(new Athlete());
 			}
 		});
 		
+		
+	}
+	
+	/**
+	 * Method used for encapsulating the logic necessary to properly add a new
+	 * Athlete to database, and display it on screen.
+	 * 
+	 * @param athlete
+	 *            The Athlete to add to list of Athletes.
+	 */
+	protected void addAthlete(Athlete athlete) {
+		Uri addRow = Uri.parse(SmartBellContentProvider.ATHLETE_CONTENT_URI+"/athlete/"+athlete.getId());
+		ContentValues cv = new ContentValues();
+//		cv.put(AthleteTable.ATHLETE_KEY_ID, athlete.getId());
+		cv.put(AthleteTable.ATHLETE_IS_MALE, athlete.isMale());
+		cv.put(AthleteTable.ATHLETE_HEIGHT, 0);
+		cv.put(AthleteTable.ATHLETE_WEIGHT, 0);
+		cv.put(AthleteTable.ATHLETE_FOREARM, 0);
+		cv.put(AthleteTable.ATHLETE_UPPER_ARM, 0);
+		cv.put(AthleteTable.ATHLETE_TORSO, 0);
+		cv.put(AthleteTable.ATHLETE_THIGH, 0);
+		cv.put(AthleteTable.ATHLETE_SHIN, 0);
+
+		athlete.setId(Integer.valueOf(getContentResolver().insert(addRow, cv).getLastPathSegment()));
+		Log.d("mlady", "athlete: "+athlete);
+		athleteCursorAdapter.setOnAthleteChangeListener(null);
+		fillData();
 	}
 
 	@Override
@@ -84,7 +139,7 @@ public class SelectAthleteActivity extends FragmentActivity implements android.s
 		proj[AthleteTable.ATHLETE_COL_TORSO] = AthleteTable.ATHLETE_TORSO;
 		proj[AthleteTable.ATHLETE_COL_THIGH] = AthleteTable.ATHLETE_THIGH;
 		proj[AthleteTable.ATHLETE_COL_SHIN] = AthleteTable.ATHLETE_SHIN;
-		Uri m_uri = Uri.parse(AthleteContentProvider.CONTENT_URI + "/athlete/");
+		Uri m_uri = Uri.parse(SmartBellContentProvider.ATHLETE_CONTENT_URI + "/athlete/");
 		
 		CursorLoader cl = new CursorLoader(this, m_uri, proj, null, null, null);
 		
@@ -99,6 +154,29 @@ public class SelectAthleteActivity extends FragmentActivity implements android.s
 	@Override
 	public void onLoaderReset(Loader<Cursor> arg0) {
 		athleteCursorAdapter.swapCursor(null);
+	}
+
+	@Override
+	public void onAthleteChanged(AthleteView view, Athlete athlete) {
+		// TODO Auto-generated method stub
+		Uri updateRow = Uri.parse(SmartBellContentProvider.ATHLETE_CONTENT_URI+"/athlete/"+athlete.getId());
+		Log.d("mlady","updateRow: "+updateRow);
+		ContentValues cv = new ContentValues();
+		cv.put(AthleteTable.ATHLETE_IS_MALE, athlete.isMale());
+		cv.put(AthleteTable.ATHLETE_HEIGHT, 0);
+		cv.put(AthleteTable.ATHLETE_WEIGHT, 0);
+		cv.put(AthleteTable.ATHLETE_FOREARM, 0);
+		cv.put(AthleteTable.ATHLETE_UPPER_ARM, 0);
+		cv.put(AthleteTable.ATHLETE_TORSO, 0);
+		cv.put(AthleteTable.ATHLETE_THIGH, 0);
+		cv.put(AthleteTable.ATHLETE_SHIN, 0);
+
+
+		getContentResolver().update(updateRow, cv, null, null);
+		
+		athleteCursorAdapter.setOnAthleteChangeListener(null);
+		
+		fillData();
 	}
 
 }

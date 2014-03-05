@@ -7,17 +7,20 @@ public class LiftingSet {
 	String exercise;
 	ArrayList<Moment> moments;
 	int weightLifted;
+	int reps;
 	
 	public LiftingSet() {
 		exercise = "Squat";
 		moments = new ArrayList<Moment>();
 		weightLifted = 135;
+		reps = 0;
 	}
 	
-	public LiftingSet(String exercise, ArrayList<Moment> moments, int weightLifted) {
+	public LiftingSet(String exercise, ArrayList<Moment> moments, int weightLifted, int reps) {
 		this.exercise = exercise;
 		this.moments = moments;
 		this.weightLifted = weightLifted;
+		this.reps = reps;
 	}
 
 	public String getExercise() {
@@ -42,6 +45,14 @@ public class LiftingSet {
 
 	public void setWeightLifted(int weightLifted) {
 		this.weightLifted = weightLifted;
+	}
+
+	public int getReps() {
+		return reps;
+	}
+
+	public void setReps(int reps) {
+		this.reps = reps;
 	}
 
 }

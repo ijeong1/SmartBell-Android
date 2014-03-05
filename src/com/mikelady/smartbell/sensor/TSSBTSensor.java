@@ -361,6 +361,21 @@ public class TSSBTSensor{
     	write(send_data);
     	call_lock.unlock();
     }
+
+    public void setFilterMode(int mode)
+    {
+    	/*Changingthisparametercan be useful for tuning filter-performance versus orientation-update rates. 
+    	Passing in a parameter of 0 places the sensor into IMU mode, 
+    	a 1 places the sensor into Kalman Filtered Mode (Default mode), 
+    	a 2 places the sensor into Alternating Kalman Filter Mode, 
+    	a 3 places the sensor into Complementary Filter Mode and 
+    	a 4 places the sensor into Quaternion Gradient Descent Filter Mode.
+    	*/
+    	call_lock.lock();
+    	byte[] send_data =new byte[]{(byte)0x7b, (byte)mode};
+    	write(send_data);
+    	call_lock.unlock();
+    }
     
     public int getBatteryStatus()
     {
@@ -461,8 +476,8 @@ public class TSSBTSensor{
     	call_lock.unlock();
     	return binToFloat(response);
     }
-    
-    public float[] getNormalAccelData()
+    */
+    public Float[] getNormalAccelData()
     {
     	call_lock.lock();
     	byte[] send_data = new byte[]{(byte)0x22};
@@ -471,7 +486,7 @@ public class TSSBTSensor{
     	call_lock.unlock();
     	return binToFloat(response);
     }
-    
+    /*
     public float[] getCorrectedComponentData()
     {
     	call_lock.lock();

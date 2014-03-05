@@ -8,6 +8,7 @@ import com.mikelady.smartbell.R.string;
 import com.mikelady.smartbell.fragment.SelectExerciseFragment;
 import com.mikelady.smartbell.fragment.SelectExerciseFragment.OnFragmentInteractionListener;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +34,16 @@ public class StartWorkoutActivity extends FragmentActivity
 	}
 	
 	private void initLayout(){
+		Intent intent = getIntent();
+		int user = intent.getExtras().getInt("user");
+		
+		if(user > 0){
+			
+		}
+		else{
+			
+		}
+		
 		setContentView(R.layout.activity_start_workout);
 		fragmentManager = getSupportFragmentManager();
 		SelectExerciseFragment selectExerciseFragment = new SelectExerciseFragment();

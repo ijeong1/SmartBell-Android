@@ -8,7 +8,7 @@
 		android:layout_height="wrap_content" android:text="Please enter the following information"
 		android:textAppearance="?android:attr/textAppearanceLarge" />
 
-	<LinearLayout android:id="@+id/athlete_info_questions"
+	<ListView android:id="@+id/athlete_info_questions"
 		android:layout_width="match_parent" android:layout_height="wrap_content"
 		android:orientation="vertical" />
 

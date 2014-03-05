@@ -1,14 +1,10 @@
 package com.mikelady.smartbell.barpath;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+
 import java.util.ArrayList;
-import java.util.List;
+
+import android.util.Log;
 
 import com.mikelady.smartbell.primitives.Moment;
-
-
-import au.com.bytecode.opencsv.CSVReader;
 
 public class BarPathTracker {
 
@@ -18,36 +14,10 @@ public class BarPathTracker {
 	
 	private ArrayList<Moment> moments;
 	
-	public BarPathTracker(String infile) {
-		moments = generateMoments(getInputList(infile));
+	public BarPathTracker(ArrayList<Moment> moments) {
+		this.moments = moments;
 	}
 
-	List getInputList(String infile){
-		List myEntries = null;
-		CSVReader reader;
-		try {
-			reader = new CSVReader(new FileReader(infile));
-			myEntries = reader.readAll();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return myEntries;
-	}
-
-	ArrayList<Moment> generateMoments(List<String[]> myEntries){
-		ArrayList<Moment> m = new ArrayList<Moment>();
-		
-		for(int i = 0; i < myEntries.size(); i++){
-			m.add(new Moment(myEntries.get(i)));
-		}
-		
-		return m;
-	}
 
 	public ArrayList<Moment> getMoments() {
 		return moments;
@@ -81,18 +51,18 @@ public class BarPathTracker {
 		long t0;
 		long dt;
 		
-		for(int i = 1; i < moments.size(); i++){
+		for(int i = 5; i < moments.size(); i++){
 			t0 = moments.get(i).getTimestamp();
 			dt = t0 - t;
-			positions.add(pos);
+			positions.add(pos.clone());
 			
-			System.out.println("pos after: "+(i - 1)+" ("+positions.get(i-1)[X]+", "+positions.get(i-1)[Y]+", "+positions.get(i-1)[Z]+")");
-			System.out.println("vel after: "+(i - 1)+" ("+vel[X]+", "+vel[Y]+", "+vel[Z]+")");
-			System.out.println("acc after: "+(i - 1)+" ("+moments.get(i - 1).getAcc()[X]+", "+moments.get(i - 1).getAcc()[Y]+", "+moments.get(i - 1).getAcc()[Z]+")");
-			System.out.println("dt: "+dt);
-			vel[X] = (moments.get(i - 1).getAcc()[X] + moments.get(i).getAcc()[X]) / 2.0 * dt;
-			vel[Y] = (moments.get(i - 1).getAcc()[Y] + moments.get(i).getAcc()[Y]) / 2.0 * dt;
-			vel[Z] = (moments.get(i - 1).getAcc()[Z] + moments.get(i).getAcc()[Z]) / 2.0 * dt;
+//			Log.d("ml","pos after: "+(i - 1)+" ("+positions.get(i-1)[X]+", "+positions.get(i-1)[Y]+", "+positions.get(i-1)[Z]+")");
+//			Log.d("ml","vel after: "+(i - 1)+" ("+vel[X]+", "+vel[Y]+", "+vel[Z]+")");
+//			Log.d("ml","acc after: "+(i - 1)+" ("+moments.get(i - 1).getLinAcc()[X]+", "+moments.get(i - 1).getLinAcc()[Y]+", "+moments.get(i - 1).getLinAcc()[Z]+")");
+//			Log.d("ml","dt: "+dt);
+			vel[X] = (moments.get(i - 1).getLinAcc()[X] + moments.get(i).getLinAcc()[X]) / 2.0 * dt;
+			vel[Y] = (moments.get(i - 1).getLinAcc()[Y] + moments.get(i).getLinAcc()[Y]) / 2.0 * dt;
+			vel[Z] = (moments.get(i - 1).getLinAcc()[Z] + moments.get(i).getLinAcc()[Z]) / 2.0 * dt;
 		
 			pos[X] = (prevVel[X] + vel[X]) / 2 * dt;
 			pos[Y] = (prevVel[Y] + vel[Y]) / 2 * dt;
@@ -100,6 +70,10 @@ public class BarPathTracker {
 			
 			t = t0;
 			prevVel = vel;
+		}
+		
+		for(Double[] d : positions){
+			Log.d("ml", "d[0] = "+ d[0] +" d[1] = " + d[1] + " d[2] = "+ d[2]);
 		}
 		
 		return positions;

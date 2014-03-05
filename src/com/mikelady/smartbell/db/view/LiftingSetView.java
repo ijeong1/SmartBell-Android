@@ -1,4 +1,4 @@
-package com.mikelady.smartbell.db;
+package com.mikelady.smartbell.db.view;
 
 import android.content.Context;
 import android.view.View;

@@ -1,6 +1,8 @@
 package com.mikelady.smartbell.primitives;
 
+
 public class Moment {
+	public static final boolean TEST = true;
 	Long timestamp;
 	Float[] euler;
 	Float[] linAcc;

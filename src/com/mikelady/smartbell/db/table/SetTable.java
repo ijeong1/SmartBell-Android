@@ -25,13 +25,20 @@ public class SetTable {
 	public static final String SET_WEIGHT_LIFTED = "weight_lifted";
 	public static final int SET_COL_WEIGHT_LIFTED = SET_COL_ID + 3;
 	
+	public static final String SET_REPS = "reps";
+	public static final int SET_COL_REPS = SET_COL_ID + 4;
+	
+	public static final String[] SET_COL_NAMES = {SET_KEY_ID, SET_TIMESTAMP, 
+		SET_WORKOUT_ID, SET_WEIGHT_LIFTED, SET_REPS};
+	
 	/** SQLite database creation statement. Auto-increments IDs of inserted jokes.
 	 * Joke IDs are set after insertion into the database. */
 	public static final String DATABASE_CREATE = "create table " + DATABASE_TABLE_SET + " (" + 
 			SET_KEY_ID + " integer primary key autoincrement, " + 
 			SET_TIMESTAMP	+ " text not null, " + 
-			SET_WORKOUT_ID 	+ "integer foreign key REFERENCES "+WorkoutTable.DATABASE_TABLE_WORKOUT+"("+WorkoutTable.WORKOUT_COL_ID+"), " +
-			SET_WEIGHT_LIFTED + "integer not null" + ");";
+			SET_WORKOUT_ID 	+ "integer REFERENCES "+WorkoutTable.DATABASE_TABLE_WORKOUT+"("+WorkoutTable.WORKOUT_KEY_ID+"), " +
+			SET_WEIGHT_LIFTED + "integer not null," + 
+			SET_REPS + " integer not null "+");";
 	
 	/** SQLite database table removal statement. Only used if upgrading database. */
 	public static final String DATABASE_DROP = "drop table if exists " + DATABASE_TABLE_SET;

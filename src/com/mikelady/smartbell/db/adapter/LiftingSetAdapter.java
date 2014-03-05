@@ -2,7 +2,7 @@ package com.mikelady.smartbell.db.adapter;
 
 import java.util.List;
 
-import com.mikelady.smartbell.db.LiftingSetView;
+import com.mikelady.smartbell.db.view.LiftingSetView;
 import com.mikelady.smartbell.primitives.LiftingSet;
 
 import android.content.Context;

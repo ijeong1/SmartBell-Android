@@ -13,23 +13,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button2"
-        android:layout_centerHorizontal="true"
         android:text="Start a new workout" />
 
-    <Button
-        android:id="@+id/view_previous_workouts_button"
+    <TextView 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="View previous workouts" />
+        android:text="View previous workouts"/>
+    
+    <ListView
+        android:id="@+id/view_previous_workouts_view_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         />
 
     <Button
-        android:id="@+id/options_button"
+        android:id="@+id/user_details_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="Options" />
+        android:text="User Details" />
 
 </RelativeLayout>

@@ -1,7 +1,12 @@
 package com.mikelady.smartbell.fragment;
 
+import java.util.ArrayList;
+
 import com.mikelady.smartbell.R;
 import com.mikelady.smartbell.R.layout;
+import com.mikelady.smartbell.activity.SelectWorkoutActivity;
+import com.mikelady.smartbell.barpath.BarPathView;
+import com.mikelady.smartbell.primitives.Moment;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -28,6 +33,7 @@ public class BarPathFragment extends Fragment {
 	// TODO: Rename and change types of parameters
 //	private String mParam1;
 //	private String mParam2;
+	ArrayList<Moment> moments;
 
 	private OnFragmentInteractionListener mListener;
 
@@ -42,10 +48,11 @@ public class BarPathFragment extends Fragment {
 	 * @return A new instance of fragment BarPathFragment.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static BarPathFragment newInstance() { //String param1, String param2
+	public static BarPathFragment newInstance(ArrayList<Moment> moments) { //String param1, String param2
 		BarPathFragment fragment = new BarPathFragment();
+		fragment.moments = moments;
 //		Bundle args = new Bundle();
-//		args.putString(ARG_PARAM1, param1);
+//		args.put(ARG_PARAM1, param1);
 //		args.putString(ARG_PARAM2, param2);
 //		fragment.setArguments(args);
 		return fragment;
@@ -87,6 +94,11 @@ public class BarPathFragment extends Fragment {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnFragmentInteractionListener");
 		}
+	}
+	
+	@Override
+	public void onResume(){
+		
 	}
 
 	@Override

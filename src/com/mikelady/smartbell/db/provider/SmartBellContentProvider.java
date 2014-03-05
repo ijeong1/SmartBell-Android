@@ -1,10 +1,14 @@
 package com.mikelady.smartbell.db.provider;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
 import com.mikelady.smartbell.db.SmartBellDatabaseHelper;
 import com.mikelady.smartbell.db.table.AthleteTable;
+import com.mikelady.smartbell.db.table.MomentTable;
+import com.mikelady.smartbell.db.table.SetTable;
+import com.mikelady.smartbell.db.table.WorkoutTable;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -25,31 +29,51 @@ import android.database.sqlite.SQLiteQueryBuilder;
  * SQLite database into a content provider instead of managing the database<-->application
  * transactions manually.
  */
-public class AthleteContentProvider extends ContentProvider {
+public class SmartBellContentProvider extends ContentProvider {
 
 	/** The athlete database. */
 	private SmartBellDatabaseHelper database;
 
-	/** Values for the URIMatcher. */
+	/** Values for the URIMatcher. */ 
 	private static final int ATHLETE_ID = 1;
+	private static final int ATHLETE_ALL = 2;
+	private static final int WORKOUT_ID = 3;
+	private static final int WORKOUT_ALL = 4;
+	private static final int SET_ID = 5;
+	private static final int SET_ALL = 6;
+	private static final int MOMENT_ID = 7;
+	private static final int MOMENT_ALL = 8;
 
 	/** The authority for this content provider. */
-	private static final String AUTHORITY = "com.mikelady.smarbell.athletecontentprovider";
+	private static final String AUTHORITY = "com.mikelady.smarbell.smartbellcontentprovider";
 
 	/** The database table to read from and write to, and also the root path for use in the URI matcher.
 	 * This is essentially a label to a two-dimensional array in the database filled with rows of athletes
 	 * whose columns contain athlete data. */
-	private static final String BASE_PATH = "athlete_table";
+	private static final String ATHLETE_BASE_PATH = "athlete_table";
+	private static final String WORKOUT_BASE_PATH = "workout_table";
+	private static final String SET_BASE_PATH = "set_table";
+	private static final String MOMENT_BASE_PATH = "moment_table";
 
 	/** This provider's content location. Used by accessing applications to
 	 * interact with this provider. */
-	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH);
+	public static final Uri ATHLETE_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + ATHLETE_BASE_PATH);
+	public static final Uri WORKOUT_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + WORKOUT_BASE_PATH);
+	public static final Uri SET_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + SET_BASE_PATH);
+	public static final Uri MOMENT_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + MOMENT_BASE_PATH);
 
 	/** Matches content URIs requested by accessing applications with possible
 	 * expected content URI formats to take specific actions in this provider. */
 	private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 	static {
-		sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/athlete/#", ATHLETE_ID);
+		sURIMatcher.addURI(AUTHORITY, ATHLETE_BASE_PATH + "/athlete", ATHLETE_ALL);
+		sURIMatcher.addURI(AUTHORITY, ATHLETE_BASE_PATH + "/athlete/#", ATHLETE_ID);
+		sURIMatcher.addURI(AUTHORITY, WORKOUT_BASE_PATH + "/workout", WORKOUT_ALL);
+		sURIMatcher.addURI(AUTHORITY, WORKOUT_BASE_PATH + "/workout/#", WORKOUT_ID);
+		sURIMatcher.addURI(AUTHORITY, SET_BASE_PATH + "/set", SET_ALL);
+		sURIMatcher.addURI(AUTHORITY, SET_BASE_PATH + "/set/#", SET_ID);
+		sURIMatcher.addURI(AUTHORITY, MOMENT_BASE_PATH + "/moment", MOMENT_ALL);
+		sURIMatcher.addURI(AUTHORITY, MOMENT_BASE_PATH + "/moment/#", MOMENT_ID);
 	}
 
 	@Override
@@ -78,9 +102,61 @@ public class AthleteContentProvider extends ContentProvider {
 		/** Make sure the projection is proper before querying. */
 		checkColumns(projection);
 
-		/** Set up helper to query our athletes table. */
-		queryBuilder.setTables(AthleteTable.DATABASE_TABLE_ATHLETE);
+		/** Match the passed-in URI to an expected URI format. */
+		int uriType = sURIMatcher.match(uri);
+		String id = uri.getLastPathSegment();
+		
+		switch(uriType) {
+		case ATHLETE_ALL:
+			/** Set up helper to query our athletes table. */
+			queryBuilder.setTables(AthleteTable.DATABASE_TABLE_ATHLETE);
+			break;
+			
+		case ATHLETE_ID:
+			/** Set up helper to query our athletes table. */
+			queryBuilder.setTables(AthleteTable.DATABASE_TABLE_ATHLETE);
+			queryBuilder.appendWhere(AthleteTable.ATHLETE_KEY_ID + "=" + id);
+			break;
 
+		case WORKOUT_ALL:
+			/** Set up helper to query our athletes table. */
+			queryBuilder.setTables(WorkoutTable.DATABASE_TABLE_WORKOUT);
+			break;
+			
+		case WORKOUT_ID:
+			/** Set up helper to query our athletes table. */
+			queryBuilder.setTables(WorkoutTable.DATABASE_TABLE_WORKOUT);
+			queryBuilder.appendWhere(WorkoutTable.WORKOUT_KEY_ID + "=" + id);
+			break;
+			
+		case SET_ALL:
+			/** Set up helper to query our athletes table. */
+			queryBuilder.setTables(SetTable.DATABASE_TABLE_SET);
+			break;
+			
+		case SET_ID:
+			/** Set up helper to query our athletes table. */
+			queryBuilder.setTables(SetTable.DATABASE_TABLE_SET);
+			queryBuilder.appendWhere(SetTable.SET_KEY_ID + "=" + id);
+			break;
+			
+		case MOMENT_ALL:
+			/** Set up helper to query our athletes table. */
+			queryBuilder.setTables(MomentTable.DATABASE_TABLE_MOMENT);
+			break;
+			
+		case MOMENT_ID:
+			/** Set up helper to query our athletes table. */
+			queryBuilder.setTables(SetTable.DATABASE_TABLE_SET);
+			queryBuilder.appendWhere(SetTable.SET_KEY_ID + "=" + id);
+			break;
+			
+
+		default:
+			throw new IllegalArgumentException("Unknown URI: " + uri);
+		}
+		
+		
 		/** Perform the database query. */
 		SQLiteDatabase db = this.database.getWritableDatabase();
 		Cursor cursor = queryBuilder.query(db, projection, selection, null, null, null, null);
@@ -121,6 +197,8 @@ public class AthleteContentProvider extends ContentProvider {
 		/** Match the passed-in URI to an expected URI format. */
 		int uriType = sURIMatcher.match(uri);
 
+		String basePath = "";
+		
 		switch(uriType)	{
 
 		/** Expects a athlete ID, but we will do nothing with the passed-in ID since
@@ -131,8 +209,27 @@ public class AthleteContentProvider extends ContentProvider {
 
 			/** Perform the database insert, placing the athlete at the bottom of the table. */
 			id = sqlDB.insert(AthleteTable.DATABASE_TABLE_ATHLETE, null, values);
+			basePath = ATHLETE_BASE_PATH;
 			break;
 
+		case WORKOUT_ID:
+			/** Perform the database insert, placing the workout at the bottom of the table. */
+			id = sqlDB.insert(WorkoutTable.DATABASE_TABLE_WORKOUT, null, values);
+			basePath = WORKOUT_BASE_PATH;
+			break;
+
+		case SET_ID:
+			/** Perform the database insert, placing the set at the bottom of the table. */
+			id = sqlDB.insert(SetTable.DATABASE_TABLE_SET, null, values);
+			basePath = SET_BASE_PATH;
+			break;
+			
+		case MOMENT_ID:
+			/** Perform the database insert, placing the moment at the bottom of the table. */
+			id = sqlDB.insert(MomentTable.DATABASE_TABLE_MOMENT, null, values);
+			basePath = MOMENT_BASE_PATH;
+			break;
+			
 		default:
 			throw new IllegalArgumentException("Unknown URI: " + uri);
 		}
@@ -140,7 +237,7 @@ public class AthleteContentProvider extends ContentProvider {
 		/** Alert any watchers of an underlying data change for content/view refreshing. */
 		getContext().getContentResolver().notifyChange(uri, null);
 
-		return Uri.parse(BASE_PATH + "/" + id);
+		return Uri.parse(basePath + "/" + id);
 	}
 
 	/**
@@ -163,13 +260,26 @@ public class AthleteContentProvider extends ContentProvider {
 		int rowsDeleted = 0;
 		
 		int uriType = sURIMatcher.match(uri);
+		String id = uri.getLastPathSegment();
 
 		switch(uriType)	{
 		case ATHLETE_ID:
-			String id = uri.getLastPathSegment();
 			rowsDeleted = sqlDB.delete(AthleteTable.DATABASE_TABLE_ATHLETE, AthleteTable.ATHLETE_KEY_ID+"="+id, null);
+			break;
+			
+		case WORKOUT_ID:
+			rowsDeleted = sqlDB.delete(WorkoutTable.DATABASE_TABLE_WORKOUT, WorkoutTable.WORKOUT_KEY_ID+"="+id, null);
+			break;
+			
+		case SET_ID:
+			rowsDeleted = sqlDB.delete(SetTable.DATABASE_TABLE_SET, SetTable.SET_KEY_ID+"="+id, null);
+			break;
+			
+		case MOMENT_ID:
+			rowsDeleted = sqlDB.delete(MomentTable.DATABASE_TABLE_MOMENT, MomentTable.MOMENT_KEY_ID+"="+id, null);
+			break;	
 		}
-		
+
 		if(rowsDeleted > 0)
 			getContext().getContentResolver().notifyChange(uri, null);
 		
@@ -197,13 +307,34 @@ public class AthleteContentProvider extends ContentProvider {
 		int rowsUpdated = 0;
 		
 		int uriType = sURIMatcher.match(uri);
-
+		String id = uri.getLastPathSegment();
+		
 		switch(uriType)	{
 		case ATHLETE_ID:
-			String id = uri.getLastPathSegment();
+
 //			Log.d("mlady","id: "+id);
 //			Log.d("mlady","values: "+values);
 			rowsUpdated = sqlDB.update(AthleteTable.DATABASE_TABLE_ATHLETE, values, AthleteTable.ATHLETE_KEY_ID+"="+id, null);
+			break;
+			
+		case WORKOUT_ID:
+//			Log.d("mlady","id: "+id);
+//			Log.d("mlady","values: "+values);
+			rowsUpdated = sqlDB.update(WorkoutTable.DATABASE_TABLE_WORKOUT, values, WorkoutTable.WORKOUT_KEY_ID+"="+id, null);
+			break;
+			
+		case SET_ID:
+//			Log.d("mlady","id: "+id);
+//			Log.d("mlady","values: "+values);
+			rowsUpdated = sqlDB.update(SetTable.DATABASE_TABLE_SET, values, SetTable.SET_KEY_ID+"="+id, null);
+			break;
+			
+		case MOMENT_ID:
+//			Log.d("mlady","id: "+id);
+//			Log.d("mlady","values: "+values);
+			rowsUpdated = sqlDB.update(MomentTable.DATABASE_TABLE_MOMENT, values, MomentTable.MOMENT_KEY_ID+"="+id, null);
+			break;
+			
 		}
 		
 		if(rowsUpdated > 0)
@@ -220,13 +351,15 @@ public class AthleteContentProvider extends ContentProvider {
 	 */
 	private void checkColumns(String[] projection)
 	{
-		String[] available = { AthleteTable.ATHLETE_KEY_ID, AthleteTable.ATHLETE_IS_MALE, AthleteTable.ATHLETE_FOREARM, 
-				AthleteTable.ATHLETE_HEIGHT, AthleteTable.ATHLETE_SHIN, AthleteTable.ATHLETE_THIGH, AthleteTable.ATHLETE_TORSO,
-				AthleteTable.ATHLETE_TORSO, AthleteTable.ATHLETE_UPPER_ARM, AthleteTable.ATHLETE_WEIGHT };
+		ArrayList<String> available = new ArrayList<String>();
+		available.addAll(Arrays.asList(AthleteTable.ATHLETE_COL_NAMES));
+		available.addAll(Arrays.asList(WorkoutTable.WORKOUT_COL_NAMES));
+		available.addAll(Arrays.asList(SetTable.SET_COL_NAMES));
+		available.addAll(Arrays.asList(MomentTable.MOMENT_COL_NAMES));
 
 		if(projection != null) {
 			HashSet<String> requestedColumns = new HashSet<String>(Arrays.asList(projection));
-			HashSet<String> availableColumns = new HashSet<String>(Arrays.asList(available));
+			HashSet<String> availableColumns = new HashSet<String>(available);
 
 			if(!availableColumns.containsAll(requestedColumns))	{
 				throw new IllegalArgumentException("Unknown columns in projection");

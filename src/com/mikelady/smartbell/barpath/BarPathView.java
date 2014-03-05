@@ -1,10 +1,17 @@
 package com.mikelady.smartbell.barpath;
 
+import java.util.ArrayList;
+
+import com.mikelady.smartbell.fragment.RecordSetFragment;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 
 public class BarPathView extends View {
@@ -12,9 +19,10 @@ public class BarPathView extends View {
         private static Paint paint;
         private int screenW, screenH;
         private float X, Y;
-        private int t = 0;
+        private float cX, cY;
+        private int t = 5;
 //        private float[] xt = {0, 100, 10,};
-        private float[] yt = {0, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10};
+        private float[] yt = {0, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10};
         private Path path;
         private float initialScreenW;
         private float initialX, plusX;
@@ -22,6 +30,8 @@ public class BarPathView extends View {
         private boolean translate;
         private int flash;
         private Context context;
+        
+        ArrayList<Double[]> positions;
 
         //call by using setContentView(new BarPathView(this));
         public BarPathView(Context context) {
@@ -31,18 +41,24 @@ public class BarPathView extends View {
 
             paint = new Paint();
             paint.setColor(Color.argb(0xff, 0x99, 0x00, 0x00));
-            paint.setStrokeWidth(10);
+            paint.setStrokeWidth(5);
             paint.setAntiAlias(true);
             paint.setStrokeCap(Paint.Cap.ROUND);
             paint.setStrokeJoin(Paint.Join.ROUND);
             paint.setStyle(Paint.Style.STROKE);
-            paint.setShadowLayer(7, 0, 0, Color.RED);
+            paint.setShadowLayer(1, 0, 0, Color.RED);
 
-
+            positions = RecordSetFragment.positions;
             path= new Path();
             TX=0;
             translate=false;
 
+            X = screenW/2;
+            Y = screenH/2;
+            
+            cX = X;
+            cY = Y;
+            
             flash=0;
 
         }
@@ -59,7 +75,7 @@ public class BarPathView extends View {
             initialScreenW=screenW;
             initialX=((screenW/2)+(screenW/4));
             plusX=0;
-
+            
             path.moveTo(X, Y);
 
         }
@@ -67,7 +83,7 @@ public class BarPathView extends View {
 
 
         @Override
-        public void onDraw(Canvas canvas) {
+        public void onDraw(final Canvas canvas) {
             super.onDraw(canvas);
 
             //canvas.save();    
@@ -92,24 +108,22 @@ public class BarPathView extends View {
 //                flash=0;
 //            }
 
-            path.lineTo(X,Y);
-
-
-            //get next point in path
-            t++;
-            if(t < yt.length){
+            if(t < positions.size()){
                 
-//                X += xt[t];
-            	if(yt[t] < 0)
-            		X+= 1;
-                Y += yt[t];
+//            	X = t;
+//            	Y = t;
+                X = -positions.get(t)[0].floatValue()/10 + cX + 300;
+            	Y = -positions.get(t)[1].floatValue()/10 + cY + 300;
+            	Log.d("ml", "t = "+t+" X = "+X+" Y = "+Y);
             }
+            t++;
             
-            canvas.drawPath(path, paint);
-
-
+           
+            path.lineTo(X,Y);
+            //get next point in path
+            SystemClock.sleep(100);
             //canvas.restore(); 
-
+            canvas.drawPath(path, paint);
             invalidate();
         }
     }

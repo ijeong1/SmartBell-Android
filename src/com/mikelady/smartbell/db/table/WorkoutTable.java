@@ -22,13 +22,14 @@ public class WorkoutTable {
 	public static final String WORKOUT_ATHLETE_ID = "athlete_id";
 	public static final int SET_COL_ATHLETE_ID = WORKOUT_COL_ID + 2;
 	
+	public static final String[] WORKOUT_COL_NAMES = {WORKOUT_KEY_ID, WORKOUT_TIMESTAMP, WORKOUT_ATHLETE_ID};
 	
 	/** SQLite database creation statement. Auto-increments IDs of inserted jokes.
 	 * Joke IDs are set after insertion into the database. */
 	public static final String DATABASE_CREATE = "create table " + DATABASE_TABLE_WORKOUT + " (" + 
 			WORKOUT_KEY_ID + " integer primary key autoincrement, " + 
 			WORKOUT_TIMESTAMP	+ " text not null, " +
-			WORKOUT_ATHLETE_ID 	+ "integer foreign key REFERENCES "+AthleteTable.DATABASE_TABLE_ATHLETE+"("+AthleteTable.ATHLETE_COL_ID+")"+");";
+			WORKOUT_ATHLETE_ID 	+ " integer REFERENCES "+AthleteTable.DATABASE_TABLE_ATHLETE+"("+AthleteTable.ATHLETE_KEY_ID+")"+");";
 	
 	/** SQLite database table removal statement. Only used if upgrading database. */
 	public static final String DATABASE_DROP = "drop table if exists " + DATABASE_TABLE_WORKOUT;
@@ -40,6 +41,7 @@ public class WorkoutTable {
 	 * 				The database to initialize.	
 	 */
 	public static void onCreate(SQLiteDatabase database) {
+		Log.d("workoutTable", DATABASE_CREATE);
 		database.execSQL(DATABASE_CREATE);
 	}
 	

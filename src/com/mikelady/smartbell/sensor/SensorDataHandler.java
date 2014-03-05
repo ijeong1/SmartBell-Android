@@ -21,6 +21,32 @@ public class SensorDataHandler extends Handler {
 	Float[] linacc;
 	long unixTime;
 	
+	public SensorDataHandler(int mode){
+		super();
+		
+		try {
+			TSSBTSensor.getInstance().setTareCurrentOrient();
+			TSSBTSensor.getInstance().setFilterMode(mode);
+			keep_going = true;
+/*			int i = 0;
+			Log.d("ml", "start timestamp: "+System.currentTimeMillis());
+			while(keep_going && i < 100){
+				euler = TSSBTSensor.getInstance().getEulerAngles();
+				linacc = TSSBTSensor.getInstance().getLinAcc();
+				unixTime = System.currentTimeMillis();
+				moments.add(new Moment(unixTime, euler, linacc));
+//				Log.d("ML", "logging in memory");
+				i++;
+			}
+			Log.d("ml", "end timestamp: "+unixTime);*/
+			
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	//refactor this later
 	@Override
     public void handleMessage(Message msg) {
