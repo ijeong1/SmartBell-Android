@@ -1,9 +1,9 @@
 package com.mikelady.smartbell.db.adapter;
 
-import com.mikelady.smartbell.db.table.LiftingSetTable;
-import com.mikelady.smartbell.db.view.LiftingSetView;
-import com.mikelady.smartbell.db.view.LiftingSetView.OnLiftingSetChangeListener;
-import com.mikelady.smartbell.primitives.LiftingSet;
+import com.mikelady.smartbell.db.table.WorkoutTable;
+import com.mikelady.smartbell.db.view.WorkoutView;
+import com.mikelady.smartbell.db.view.WorkoutView.OnWorkoutChangeListener;
+import com.mikelady.smartbell.primitives.Workout;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -16,11 +16,11 @@ import android.view.ViewGroup;
  * database and a ViewGroup (in this case, a SQLite database table containing rows
  * of jokes and a ListView containing LiftingSetViews).
  */
-public class LiftingSetCursorAdapter extends android.support.v4.widget.CursorAdapter {
+public class WorkoutCursorAdapter extends android.support.v4.widget.CursorAdapter {
 
 	/** The OnLiftingSetChangeListener that should be connected to each of the
-	 * LiftingSetViews created/managed by this Adapter. */
-	private OnLiftingSetChangeListener m_listener;
+	 * WorkoutViews created/managed by this Adapter. */
+	private OnWorkoutChangeListener m_listener;
 
 	/**
 	 * Parameterized constructor that takes in the application Context in which
@@ -37,7 +37,7 @@ public class LiftingSetCursorAdapter extends android.support.v4.widget.CursorAda
 	 * @param flags
 	 * 			  A list of flags that decide this adapter's behavior.
 	 */
-	public LiftingSetCursorAdapter(Context context, Cursor athleteCursor, int flags) {
+	public WorkoutCursorAdapter(Context context, Cursor athleteCursor, int flags) {
 		super(context, athleteCursor, flags);
 	}
 
@@ -49,37 +49,37 @@ public class LiftingSetCursorAdapter extends android.support.v4.widget.CursorAda
 	 *            internal state of any LiftingSet contained in one of this Adapters
 	 *            LiftingSetViews is changed.
 	 */
-	public void setOnLiftingSetChangeListener(OnLiftingSetChangeListener mListener) {
+	public void setOnWorkoutChangeListener(OnWorkoutChangeListener mListener) {
 		this.m_listener = mListener;
 	}
 
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 		
-		int liftingSetID = cursor.getInt(LiftingSetTable.SET_COL_ID);
-		long liftingSetTime = cursor.getLong(LiftingSetTable.SET_COL_TIMESTAMP);
+		int workoutID = cursor.getInt(WorkoutTable.WORKOUT_COL_ID);
+		long workoutTime = cursor.getLong(WorkoutTable.WORKOUT_COL_TIMESTAMP);
 
-		LiftingSet retrievedLiftingSet = new LiftingSet();
-		retrievedLiftingSet.setId(liftingSetID);
-		retrievedLiftingSet.setTimestamp(liftingSetTime);
+		Workout retrievedWorkout = new Workout();
+		retrievedWorkout.setId(workoutID);
+		retrievedWorkout.setTimestamp(workoutTime);
 		
-		((LiftingSetView)view).setOnLiftingSetChangeListener(null);
-		((LiftingSetView)view).setLiftingSet(retrievedLiftingSet);
-		((LiftingSetView)view).setOnLiftingSetChangeListener(m_listener);
+		((WorkoutView)view).setOnWorkoutChangeListener(null);
+		((WorkoutView)view).setWorkout(retrievedWorkout);
+		((WorkoutView)view).setOnWorkoutChangeListener(m_listener);
 		
 	}
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup vg) {
 		
-		int liftingSetID = cursor.getInt(LiftingSetTable.SET_COL_ID);
-		long liftingSetTime = cursor.getLong(LiftingSetTable.SET_COL_TIMESTAMP);
-		LiftingSet retrievedLiftingSet = new LiftingSet();
-		retrievedLiftingSet.setId(liftingSetID);
-		retrievedLiftingSet.setTimestamp(liftingSetTime);
+		int workoutID = cursor.getInt(WorkoutTable.WORKOUT_COL_ID);
+		long workoutTime = cursor.getLong(WorkoutTable.WORKOUT_COL_TIMESTAMP);
+		Workout retrievedWorkout = new Workout();
+		retrievedWorkout.setId(workoutID);
+		retrievedWorkout.setTimestamp(workoutTime);
 		
-		LiftingSetView view = new LiftingSetView(context, retrievedLiftingSet);
-		((LiftingSetView)view).setOnLiftingSetChangeListener(m_listener);
+		WorkoutView view = new WorkoutView(context, retrievedWorkout);
+		((WorkoutView)view).setOnWorkoutChangeListener(m_listener);
 		
 		return view;
 	}

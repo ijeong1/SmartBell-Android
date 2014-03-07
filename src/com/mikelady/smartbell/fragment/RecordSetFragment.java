@@ -155,14 +155,17 @@ public class RecordSetFragment extends Fragment {
 					Float[] test = {(float) 1.0, (float) 2.0, (float) 3.0};
 					Float[] test1 = {(float) 4.0, (float) 5.0, (float) 6.0};
 					moments.add(new Moment((long) 10, test, test1));
+					fragmentManager = getFragmentManager();
+					BarPathFragment barPathFragment = BarPathFragment.newInstance(moments);
+					android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+					fragmentTransaction.replace(R.id.start_workout_activity_layout, barPathFragment); //setQuestionFragment
+					fragmentTransaction.addToBackStack(null);
+					fragmentTransaction.commit();
 					
-//					android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//					fragmentTransaction.replace(R.id.start_workout_activity_layout, barPathFragment); //setQuestionFragment
-//					fragmentTransaction.addToBackStack(null);
-//					fragmentTransaction.commit();
 					
 					String selectExerciseTag = getResources().getString(R.string.exercise_detail_tag);
-					fragmentManager.popBackStackImmediate(selectExerciseTag, 1);
+//					fragmentManager.popBackStackImmediate(selectExerciseTag, 1);
+//					fragmentManager.popBackStackImmediate();
 				}
 			}
 		});

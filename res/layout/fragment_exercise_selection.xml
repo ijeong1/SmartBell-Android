@@ -8,11 +8,6 @@
 		android:layout_height="wrap_content" android:text="Select Exercise"
 		android:textAppearance="?android:attr/textAppearanceLarge" />
 
-	<LinearLayout android:id="@+id/exercise_list"
-		android:layout_width="match_parent" android:layout_height="wrap_content"
-		android:orientation="vertical" />
-
-
 	<Button android:id="@+id/bench_button" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:text="@string/bench" />
 

@@ -38,7 +38,7 @@ public class SmartBellDatabaseHelper extends android.database.sqlite.SQLiteOpenH
 	public void onCreate(SQLiteDatabase db) {
 		AthleteTable.onCreate(db);
 		WorkoutTable.onCreate(db);
-		SetTable.onCreate(db);
+		LiftingSetTable.onCreate(db);
 		MomentTable.onCreate(db);
 	}
 
@@ -46,7 +46,7 @@ public class SmartBellDatabaseHelper extends android.database.sqlite.SQLiteOpenH
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		AthleteTable.onUpgrade(db, oldVersion, newVersion);
 		WorkoutTable.onUpgrade(db, oldVersion, newVersion);
-		SetTable.onUpgrade(db, oldVersion, newVersion);
+		LiftingSetTable.onUpgrade(db, oldVersion, newVersion);
 		MomentTable.onUpgrade(db, oldVersion, newVersion);
 	}
 }

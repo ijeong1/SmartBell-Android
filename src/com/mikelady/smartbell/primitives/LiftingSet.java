@@ -4,30 +4,61 @@ import java.util.ArrayList;
 
 public class LiftingSet {
 
-	String exercise;
+	public static enum ExerciseId{
+		PRESS(0),
+		BENCH(1),
+		BACK_SQUAT(2);
+		private int id;
+		private ExerciseId(int id){
+			this.id = id;
+		}
+		public int getId() {
+			return id;
+		}
+	}
+	
+	int id;
+	long timestamp;
+	int exercise;
 	ArrayList<Moment> moments;
 	int weightLifted;
 	int reps;
 	
 	public LiftingSet() {
-		exercise = "Squat";
+		exercise = ExerciseId.BACK_SQUAT.getId();
 		moments = new ArrayList<Moment>();
 		weightLifted = 135;
 		reps = 0;
 	}
 	
-	public LiftingSet(String exercise, ArrayList<Moment> moments, int weightLifted, int reps) {
+	public LiftingSet(int exercise, ArrayList<Moment> moments, int weightLifted, int reps) {
 		this.exercise = exercise;
 		this.moments = moments;
 		this.weightLifted = weightLifted;
 		this.reps = reps;
 	}
 
-	public String getExercise() {
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(long timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public int getExercise() {
 		return exercise;
 	}
 
-	public void setExercise(String exercise) {
+	public void setExercise(int exercise) {
 		this.exercise = exercise;
 	}
 

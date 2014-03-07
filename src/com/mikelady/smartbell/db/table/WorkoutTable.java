@@ -20,7 +20,7 @@ public class WorkoutTable {
 	public static final int WORKOUT_COL_TIMESTAMP = WORKOUT_COL_ID + 1;
 	
 	public static final String WORKOUT_ATHLETE_ID = "athlete_id";
-	public static final int SET_COL_ATHLETE_ID = WORKOUT_COL_ID + 2;
+	public static final int WORKOUT_COL_ATHLETE_ID = WORKOUT_COL_ID + 2;
 	
 	public static final String[] WORKOUT_COL_NAMES = {WORKOUT_KEY_ID, WORKOUT_TIMESTAMP, WORKOUT_ATHLETE_ID};
 	

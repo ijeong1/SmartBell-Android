@@ -49,7 +49,7 @@ public class MomentTable {
 	public static final String DATABASE_CREATE = "create table " + DATABASE_TABLE_MOMENT + " (" + 
 			MOMENT_KEY_ID + " integer primary key autoincrement, " + 
 			MOMENT_TIMESTAMP	+ " text not null, " + 
-			MOMENT_SET_ID 	+ "integer REFERENCES "+SetTable.DATABASE_TABLE_SET+"("+SetTable.SET_KEY_ID+")," +
+			MOMENT_SET_ID 	+ "integer REFERENCES "+LiftingSetTable.DATABASE_TABLE_SET+"("+LiftingSetTable.SET_KEY_ID+")," +
 			MOMENT_EULER_X	+ " float not null, " + 
 			MOMENT_EULER_Y	+ " float not null, " +
 			MOMENT_EULER_Z	+ " float not null, " + 

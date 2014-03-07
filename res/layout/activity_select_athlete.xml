@@ -13,8 +13,8 @@
 		
 	<ListView
         android:id="@+id/athlete_list_view_group"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
     </ListView>
 

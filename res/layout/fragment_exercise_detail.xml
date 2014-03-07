@@ -42,21 +42,20 @@
             android:text="Previous sets"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-	    <LinearLayout
-	        android:id="@+id/previous_set_linear_layout"
-	        android:layout_width="match_parent"
+	    <ListView
+	        android:id="@+id/lifting_set_list_view_group"
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical" >
-	        
-	            <Button
+	    </ListView>
+<!-- 	            <Button
 			        android:id="@+id/bar_path_button"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:text="View bar path" />
+			        android:text="View bar path" /> -->
 	        
 	    </LinearLayout>
-        
-    </LinearLayout>
+
 
 
 </LinearLayout>

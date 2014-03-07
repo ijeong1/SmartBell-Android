@@ -8,12 +8,7 @@ public class Athlete {
 //	public final static int MAX_PRESS = 0;
 //	public final static int MAX_BENCH = 1;
 //	public final static int MAX_BACK_SQUAT = 2;
-	
-	public static enum ExerciseId{
-		PRESS,
-		BENCH,
-		BACK_SQUAT
-	}
+
 	
 //	public final static int HEIGHT = 0;
 //	public final static int WEIGHT = 1;

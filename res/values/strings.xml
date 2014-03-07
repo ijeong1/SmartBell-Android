@@ -16,6 +16,10 @@
     <string name="bar_path">Bar Path</string>
     <string name="title_activity_bar_path">BarPathActivity</string>
     <string name="athlete_id">AthleteId</string>
+    <string name="workout_id">WorkoutId</string>
+    <string name="lifting_set_id">LiftingSetId</string>
     <string name="title_activity_set_user_details">SetUserDetails</string>
-
+    <string name="title_activity_select_workout">SelectWorkoutActivity</string>
+ 	
+    
 </resources>

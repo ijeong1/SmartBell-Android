@@ -20,6 +20,12 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
+        <provider
+            android:name="com.mikelady.smartbell.db.provider.SmartBellContentProvider"
+            android:authorities="com.mikelady.smarbell.smartbellcontentprovider" >
+        </provider>
+        
         <activity
             android:name="com.mikelady.smartbell.activity.SelectAthleteActivity"
             android:label="@string/app_name" >
@@ -30,6 +36,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.mikelady.smartbell.activity.SelectWorkoutActivity"
+            android:label="@string/title_activity_select_workout" >
+        </activity>
+        <activity
             android:name="com.mikelady.smartbell.activity.StartWorkoutActivity"
             android:label="@string/title_activity_start_workout" >
         </activity>
@@ -37,12 +47,6 @@
             android:name="com.mikelady.smartbell.activity.BarPathActivity"
             android:label="@string/title_activity_bar_path" >
         </activity>
-
-        <provider
-            android:name="com.mikelady.smartbell.db.provider.SmartBellContentProvider"
-            android:authorities="com.mikelady.smarbell.smartbellcontentprovider" >
-        </provider>
-
         <activity
             android:name="com.mikelady.smartbell.activity.SetUserDetailsActivity"
             android:label="@string/title_activity_set_user_details" >

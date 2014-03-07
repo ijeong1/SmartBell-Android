@@ -7,7 +7,7 @@ import java.util.HashSet;
 import com.mikelady.smartbell.db.SmartBellDatabaseHelper;
 import com.mikelady.smartbell.db.table.AthleteTable;
 import com.mikelady.smartbell.db.table.MomentTable;
-import com.mikelady.smartbell.db.table.SetTable;
+import com.mikelady.smartbell.db.table.LiftingSetTable;
 import com.mikelady.smartbell.db.table.WorkoutTable;
 
 import android.content.ContentProvider;
@@ -70,8 +70,8 @@ public class SmartBellContentProvider extends ContentProvider {
 		sURIMatcher.addURI(AUTHORITY, ATHLETE_BASE_PATH + "/athlete/#", ATHLETE_ID);
 		sURIMatcher.addURI(AUTHORITY, WORKOUT_BASE_PATH + "/workout", WORKOUT_ALL);
 		sURIMatcher.addURI(AUTHORITY, WORKOUT_BASE_PATH + "/workout/#", WORKOUT_ID);
-		sURIMatcher.addURI(AUTHORITY, SET_BASE_PATH + "/set", SET_ALL);
-		sURIMatcher.addURI(AUTHORITY, SET_BASE_PATH + "/set/#", SET_ID);
+		sURIMatcher.addURI(AUTHORITY, SET_BASE_PATH + "/lifting_set", SET_ALL);
+		sURIMatcher.addURI(AUTHORITY, SET_BASE_PATH + "/lifting_set/#", SET_ID);
 		sURIMatcher.addURI(AUTHORITY, MOMENT_BASE_PATH + "/moment", MOMENT_ALL);
 		sURIMatcher.addURI(AUTHORITY, MOMENT_BASE_PATH + "/moment/#", MOMENT_ID);
 	}
@@ -131,13 +131,13 @@ public class SmartBellContentProvider extends ContentProvider {
 			
 		case SET_ALL:
 			/** Set up helper to query our athletes table. */
-			queryBuilder.setTables(SetTable.DATABASE_TABLE_SET);
+			queryBuilder.setTables(LiftingSetTable.DATABASE_TABLE_SET);
 			break;
 			
 		case SET_ID:
 			/** Set up helper to query our athletes table. */
-			queryBuilder.setTables(SetTable.DATABASE_TABLE_SET);
-			queryBuilder.appendWhere(SetTable.SET_KEY_ID + "=" + id);
+			queryBuilder.setTables(LiftingSetTable.DATABASE_TABLE_SET);
+			queryBuilder.appendWhere(LiftingSetTable.SET_KEY_ID + "=" + id);
 			break;
 			
 		case MOMENT_ALL:
@@ -147,8 +147,8 @@ public class SmartBellContentProvider extends ContentProvider {
 			
 		case MOMENT_ID:
 			/** Set up helper to query our athletes table. */
-			queryBuilder.setTables(SetTable.DATABASE_TABLE_SET);
-			queryBuilder.appendWhere(SetTable.SET_KEY_ID + "=" + id);
+			queryBuilder.setTables(MomentTable.DATABASE_TABLE_MOMENT);
+			queryBuilder.appendWhere(LiftingSetTable.SET_KEY_ID + "=" + id);
 			break;
 			
 
@@ -159,6 +159,14 @@ public class SmartBellContentProvider extends ContentProvider {
 		
 		/** Perform the database query. */
 		SQLiteDatabase db = this.database.getWritableDatabase();
+		
+//		Cursor ti = db.rawQuery("PRAGMA table_info(set_table)", null);
+//		if ( ti.moveToFirst() ) {
+//		    do {
+//		        Log.d("SmartBellContentProvider","col: " + ti.getString(1));
+//		    } while (ti.moveToNext());
+//		}
+		
 		Cursor cursor = queryBuilder.query(db, projection, selection, null, null, null, null);
 
 		/** Set the cursor to automatically alert listeners for content/view refreshing. */
@@ -220,7 +228,7 @@ public class SmartBellContentProvider extends ContentProvider {
 
 		case SET_ID:
 			/** Perform the database insert, placing the set at the bottom of the table. */
-			id = sqlDB.insert(SetTable.DATABASE_TABLE_SET, null, values);
+			id = sqlDB.insert(LiftingSetTable.DATABASE_TABLE_SET, null, values);
 			basePath = SET_BASE_PATH;
 			break;
 			
@@ -272,7 +280,7 @@ public class SmartBellContentProvider extends ContentProvider {
 			break;
 			
 		case SET_ID:
-			rowsDeleted = sqlDB.delete(SetTable.DATABASE_TABLE_SET, SetTable.SET_KEY_ID+"="+id, null);
+			rowsDeleted = sqlDB.delete(LiftingSetTable.DATABASE_TABLE_SET, LiftingSetTable.SET_KEY_ID+"="+id, null);
 			break;
 			
 		case MOMENT_ID:
@@ -326,7 +334,7 @@ public class SmartBellContentProvider extends ContentProvider {
 		case SET_ID:
 //			Log.d("mlady","id: "+id);
 //			Log.d("mlady","values: "+values);
-			rowsUpdated = sqlDB.update(SetTable.DATABASE_TABLE_SET, values, SetTable.SET_KEY_ID+"="+id, null);
+			rowsUpdated = sqlDB.update(LiftingSetTable.DATABASE_TABLE_SET, values, LiftingSetTable.SET_KEY_ID+"="+id, null);
 			break;
 			
 		case MOMENT_ID:
@@ -354,13 +362,20 @@ public class SmartBellContentProvider extends ContentProvider {
 		ArrayList<String> available = new ArrayList<String>();
 		available.addAll(Arrays.asList(AthleteTable.ATHLETE_COL_NAMES));
 		available.addAll(Arrays.asList(WorkoutTable.WORKOUT_COL_NAMES));
-		available.addAll(Arrays.asList(SetTable.SET_COL_NAMES));
+		available.addAll(Arrays.asList(LiftingSetTable.SET_COL_NAMES));
 		available.addAll(Arrays.asList(MomentTable.MOMENT_COL_NAMES));
 
 		if(projection != null) {
 			HashSet<String> requestedColumns = new HashSet<String>(Arrays.asList(projection));
 			HashSet<String> availableColumns = new HashSet<String>(available);
-
+			
+				for(String s: availableColumns){
+					Log.d("available cols", ""+s);
+				}
+				for(String s : requestedColumns){
+					Log.d("requested cols", ""+s);
+				}
+			
 			if(!availableColumns.containsAll(requestedColumns))	{
 				throw new IllegalArgumentException("Unknown columns in projection");
 			}

@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-public class AthleteView extends LinearLayout {
+public class AthleteDetailView extends LinearLayout {
 
 	private Button m_athleteButton;
 	
@@ -29,7 +29,7 @@ public class AthleteView extends LinearLayout {
 	 * @param athlete
 	 * 			  The Athlete this view is responsible for displaying.
 	 */
-	public AthleteView(Context context, Athlete athlete) {
+	public AthleteDetailView(Context context, Athlete athlete) {
 		super(context);
 		LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		inflater.inflate(R.layout.view_athlete, this, true);
@@ -110,7 +110,7 @@ public class AthleteView extends LinearLayout {
 		 * @param athlete
 		 *            The Athlete that was changed.
 		 */
-		public void onAthleteChanged(AthleteView view, Athlete athlete);
+		public void onAthleteChanged(AthleteDetailView view, Athlete athlete);
 	}
 
 }

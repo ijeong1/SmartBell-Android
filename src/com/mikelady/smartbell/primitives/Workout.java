@@ -3,26 +3,43 @@ package com.mikelady.smartbell.primitives;
 import java.util.ArrayList;
 
 public class Workout {
-
-	Long timeStamp;
+	int id;
+	Long timestamp;
+	int athleteId;
 	ArrayList<LiftingSet> sets;
 	
 	public Workout() {
-		timeStamp = System.currentTimeMillis();
+		timestamp = System.currentTimeMillis();
 		sets = new ArrayList<LiftingSet>();
 	}
 
 	public Workout(Long timeStarted, ArrayList<LiftingSet> sets) {
-		this.timeStamp = timeStarted;
+		this.timestamp = timeStarted;
 		this.sets = sets;
 	}
 
-	public Long getTimeStarted() {
-		return timeStamp;
+	public int getId() {
+		return id;
 	}
 
-	public void setTimeStarted(Long timeStarted) {
-		this.timeStamp = timeStarted;
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Long timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public int getAthleteId() {
+		return athleteId;
+	}
+
+	public void setAthleteId(int athleteId) {
+		this.athleteId = athleteId;
 	}
 
 	public ArrayList<LiftingSet> getSets() {
@@ -31,5 +48,9 @@ public class Workout {
 
 	public void setSets(ArrayList<LiftingSet> sets) {
 		this.sets = sets;
+	}
+	
+	public String toString(){
+		return ""+id;
 	}
 }

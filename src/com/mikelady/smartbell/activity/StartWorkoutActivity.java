@@ -8,6 +8,7 @@ import com.mikelady.smartbell.R.string;
 import com.mikelady.smartbell.fragment.SelectExerciseFragment;
 import com.mikelady.smartbell.fragment.SelectExerciseFragment.OnFragmentInteractionListener;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,10 +20,11 @@ public class StartWorkoutActivity extends FragmentActivity
 		implements OnFragmentInteractionListener{
 	
 	private android.support.v4.app.FragmentManager fragmentManager;
-	
+	public static Context ctx;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ctx = this;
 		initLayout();
 	}
 
@@ -35,9 +37,11 @@ public class StartWorkoutActivity extends FragmentActivity
 	
 	private void initLayout(){
 		Intent intent = getIntent();
-		int user = intent.getExtras().getInt("user");
+		Log.d("StartWorkoutActivity","intent: "+intent);
+		Log.d("StartWorkoutActivity","intent.getIntExtra(): "+intent.getIntExtra(getString(R.string.workout_id), 0));
+		int workout = intent.getIntExtra(getString(R.string.workout_id), 0);
 		
-		if(user > 0){
+		if(workout > 0){
 			
 		}
 		else{
@@ -48,14 +52,13 @@ public class StartWorkoutActivity extends FragmentActivity
 		fragmentManager = getSupportFragmentManager();
 		SelectExerciseFragment selectExerciseFragment = new SelectExerciseFragment();
 		
-		
 		android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		fragmentTransaction.replace(R.id.start_workout_activity_layout, selectExerciseFragment);
-		String startWorkoutActivityTag = getResources().getString(R.string.start_workout_activity_tag);
-		fragmentTransaction.addToBackStack(startWorkoutActivityTag);
+//		String startWorkoutActivityTag = getResources().getString(R.string.start_workout_activity_tag);
+//		fragmentTransaction.addToBackStack(startWorkoutActivityTag);
 		fragmentTransaction.commit();
 		
-		Log.d("startWorkoutActivity","backstack count: "+fragmentManager.getBackStackEntryCount());
+//		Log.d("startWorkoutActivity","backstack count: "+fragmentManager.getBackStackEntryCount());
 
 	}
 

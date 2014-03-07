@@ -3,7 +3,6 @@ import java.util.ArrayList;
 
 import com.mikelady.smartbell.R;
 import com.mikelady.smartbell.db.adapter.AthleteCursorAdapter;
-import com.mikelady.smartbell.db.adapter.AthleteListAdapter;
 import com.mikelady.smartbell.db.provider.SmartBellContentProvider;
 import com.mikelady.smartbell.db.table.AthleteTable;
 import com.mikelady.smartbell.db.view.AthleteView;
@@ -50,11 +49,10 @@ public class SelectAthleteActivity extends FragmentActivity implements android.s
 		Parse.initialize(this, "6YKFkBFeURXqEB3cK9YvPLzRDiMHYvqGsHZy5YMt", "YukuM4BgD5YT1jsV9npeU7iLnUjolmvmNz1bNONX");
 		
 		athleteCursorAdapter = new AthleteCursorAdapter(this, null, 0);
-		
-		
 		getSupportLoaderManager().initLoader(LOADER_ID, null, this);
 		
 		initLayout();
+		
 		Log.d("ml", "after oncreate");
 //		ParseObject testObject = new ParseObject("TestObject");
 //		testObject.put("foo", "bar");
@@ -69,25 +67,13 @@ public class SelectAthleteActivity extends FragmentActivity implements android.s
 		return true;
 	}
 	
-	protected void fillData(){
-		getSupportLoaderManager().restartLoader(0, null, this);
-		this.athleteListViewGroup.setAdapter(athleteCursorAdapter);
-		athleteListViewGroup.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-		        Intent intent = new Intent(SelectAthleteActivity.this, SelectWorkoutActivity.class);
-		        intent.putExtra(getString(R.string.athlete_id), position);
-		        startActivity(intent);
-            }
-        });
-	}
-	
 	private void initLayout(){
 		setContentView(R.layout.activity_select_athlete);
 		
 		newAthleteButton = (Button)this.findViewById(R.id.new_athlete_button);
 		athleteListViewGroup = (ListView)this.findViewById(R.id.athlete_list_view_group);
-		athleteCursorAdapter = new AthleteCursorAdapter(this, null, 0);
+//		athleteCursorAdapter = new AthleteCursorAdapter(this, null, 0);
+		athleteCursorAdapter.setOnAthleteChangeListener(this);
 		athleteListViewGroup.setAdapter(athleteCursorAdapter);
 
 		newAthleteButton.setOnClickListener(new OnClickListener() {
@@ -126,10 +112,15 @@ public class SelectAthleteActivity extends FragmentActivity implements android.s
 		athleteCursorAdapter.setOnAthleteChangeListener(null);
 		fillData();
 	}
+	
+	protected void fillData(){
+		getSupportLoaderManager().restartLoader(0, null, this);
+		this.athleteListViewGroup.setAdapter(athleteCursorAdapter);
+	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
-		String[] proj = new String[9];
+		String[] proj = new String[AthleteTable.ATHLETE_COL_NAMES.length];
 		proj[AthleteTable.ATHLETE_COL_ID] = AthleteTable.ATHLETE_KEY_ID;
 		proj[AthleteTable.ATHLETE_COL_IS_MALE] = AthleteTable.ATHLETE_IS_MALE;
 		proj[AthleteTable.ATHLETE_COL_HEIGHT] = AthleteTable.ATHLETE_HEIGHT;
@@ -149,6 +140,7 @@ public class SelectAthleteActivity extends FragmentActivity implements android.s
 	@Override
 	public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
 		athleteCursorAdapter.swapCursor(arg1);
+		this.athleteListViewGroup.setAdapter(athleteCursorAdapter);
 	}
 
 	@Override
@@ -159,24 +151,11 @@ public class SelectAthleteActivity extends FragmentActivity implements android.s
 	@Override
 	public void onAthleteChanged(AthleteView view, Athlete athlete) {
 		// TODO Auto-generated method stub
-		Uri updateRow = Uri.parse(SmartBellContentProvider.ATHLETE_CONTENT_URI+"/athlete/"+athlete.getId());
-		Log.d("mlady","updateRow: "+updateRow);
-		ContentValues cv = new ContentValues();
-		cv.put(AthleteTable.ATHLETE_IS_MALE, athlete.isMale());
-		cv.put(AthleteTable.ATHLETE_HEIGHT, 0);
-		cv.put(AthleteTable.ATHLETE_WEIGHT, 0);
-		cv.put(AthleteTable.ATHLETE_FOREARM, 0);
-		cv.put(AthleteTable.ATHLETE_UPPER_ARM, 0);
-		cv.put(AthleteTable.ATHLETE_TORSO, 0);
-		cv.put(AthleteTable.ATHLETE_THIGH, 0);
-		cv.put(AthleteTable.ATHLETE_SHIN, 0);
 
-
-		getContentResolver().update(updateRow, cv, null, null);
-		
-		athleteCursorAdapter.setOnAthleteChangeListener(null);
-		
-		fillData();
+        Log.d("ml", "clicked athlete");
+        Intent intent = new Intent(SelectAthleteActivity.this, SelectWorkoutActivity.class);
+        intent.putExtra(getString(R.string.athlete_id), athlete.getId());
+        startActivity(intent);
 	}
 
 }

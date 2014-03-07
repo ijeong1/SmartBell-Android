@@ -56,24 +56,13 @@ public class AthleteCursorAdapter extends android.support.v4.widget.CursorAdapte
 
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
-/*		int jokeID = cursor.getInt(MomentTable.MOMENT_COL_ID);
-		String jokeText = cursor.getString(MomentTable.MOMENT_COL_TIMESTAMP);
-		int jokeRating = cursor.getInt(MomentTable.MOMENT_COL_EULER);
-		String jokeAuthor = cursor.getString(MomentTable.MOMENT_COL_LINACC);
-		LiftingSet retrievedLiftingSet = new LiftingSet(jokeText, jokeAuthor, jokeRating, jokeID);
-		
-		//not too sure about
-		((LiftingSetView)view).setOnLiftingSetChangeListener(null);
-		
-		((LiftingSetView)view).setLiftingSet(retrievedLiftingSet);
-		((LiftingSetView)view).setOnLiftingSetChangeListener(m_listener);*/
-		
+
 		int athleteID = cursor.getInt(AthleteTable.ATHLETE_COL_ID);
-		boolean athleteIsMale = Boolean.getBoolean(
-				cursor.getString(AthleteTable.ATHLETE_COL_IS_MALE));
+//		boolean athleteIsMale = Boolean.getBoolean(
+//				cursor.getString(AthleteTable.ATHLETE_COL_IS_MALE));
 		Athlete retrievedAthlete = new Athlete();
 		retrievedAthlete.setId(athleteID);
-		retrievedAthlete.setMale(athleteIsMale);
+//		retrievedAthlete.setMale(athleteIsMale);
 		((AthleteView)view).setOnAthleteChangeListener(null);
 		((AthleteView)view).setAthlete(retrievedAthlete);
 		((AthleteView)view).setOnAthleteChangeListener(m_listener);
@@ -86,29 +75,13 @@ public class AthleteCursorAdapter extends android.support.v4.widget.CursorAdapte
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup vg) {
-/*		
-		int jokeID = cursor.getInt(MomentTable.MOMENT_COL_ID);
-		String jokeText = cursor.getString(MomentTable.MOMENT_COL_TIMESTAMP);
-		int jokeRating = cursor.getInt(MomentTable.MOMENT_COL_EULER);
-		String jokeAuthor = cursor.getString(MomentTable.MOMENT_COL_LINACC);
-		LiftingSet retrievedLiftingSet = new LiftingSet(jokeText, jokeAuthor, jokeRating, jokeID);
-		LiftingSetView view = new LiftingSetView(context, retrievedLiftingSet);
-		
-		//not too sure about
-		//((LiftingSetView)view).setOnLiftingSetChangeListener(null);
-
-		((LiftingSetView)view).setOnLiftingSetChangeListener(m_listener);
-		
-		//add LiftingSetview to vg?
-		return view;
-		*/
-		
+	
 		int athleteID = cursor.getInt(AthleteTable.ATHLETE_COL_ID);
-		boolean athleteIsMale = Boolean.getBoolean(
-				cursor.getString(AthleteTable.ATHLETE_COL_IS_MALE));
+//		boolean athleteIsMale = Boolean.getBoolean(
+//				cursor.getString(AthleteTable.ATHLETE_COL_IS_MALE));
 		Athlete retrievedAthlete = new Athlete();
 		retrievedAthlete.setId(athleteID);
-		retrievedAthlete.setMale(athleteIsMale);
+//		retrievedAthlete.setMale(athleteIsMale);
 		
 		AthleteView view = new AthleteView(context, retrievedAthlete);
 		((AthleteView)view).setOnAthleteChangeListener(m_listener);
