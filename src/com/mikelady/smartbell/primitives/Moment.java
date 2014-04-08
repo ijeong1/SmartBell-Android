@@ -2,7 +2,7 @@ package com.mikelady.smartbell.primitives;
 
 
 public class Moment {
-	public static final boolean TEST = true;
+	public static final boolean TEST = false;
 	Long timestamp;
 	Float[] euler;
 	Float[] linAcc;

@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".SetUserDetailsActivity" >
+    tools:context=".SetAthleteDetailsActivity" >
 
     <TextView
         android:layout_width="wrap_content"
@@ -15,7 +15,7 @@
         android:text="@string/hello_world" />
 
     <ListView
-    android:id="@+id/user_details_view_group"
+    android:id="@+id/athlete_details_view_group"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
      />

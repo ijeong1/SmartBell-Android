@@ -45,11 +45,14 @@ public class RecordSetFragment extends Fragment {
 	// TODO: Rename and change types of parameters
 	private String exerciseName;
 	private TextView recordTextView;
+	private TextView repsTextView;
 	private Button endSetButton;
+	private Button nextRepButton;
 	private android.support.v4.app.FragmentManager fragmentManager;
 	
 	private OnFragmentInteractionListener mListener;
 	private SensorDataHandler sensorDataHandler;
+	private ArrayList<Long> repTimestamps;
 	private boolean is_polling = false;
 	
 	public static ArrayList<Double[]> positions;
@@ -81,7 +84,7 @@ public class RecordSetFragment extends Fragment {
 		if (getArguments() != null) {
 			exerciseName = getArguments().getString(ARG_PARAM1);
 		}
-		
+		repTimestamps = new ArrayList<Long>();
 		if(!Moment.TEST){
 			//1 is default
 			sensorDataHandler = new SensorDataHandler(1); // make new thread?
@@ -109,8 +112,9 @@ public class RecordSetFragment extends Fragment {
 	private void initLayout(){
 		recordTextView = (TextView)this.getView().findViewById(R.id.record_exercise_text);
 		recordTextView.setText(exerciseName);
+		repsTextView = (TextView)this.getView().findViewById(R.id.num_reps_text);
 		endSetButton = (Button)this.getView().findViewById(R.id.end_set_button);
-
+		nextRepButton = (Button)this.getView().findViewById(R.id.next_rep_button);
 		setClickListeners();
 	}
 	
@@ -127,31 +131,31 @@ public class RecordSetFragment extends Fragment {
 				    	is_polling = false;
 			    	}
 					ArrayList<Moment> moments = sensorDataHandler.getMoments();
-					Log.d("ML", "num moments: "+moments.size());
+					Log.d("RecordSetFragment", "num moments: "+moments.size());
 				
-					BarPathTracker barPathTracker = new BarPathTracker(moments);
-					positions = barPathTracker.determinePosition();
-					
-	
+//					BarPathTracker barPathTracker = new BarPathTracker(moments);
+//					positions = barPathTracker.determinePosition();
 					
 					fragmentManager = getFragmentManager();
-	//				SetQuestionFragment setQuestionFragment = SetQuestionFragment.newInstance(exerciseName);
+					SetClassificationFragment setQuestionFragment = SetClassificationFragment.newInstance(exerciseName, moments, repTimestamps);
 					
 	//				BarPathFragment barPathFragment = BarPathFragment.newInstance(moments);
 	//				
-	//				android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+					android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+					fragmentTransaction.replace(R.id.start_workout_activity_layout, setQuestionFragment);
 	//				fragmentTransaction.replace(R.id.start_workout_activity_layout, barPathFragment); //setQuestionFragment
-	//				fragmentTransaction.addToBackStack(null);
-	//				fragmentTransaction.commit();
+					fragmentTransaction.addToBackStack(null);
+					fragmentTransaction.commit();
 					
 	//				String selectExerciseTag = getResources().getString(R.string.exercise_detail_tag);
 	//				fragmentManager.popBackStackImmediate(selectExerciseTag, 1);
-					Intent intent = new Intent(getActivity(), BarPathActivity.class);
+//					Intent intent = new Intent(getActivity(), BarPathActivity.class);
 					
-					startActivity(intent);
+//					startActivity(intent);
 				}
 				else{
-					ArrayList<Moment> moments = new ArrayList<Moment>();
+					Log.d("RecordSetFragment", "In test mode");
+					/*ArrayList<Moment> moments = new ArrayList<Moment>();
 					Float[] test = {(float) 1.0, (float) 2.0, (float) 3.0};
 					Float[] test1 = {(float) 4.0, (float) 5.0, (float) 6.0};
 					moments.add(new Moment((long) 10, test, test1));
@@ -163,10 +167,18 @@ public class RecordSetFragment extends Fragment {
 					fragmentTransaction.commit();
 					
 					
-					String selectExerciseTag = getResources().getString(R.string.exercise_detail_tag);
+					String selectExerciseTag = getResources().getString(R.string.exercise_detail_tag);*/
 //					fragmentManager.popBackStackImmediate(selectExerciseTag, 1);
 //					fragmentManager.popBackStackImmediate();
 				}
+			}
+		});
+		
+		nextRepButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				repTimestamps.add(System.currentTimeMillis());
+				repsTextView.setText(""+repTimestamps.size());
 			}
 		});
 		

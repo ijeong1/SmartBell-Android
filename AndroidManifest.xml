@@ -48,7 +48,7 @@
             android:label="@string/title_activity_bar_path" >
         </activity>
         <activity
-            android:name="com.mikelady.smartbell.activity.SetUserDetailsActivity"
+            android:name="com.mikelady.smartbell.activity.SetAthleteDetailsActivity"
             android:label="@string/title_activity_set_user_details" >
         </activity>
     </application>

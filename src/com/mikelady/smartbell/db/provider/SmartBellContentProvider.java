@@ -369,13 +369,13 @@ public class SmartBellContentProvider extends ContentProvider {
 			HashSet<String> requestedColumns = new HashSet<String>(Arrays.asList(projection));
 			HashSet<String> availableColumns = new HashSet<String>(available);
 			
-				for(String s: availableColumns){
+/*				for(String s: availableColumns){
 					Log.d("available cols", ""+s);
 				}
 				for(String s : requestedColumns){
 					Log.d("requested cols", ""+s);
 				}
-			
+*/			
 			if(!availableColumns.containsAll(requestedColumns))	{
 				throw new IllegalArgumentException("Unknown columns in projection");
 			}

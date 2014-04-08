@@ -29,7 +29,7 @@ public class AthleteView extends LinearLayout {
 	 * @param athlete
 	 * 			  The Athlete this view is responsible for displaying.
 	 */
-	public AthleteView(Context context, Athlete athlete) {
+	public AthleteView(Context context, final Athlete athlete) {
 		super(context);
 		LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		inflater.inflate(R.layout.view_athlete, this, true);
@@ -39,6 +39,7 @@ public class AthleteView extends LinearLayout {
 			
 			@Override
 			public void onClick(View v) {
+				Log.d("AthleteView", "AthleteView "+athlete+" clicked");
 				notifyOnAthleteChangeListener();
 			}
 		});
@@ -91,7 +92,7 @@ public class AthleteView extends LinearLayout {
 	 * different Athlete object.
 	 */
 	protected void notifyOnAthleteChangeListener() {
-		Log.d("mlady", "m_onAthleteChangeListener: "+m_onAthleteChangeListener);
+		Log.d("AthleteView", "notifyOnAthleteChangeListener m_athlete: "+m_athlete+" m_onAthleteChangeListener: "+m_onAthleteChangeListener);
 		if(m_onAthleteChangeListener != null)
 			m_onAthleteChangeListener.onAthleteChanged(this, m_athlete);
 	}

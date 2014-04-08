@@ -19,8 +19,8 @@ public class MomentTable {
 	public static final String MOMENT_TIMESTAMP = "timestamp";
 	public static final int MOMENT_COL_TIMESTAMP = MOMENT_COL_ID + 1;
 	
-	public static final String MOMENT_SET_ID = "set_id";
-	public static final int MOMENT_COL_SET_ID = MOMENT_COL_ID + 2;
+	public static final String MOMENT_REP_ID = "rep_id";
+	public static final int MOMENT_COL_REP_ID = MOMENT_COL_ID + 2;
 	
 	public static final String MOMENT_EULER_X = "euler_angle_X";
 	public static final int MOMENT_COL_EULER_X = MOMENT_COL_ID + 3;
@@ -41,7 +41,7 @@ public class MomentTable {
 	public static final int MOMENT_COL_LINACC_Z = MOMENT_COL_ID + 8;
 	
 	public static final String[] MOMENT_COL_NAMES = {MOMENT_KEY_ID, MOMENT_TIMESTAMP,
-		MOMENT_SET_ID, MOMENT_EULER_X, MOMENT_EULER_Y, MOMENT_EULER_Z, MOMENT_LINACC_X,
+		MOMENT_REP_ID, MOMENT_EULER_X, MOMENT_EULER_Y, MOMENT_EULER_Z, MOMENT_LINACC_X,
 		MOMENT_LINACC_Y, MOMENT_LINACC_Z};
 	
 	/** SQLite database creation statement. Auto-increments IDs of inserted jokes.
@@ -49,7 +49,7 @@ public class MomentTable {
 	public static final String DATABASE_CREATE = "create table " + DATABASE_TABLE_MOMENT + " (" + 
 			MOMENT_KEY_ID + " integer primary key autoincrement, " + 
 			MOMENT_TIMESTAMP	+ " text not null, " + 
-			MOMENT_SET_ID 	+ "integer REFERENCES "+LiftingSetTable.DATABASE_TABLE_SET+"("+LiftingSetTable.SET_KEY_ID+")," +
+			MOMENT_REP_ID 	+ "integer REFERENCES "+LiftingSetTable.DATABASE_TABLE_SET+"("+LiftingSetTable.SET_KEY_ID+")," +
 			MOMENT_EULER_X	+ " float not null, " + 
 			MOMENT_EULER_Y	+ " float not null, " +
 			MOMENT_EULER_Z	+ " float not null, " + 

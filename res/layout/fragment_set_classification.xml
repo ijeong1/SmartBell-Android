@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/orient_category_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Indicate the orientation category"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <RadioGroup
+        android:id="@+id/orient_category_radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/good_radio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Good" />
+
+        <RadioButton
+            android:id="@+id/left_roll_radio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Left roll" />
+        
+        <RadioButton
+            android:id="@+id/right_roll_radio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Right roll" />
+        
+        <RadioButton
+            android:id="@+id/pitch_up_radio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Up pitch" />
+        
+        <RadioButton
+            android:id="@+id/pitch_down_radio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Down pitch" />
+        
+        <RadioButton
+            android:id="@+id/yaw_left_radio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yaw left" />
+        
+        <RadioButton
+            android:id="@+id/yaw_right_radio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yaw right" />
+
+    </RadioGroup>
+    
+    <TextView
+        android:id="@+id/orient_category_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Indicate the path category"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</LinearLayout>

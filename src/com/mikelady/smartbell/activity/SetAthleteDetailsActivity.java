@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 
-public class SetUserDetailsActivity extends Activity {
+public class SetAthleteDetailsActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_set_user_details);
+		setContentView(R.layout.activity_set_athlete_details);
 	}
 
 	@Override

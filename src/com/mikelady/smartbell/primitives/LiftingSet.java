@@ -20,20 +20,20 @@ public class LiftingSet {
 	int id;
 	long timestamp;
 	int exercise;
-	ArrayList<Moment> moments;
+//	ArrayList<Moment> moments;
 	int weightLifted;
 	int reps;
 	
 	public LiftingSet() {
 		exercise = ExerciseId.BACK_SQUAT.getId();
-		moments = new ArrayList<Moment>();
+//		moments = new ArrayList<Moment>();
 		weightLifted = 135;
 		reps = 0;
 	}
 	
 	public LiftingSet(int exercise, ArrayList<Moment> moments, int weightLifted, int reps) {
 		this.exercise = exercise;
-		this.moments = moments;
+//		this.moments = moments;
 		this.weightLifted = weightLifted;
 		this.reps = reps;
 	}
@@ -62,13 +62,13 @@ public class LiftingSet {
 		this.exercise = exercise;
 	}
 
-	public ArrayList<Moment> getMoments() {
+/*	public ArrayList<Moment> getMoments() {
 		return moments;
 	}
 
 	public void setMoments(ArrayList<Moment> moments) {
 		this.moments = moments;
-	}
+	}*/
 
 	public int getWeightLifted() {
 		return weightLifted;

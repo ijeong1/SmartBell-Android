@@ -16,5 +16,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="End set" />
+    
+     <TextView
+        android:id="@+id/num_reps_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0 reps"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <Button
+        android:id="@+id/next_rep_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next rep" />
+    
+    
 
 </LinearLayout>

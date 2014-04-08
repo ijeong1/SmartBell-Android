@@ -84,7 +84,7 @@ public class SelectWorkoutActivity extends FragmentActivity implements android.s
 		userDetailsButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(SelectWorkoutActivity.this, SetUserDetailsActivity.class);
+				Intent intent = new Intent(SelectWorkoutActivity.this, SetAthleteDetailsActivity.class);
 				startActivity(intent);
 			}
 		});

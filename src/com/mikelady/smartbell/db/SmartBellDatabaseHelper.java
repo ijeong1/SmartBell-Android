@@ -39,6 +39,7 @@ public class SmartBellDatabaseHelper extends android.database.sqlite.SQLiteOpenH
 		AthleteTable.onCreate(db);
 		WorkoutTable.onCreate(db);
 		LiftingSetTable.onCreate(db);
+		RepTable.onCreate(db);
 		MomentTable.onCreate(db);
 	}
 
@@ -47,6 +48,7 @@ public class SmartBellDatabaseHelper extends android.database.sqlite.SQLiteOpenH
 		AthleteTable.onUpgrade(db, oldVersion, newVersion);
 		WorkoutTable.onUpgrade(db, oldVersion, newVersion);
 		LiftingSetTable.onUpgrade(db, oldVersion, newVersion);
+		RepTable.onUpgrade(db, oldVersion, newVersion);
 		MomentTable.onUpgrade(db, oldVersion, newVersion);
 	}
 }

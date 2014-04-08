@@ -8,6 +8,7 @@ import com.mikelady.smartbell.primitives.LiftingSet;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -63,9 +64,10 @@ public class AthleteCursorAdapter extends android.support.v4.widget.CursorAdapte
 		Athlete retrievedAthlete = new Athlete();
 		retrievedAthlete.setId(athleteID);
 //		retrievedAthlete.setMale(athleteIsMale);
-		((AthleteView)view).setOnAthleteChangeListener(null);
+//		((AthleteView)view).setOnAthleteChangeListener(null);
 		((AthleteView)view).setAthlete(retrievedAthlete);
 		((AthleteView)view).setOnAthleteChangeListener(m_listener);
+//		Log.d("AthleteCursorAdapter", "bindView retrievedAthlete: "+retrievedAthlete.getId()+" m_listener: "+m_listener);
 //		int athleteHeight = cursor.getInt(AthleteTable.ATHLETE_COL_HEIGHT);
 //		int athleteWeight = cursor.getInt(AthleteTable.ATHLETE_COL_WEIGHT);
 //		int athleteForearm = cursor.getInt(AthleteTable.ATHLETE_COL_FOREARM);
@@ -85,7 +87,7 @@ public class AthleteCursorAdapter extends android.support.v4.widget.CursorAdapte
 		
 		AthleteView view = new AthleteView(context, retrievedAthlete);
 		((AthleteView)view).setOnAthleteChangeListener(m_listener);
-		
+//		Log.d("AthleteCursorAdapter", "newView retrievedAthlete: "+retrievedAthlete.getId()+" m_listener: "+m_listener);
 		return view;
 	}
 }

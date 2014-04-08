@@ -53,7 +53,7 @@ public class SelectAthleteActivity extends FragmentActivity implements android.s
 		
 		initLayout();
 		
-		Log.d("ml", "after oncreate");
+		Log.d("SelectAthleteActivity", "after oncreate");
 //		ParseObject testObject = new ParseObject("TestObject");
 //		testObject.put("foo", "bar");
 //		testObject.saveInBackground();
@@ -108,7 +108,7 @@ public class SelectAthleteActivity extends FragmentActivity implements android.s
 		cv.put(AthleteTable.ATHLETE_SHIN, 0);
 
 		athlete.setId(Integer.valueOf(getContentResolver().insert(addRow, cv).getLastPathSegment()));
-		Log.d("mlady", "athlete: "+athlete);
+		Log.d("SelectAthleteActivity", "addAthlete: "+athlete);
 		athleteCursorAdapter.setOnAthleteChangeListener(null);
 		fillData();
 	}
@@ -139,12 +139,14 @@ public class SelectAthleteActivity extends FragmentActivity implements android.s
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
+		Log.d("SelectAthleteActivity", "onLoadFinished arg0:" + arg0 + " arg1: "+arg1);
 		athleteCursorAdapter.swapCursor(arg1);
 		this.athleteListViewGroup.setAdapter(athleteCursorAdapter);
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> arg0) {
+		Log.d("SelectAthleteActivity", "onLoaderReset");
 		athleteCursorAdapter.swapCursor(null);
 	}
 
@@ -152,7 +154,7 @@ public class SelectAthleteActivity extends FragmentActivity implements android.s
 	public void onAthleteChanged(AthleteView view, Athlete athlete) {
 		// TODO Auto-generated method stub
 
-        Log.d("ml", "clicked athlete");
+        Log.d("SelectAthleteActivity", "onAthleteChanged, starting Activity");
         Intent intent = new Intent(SelectAthleteActivity.this, SelectWorkoutActivity.class);
         intent.putExtra(getString(R.string.athlete_id), athlete.getId());
         startActivity(intent);
