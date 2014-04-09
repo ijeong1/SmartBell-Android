@@ -2,6 +2,8 @@ package com.mikelady.smartbell.primitives;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 public class LiftingSet {
 
 	public static enum ExerciseId{
@@ -15,27 +17,34 @@ public class LiftingSet {
 		public int getId() {
 			return id;
 		}
+		public static int getId(String name){
+			Log.d("LiftingSet", "name: "+name);
+			return valueOf(name.toUpperCase()).ordinal();
+		}
 	}
 	
 	int id;
 	long timestamp;
 	int exercise;
 //	ArrayList<Moment> moments;
+	ArrayList<Rep> reps;
 	int weightLifted;
-	int reps;
+	int num_reps;
 	
 	public LiftingSet() {
 		exercise = ExerciseId.BACK_SQUAT.getId();
 //		moments = new ArrayList<Moment>();
+		reps = new ArrayList<Rep>();
 		weightLifted = 135;
-		reps = 0;
+		num_reps = 0;
 	}
 	
-	public LiftingSet(int exercise, ArrayList<Moment> moments, int weightLifted, int reps) {
+	public LiftingSet(int exercise, ArrayList<Rep> reps, int weightLifted, int num_reps) { //ArrayList<Moment> moments
 		this.exercise = exercise;
 //		this.moments = moments;
-		this.weightLifted = weightLifted;
 		this.reps = reps;
+		this.weightLifted = weightLifted;
+		this.num_reps = num_reps;
 	}
 
 	public int getId() {
@@ -79,11 +88,11 @@ public class LiftingSet {
 	}
 
 	public int getReps() {
-		return reps;
+		return num_reps;
 	}
 
 	public void setReps(int reps) {
-		this.reps = reps;
+		this.num_reps = reps;
 	}
 
 }

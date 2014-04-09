@@ -8,6 +8,7 @@ import com.mikelady.smartbell.db.SmartBellDatabaseHelper;
 import com.mikelady.smartbell.db.table.AthleteTable;
 import com.mikelady.smartbell.db.table.MomentTable;
 import com.mikelady.smartbell.db.table.LiftingSetTable;
+import com.mikelady.smartbell.db.table.RepTable;
 import com.mikelady.smartbell.db.table.WorkoutTable;
 
 import android.content.ContentProvider;
@@ -41,8 +42,10 @@ public class SmartBellContentProvider extends ContentProvider {
 	private static final int WORKOUT_ALL = 4;
 	private static final int SET_ID = 5;
 	private static final int SET_ALL = 6;
-	private static final int MOMENT_ID = 7;
-	private static final int MOMENT_ALL = 8;
+	private static final int REP_ID = 7;
+	private static final int REP_ALL = 8;
+	private static final int MOMENT_ID = 9;
+	private static final int MOMENT_ALL = 10;
 
 	/** The authority for this content provider. */
 	private static final String AUTHORITY = "com.mikelady.smarbell.smartbellcontentprovider";
@@ -53,6 +56,7 @@ public class SmartBellContentProvider extends ContentProvider {
 	private static final String ATHLETE_BASE_PATH = "athlete_table";
 	private static final String WORKOUT_BASE_PATH = "workout_table";
 	private static final String SET_BASE_PATH = "set_table";
+	private static final String REP_BASE_PATH = "set_table";
 	private static final String MOMENT_BASE_PATH = "moment_table";
 
 	/** This provider's content location. Used by accessing applications to
@@ -60,6 +64,7 @@ public class SmartBellContentProvider extends ContentProvider {
 	public static final Uri ATHLETE_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + ATHLETE_BASE_PATH);
 	public static final Uri WORKOUT_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + WORKOUT_BASE_PATH);
 	public static final Uri SET_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + SET_BASE_PATH);
+	public static final Uri REP_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + REP_BASE_PATH);
 	public static final Uri MOMENT_CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + MOMENT_BASE_PATH);
 
 	/** Matches content URIs requested by accessing applications with possible
@@ -72,6 +77,8 @@ public class SmartBellContentProvider extends ContentProvider {
 		sURIMatcher.addURI(AUTHORITY, WORKOUT_BASE_PATH + "/workout/#", WORKOUT_ID);
 		sURIMatcher.addURI(AUTHORITY, SET_BASE_PATH + "/lifting_set", SET_ALL);
 		sURIMatcher.addURI(AUTHORITY, SET_BASE_PATH + "/lifting_set/#", SET_ID);
+		sURIMatcher.addURI(AUTHORITY, REP_BASE_PATH + "/rep", REP_ALL);
+		sURIMatcher.addURI(AUTHORITY, REP_BASE_PATH + "/rep/#", REP_ID);
 		sURIMatcher.addURI(AUTHORITY, MOMENT_BASE_PATH + "/moment", MOMENT_ALL);
 		sURIMatcher.addURI(AUTHORITY, MOMENT_BASE_PATH + "/moment/#", MOMENT_ID);
 	}
@@ -138,6 +145,17 @@ public class SmartBellContentProvider extends ContentProvider {
 			/** Set up helper to query our athletes table. */
 			queryBuilder.setTables(LiftingSetTable.DATABASE_TABLE_SET);
 			queryBuilder.appendWhere(LiftingSetTable.SET_KEY_ID + "=" + id);
+			break;
+			
+		case REP_ALL:
+			/** Set up helper to query our athletes table. */
+			queryBuilder.setTables(RepTable.DATABASE_TABLE_REP);
+			break;
+			
+		case REP_ID:
+			/** Set up helper to query our athletes table. */
+			queryBuilder.setTables(RepTable.DATABASE_TABLE_REP);
+			queryBuilder.appendWhere(RepTable.REP_KEY_ID + "=" + id);
 			break;
 			
 		case MOMENT_ALL:
@@ -232,6 +250,12 @@ public class SmartBellContentProvider extends ContentProvider {
 			basePath = SET_BASE_PATH;
 			break;
 			
+		case REP_ID:
+			/** Perform the database insert, placing the set at the bottom of the table. */
+			id = sqlDB.insert(RepTable.DATABASE_TABLE_REP, null, values);
+			basePath = REP_BASE_PATH;
+			break;
+			
 		case MOMENT_ID:
 			/** Perform the database insert, placing the moment at the bottom of the table. */
 			id = sqlDB.insert(MomentTable.DATABASE_TABLE_MOMENT, null, values);
@@ -281,6 +305,10 @@ public class SmartBellContentProvider extends ContentProvider {
 			
 		case SET_ID:
 			rowsDeleted = sqlDB.delete(LiftingSetTable.DATABASE_TABLE_SET, LiftingSetTable.SET_KEY_ID+"="+id, null);
+			break;
+			
+		case REP_ID:
+			rowsDeleted = sqlDB.delete(RepTable.DATABASE_TABLE_REP, RepTable.REP_KEY_ID+"="+id, null);
 			break;
 			
 		case MOMENT_ID:
@@ -337,6 +365,12 @@ public class SmartBellContentProvider extends ContentProvider {
 			rowsUpdated = sqlDB.update(LiftingSetTable.DATABASE_TABLE_SET, values, LiftingSetTable.SET_KEY_ID+"="+id, null);
 			break;
 			
+		case REP_ID:
+//			Log.d("mlady","id: "+id);
+//			Log.d("mlady","values: "+values);
+			rowsUpdated = sqlDB.update(RepTable.DATABASE_TABLE_REP, values, RepTable.REP_KEY_ID+"="+id, null);
+			break;
+			
 		case MOMENT_ID:
 //			Log.d("mlady","id: "+id);
 //			Log.d("mlady","values: "+values);
@@ -363,6 +397,7 @@ public class SmartBellContentProvider extends ContentProvider {
 		available.addAll(Arrays.asList(AthleteTable.ATHLETE_COL_NAMES));
 		available.addAll(Arrays.asList(WorkoutTable.WORKOUT_COL_NAMES));
 		available.addAll(Arrays.asList(LiftingSetTable.SET_COL_NAMES));
+		available.addAll(Arrays.asList(RepTable.REP_COL_NAMES));
 		available.addAll(Arrays.asList(MomentTable.MOMENT_COL_NAMES));
 
 		if(projection != null) {

@@ -33,12 +33,15 @@ public class SetQuestionFragment extends Fragment {
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 	private static final String ARG_PARAM1 = "param1";
-
+	private static final String ARG_WORKOUT_ID = "workoutId";
+	
 	// TODO: Rename and change types of parameters
 	private String exerciseName;
-	private TextView setQuestionTextView;
-	private EditText setQuestionEditText;
-	private Button setQuestionNextButton;
+	private int workoutId;
+	
+	private EditText weightEditText;
+	private EditText repEditText;
+	private Button startRecordingButton;
 	private android.support.v4.app.FragmentManager fragmentManager;
 	
 	private OnFragmentInteractionListener mListener;
@@ -54,10 +57,11 @@ public class SetQuestionFragment extends Fragment {
 	 * @return A new instance of fragment SetQuestionFragment.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static SetQuestionFragment newInstance(String param1) {
+	public static SetQuestionFragment newInstance(String param1, int workoutId) {
 		SetQuestionFragment fragment = new SetQuestionFragment();
 		Bundle args = new Bundle();
 		args.putString(ARG_PARAM1, param1);
+		args.putInt(ARG_WORKOUT_ID, workoutId);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -71,13 +75,14 @@ public class SetQuestionFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
 			exerciseName = getArguments().getString(ARG_PARAM1);
+			workoutId = getArguments().getInt(ARG_WORKOUT_ID);
 		}
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return (LinearLayout) inflater.inflate(R.layout.view_set_question, container, false);
+		return (LinearLayout) inflater.inflate(R.layout.fragment_set_question, container, false);
 	}
 	
 	@Override
@@ -87,25 +92,34 @@ public class SetQuestionFragment extends Fragment {
 	}
 	
 	private void initLayout(){
-		setQuestionTextView = (TextView)this.getView().findViewById(R.id.set_question_text);
-		setQuestionTextView.setText(exerciseName + " question");
-		setQuestionEditText = (EditText)this.getView().findViewById(R.id.set_question_edittext);
-		
-		setQuestionNextButton = (Button)this.getView().findViewById(R.id.set_question_next_button);
+		weightEditText = (EditText)this.getView().findViewById(R.id.enter_weight_edit_text);
+		repEditText = (EditText)this.getView().findViewById(R.id.enter_reps_edit_text);
+		startRecordingButton = (Button)this.getView().findViewById(R.id.start_recording_button);
 
 		setClickListeners();
 	}
 	
 	private void setClickListeners(){
-		setQuestionNextButton.setOnClickListener(new OnClickListener() {
+		startRecordingButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				fragmentManager = getFragmentManager();
 				
+				int weight = Integer.parseInt(weightEditText.getText().toString());
+				int reps = Integer.parseInt(repEditText.getText().toString());
+				
+				RecordSetFragment recordSetFragment = RecordSetFragment.newInstance(exerciseName, workoutId, weight, reps);
+				
+				android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+				fragmentTransaction.replace(R.id.start_workout_activity_layout, recordSetFragment);
+				String setQuestionTag = getResources().getString(R.string.set_question_tag);
+				fragmentTransaction.addToBackStack(setQuestionTag);
+				fragmentTransaction.commit();
+				
 				//logic for figuring out what question is next, or to close out set
 				//if last question, close out set and go back to exercise detail
-				String exerciseDetailTag = getResources().getString(R.string.exercise_detail_tag);
-				fragmentManager.popBackStackImmediate(exerciseDetailTag, 1);
+//				String exerciseDetailTag = getResources().getString(R.string.exercise_detail_tag);
+//				fragmentManager.popBackStackImmediate(exerciseDetailTag, 1);
 				
 //				SetQuestionFragment setQuestionFragment = SetQuestionFragment.newInstance(exerciseName);
 //				

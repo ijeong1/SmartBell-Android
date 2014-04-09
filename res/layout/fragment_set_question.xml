@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="enter weight"
+        android:hint="enter weight used"
         android:inputType="number" >
     </EditText>
 
@@ -26,9 +26,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="enter reps"
+        android:hint="enter expected reps"
         android:inputType="number" >
 
     </EditText>
+    
+    <Button
+        android:id="@+id/start_recording_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start recording" />
    
 </LinearLayout>

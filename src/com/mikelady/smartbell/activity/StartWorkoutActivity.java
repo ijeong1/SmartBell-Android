@@ -50,7 +50,7 @@ public class StartWorkoutActivity extends FragmentActivity
 		
 		setContentView(R.layout.activity_start_workout);
 		fragmentManager = getSupportFragmentManager();
-		SelectExerciseFragment selectExerciseFragment = new SelectExerciseFragment();
+		SelectExerciseFragment selectExerciseFragment = SelectExerciseFragment.newInstance(workout);
 		
 		android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		fragmentTransaction.replace(R.id.start_workout_activity_layout, selectExerciseFragment);

@@ -95,6 +95,7 @@ public class SelectAthleteActivity extends FragmentActivity implements android.s
 	 *            The Athlete to add to list of Athletes.
 	 */
 	protected void addAthlete(Athlete athlete) {
+		Log.d("SelectAthleteActivity", "athlete.getId(): "+athlete.getId());
 		Uri addRow = Uri.parse(SmartBellContentProvider.ATHLETE_CONTENT_URI+"/athlete/"+athlete.getId());
 		ContentValues cv = new ContentValues();
 //		cv.put(AthleteTable.ATHLETE_KEY_ID, athlete.getId());

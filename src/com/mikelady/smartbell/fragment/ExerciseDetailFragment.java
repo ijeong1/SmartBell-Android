@@ -46,7 +46,8 @@ import android.widget.TextView;
 public class ExerciseDetailFragment extends Fragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor>, OnLiftingSetChangeListener {
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "exerciseName"; 
+	private static final String ARG_EXERCISE_NAME = "exerciseName"; 
+	private static final String ARG_WORKOUT_ID = "workoutId";
 	private static final int LOADER_ID = 1;
 	// TODO: Rename and change types of parameters
 	private String exerciseName;
@@ -58,6 +59,8 @@ public class ExerciseDetailFragment extends Fragment implements android.support.
 	private Button endExerciseButton;
 	private Button showBarpathButton;
 	private android.support.v4.app.FragmentManager fragmentManager;
+	
+	private int workoutId;
 	
 	protected ListView liftingSetListViewGroup;
 	protected Cursor liftingSetCursor;
@@ -74,10 +77,11 @@ public class ExerciseDetailFragment extends Fragment implements android.support.
 	 * @return A new instance of fragment ExerciseDetailFragment.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static ExerciseDetailFragment newInstance(String param1) {
+	public static ExerciseDetailFragment newInstance(String param1, int workoutId) {
 		ExerciseDetailFragment fragment = new ExerciseDetailFragment();
 		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
+		args.putString(ARG_EXERCISE_NAME, param1);
+		args.putInt(ARG_WORKOUT_ID, workoutId);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -90,7 +94,8 @@ public class ExerciseDetailFragment extends Fragment implements android.support.
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			exerciseName = getArguments().getString(ARG_PARAM1);
+			exerciseName = getArguments().getString(ARG_EXERCISE_NAME);
+			workoutId = getArguments().getInt(ARG_WORKOUT_ID);
 		}
 		
 		
@@ -147,10 +152,11 @@ public class ExerciseDetailFragment extends Fragment implements android.support.
 			@Override
 			public void onClick(View v) {
 				fragmentManager = getFragmentManager();
-				RecordSetFragment recordSetFragment = RecordSetFragment.newInstance(exerciseName);
+//				RecordSetFragment recordSetFragment = RecordSetFragment.newInstance(exerciseName);
+				SetQuestionFragment setQuestionFragment = SetQuestionFragment.newInstance(exerciseName, workoutId);
 				
 				android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-				fragmentTransaction.replace(R.id.start_workout_activity_layout, recordSetFragment);
+				fragmentTransaction.replace(R.id.start_workout_activity_layout, setQuestionFragment); //recordSetFragment
 				String exerciseDetailTag = getResources().getString(R.string.exercise_detail_tag);
 				fragmentTransaction.addToBackStack(exerciseDetailTag);
 				fragmentTransaction.commit();
@@ -265,9 +271,9 @@ public class ExerciseDetailFragment extends Fragment implements android.support.
 	@Override
 	public void onLiftingSetChanged(LiftingSetView view, LiftingSet liftingSet) {
 		
-        Intent intent = new Intent(getActivity(), BarPathActivity.class);
-        intent.putExtra(getString(R.string.lifting_set_id), liftingSet.getId());
-        startActivity(intent);
+//        Intent intent = new Intent(getActivity(), BarPathActivity.class);
+//        intent.putExtra(getString(R.string.lifting_set_id), liftingSet.getId());
+//        startActivity(intent);
 	}
 
 	/**

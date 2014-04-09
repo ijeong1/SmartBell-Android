@@ -26,24 +26,21 @@ public class RepTable {
 	public static final String REP_SEQ_ID = "seq_id";
 	public static final int REP_COL_SEQ_ID = REP_COL_ID + 3;
 	
-	public static final String REP_ORIENT_CATEGORY = "orient_category";
+	public static final String REP_CATEGORY = "orient_category";
 	public static final int REP_COL_ORIENT_CATEGORY = REP_COL_ID + 4;
 	
-	public static final String REP_PATH_CATEGORY = "path_category";
-	public static final int REP_COL_PATH_CATEGORY = REP_COL_ID + 5;
 	
 	public static final String[] REP_COL_NAMES = {REP_KEY_ID, REP_TIMESTAMP, 
-		REP_SET_ID, REP_SEQ_ID, REP_ORIENT_CATEGORY, REP_PATH_CATEGORY};
+		REP_SET_ID, REP_SEQ_ID, REP_CATEGORY};
 	
-	/** SQLite database creation statement. Auto-increments IDs of inserted jokes.
-	 * Joke IDs are rep after insertion into the database. */
+	/** SQLite database creation statement. Auto-increments IDs of inserted objects.
+	 *  IDs are rep after insertion into the database. */
 	public static final String DATABASE_CREATE = "create table " + DATABASE_TABLE_REP + " (" + 
 			REP_KEY_ID + " integer primary key autoincrement, " + 
 			REP_TIMESTAMP	+ " text not null, " + 
 			REP_SET_ID 	+ " integer REFERENCES "+LiftingSetTable.DATABASE_TABLE_SET+"("+LiftingSetTable.SET_KEY_ID+"), " +
 			REP_SEQ_ID	+ " integer not null, "+
-			REP_ORIENT_CATEGORY	+ " text not null, "+
-			REP_PATH_CATEGORY	+ " text not null, "+
+			REP_CATEGORY	+ " text not null, "+
 			");";
 	
 	/** SQLite database table removal statement. Only used if upgrading database. */

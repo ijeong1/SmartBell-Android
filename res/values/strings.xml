@@ -12,6 +12,7 @@
     <string name="start_workout_activity_tag">StartWorkoutActivityTag</string>
     <string name="select_exercise_tag">SelectExerciseTag</string>
     <string name="exercise_detail_tag">ExerciseDetailTag</string>
+    <string name="set_question_tag">SetQuestionTag</string>
     <string name="bar_path_tag">BarPathTag</string>
     <string name="bar_path">Bar Path</string>
     <string name="title_activity_bar_path">BarPathActivity</string>

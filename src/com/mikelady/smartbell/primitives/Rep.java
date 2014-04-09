@@ -6,12 +6,7 @@ public class Rep {
 
 	public static enum CategoryId{
 		GOOD(0),
-		LEFT_ROLL(1),
-		RIGHT_ROLL(2),
-		UP_PITCH(3),
-		DOWN_PITCH(4),
-		LEFT_YAW(5),
-		RIGHT_YAW(6),
+
 		;
 		private int id;
 		private CategoryId(int id){

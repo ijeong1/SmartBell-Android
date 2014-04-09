@@ -40,10 +40,17 @@ import android.widget.TextView;
 public class RecordSetFragment extends Fragment {
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "param1";
+	private static final String ARG_EXERCISE_NAME = "param1";
+	private static final String ARG_WORKOUT_ID = "workoutId";
+	private static final String ARG_WEIGHT = "weight";
+	private static final String ARG_REPS = "reps";
 
 	// TODO: Rename and change types of parameters
 	private String exerciseName;
+	private int workoutId;
+	private int weight;
+	private int reps;
+	
 	private TextView recordTextView;
 	private TextView repsTextView;
 	private Button endSetButton;
@@ -66,10 +73,13 @@ public class RecordSetFragment extends Fragment {
 	 * @return A new instance of fragment RecordSetFragment.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static RecordSetFragment newInstance(String param1) {
+	public static RecordSetFragment newInstance(String param1, int workoutId, int weight, int reps) {
 		RecordSetFragment fragment = new RecordSetFragment();
 		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
+		args.putString(ARG_EXERCISE_NAME, param1);
+		args.putInt(ARG_WORKOUT_ID, workoutId);
+		args.putInt(ARG_WEIGHT, weight);
+		args.putInt(ARG_REPS, reps);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -82,7 +92,10 @@ public class RecordSetFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			exerciseName = getArguments().getString(ARG_PARAM1);
+			exerciseName = getArguments().getString(ARG_EXERCISE_NAME);
+			workoutId = getArguments().getInt(ARG_WORKOUT_ID);
+			weight = getArguments().getInt(ARG_WEIGHT);
+			reps = getArguments().getInt(ARG_REPS);
 		}
 		repTimestamps = new ArrayList<Long>();
 		if(!Moment.TEST){
@@ -132,17 +145,22 @@ public class RecordSetFragment extends Fragment {
 			    	}
 					ArrayList<Moment> moments = sensorDataHandler.getMoments();
 					Log.d("RecordSetFragment", "num moments: "+moments.size());
-				
+					
+					// remove any noise from startup
+					moments.remove(0);
+					moments.remove(0);
+					moments.remove(0);
+					
 //					BarPathTracker barPathTracker = new BarPathTracker(moments);
 //					positions = barPathTracker.determinePosition();
 					
 					fragmentManager = getFragmentManager();
-					SetClassificationFragment setQuestionFragment = SetClassificationFragment.newInstance(exerciseName, moments, repTimestamps);
+					SetClassificationFragment setClassificationFragment = SetClassificationFragment.newInstance(exerciseName, workoutId, weight, reps, moments, repTimestamps);
 					
 	//				BarPathFragment barPathFragment = BarPathFragment.newInstance(moments);
 	//				
 					android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-					fragmentTransaction.replace(R.id.start_workout_activity_layout, setQuestionFragment);
+					fragmentTransaction.replace(R.id.start_workout_activity_layout, setClassificationFragment);
 	//				fragmentTransaction.replace(R.id.start_workout_activity_layout, barPathFragment); //setQuestionFragment
 					fragmentTransaction.addToBackStack(null);
 					fragmentTransaction.commit();
