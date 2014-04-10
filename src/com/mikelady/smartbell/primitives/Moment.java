@@ -3,6 +3,11 @@ package com.mikelady.smartbell.primitives;
 
 public class Moment {
 	public static final boolean TEST = false;
+	
+	public static final int X = 0;
+	public static final int Y = 1;
+	public static final int Z = 2;
+	
 	Long timestamp;
 	Float[] euler;
 	Float[] linAcc;
@@ -20,6 +25,14 @@ public class Moment {
 
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public Float[] getEuler() {
+		return euler;
+	}
+
+	public void setEuler(Float[] euler) {
+		this.euler = euler;
 	}
 
 	public Float[] getLinAcc() {

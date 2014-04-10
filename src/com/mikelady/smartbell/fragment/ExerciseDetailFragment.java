@@ -255,11 +255,14 @@ public class ExerciseDetailFragment extends Fragment implements android.support.
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
-		liftingSetCursorAdapter.swapCursor(arg1);
+		
 		Log.d("ExerciseDetailFragment","liftingSetListViewGroup "+liftingSetListViewGroup);
 		Log.d("ExerciseDetailFragment","liftingSetCursorAdapter "+liftingSetCursorAdapter);
+		if(liftingSetCursorAdapter != null)
+			liftingSetCursorAdapter.swapCursor(arg1);
 		
-		this.liftingSetListViewGroup.setAdapter(liftingSetCursorAdapter);
+		if(liftingSetListViewGroup != null)
+			this.liftingSetListViewGroup.setAdapter(liftingSetCursorAdapter);
 		
 	}
 

@@ -9,12 +9,16 @@ import com.mikelady.smartbell.activity.BarPathActivity;
 import com.mikelady.smartbell.activity.SelectWorkoutActivity;
 import com.mikelady.smartbell.activity.StartWorkoutActivity;
 import com.mikelady.smartbell.barpath.BarPathTracker;
+import com.mikelady.smartbell.db.provider.SmartBellContentProvider;
+import com.mikelady.smartbell.db.table.LiftingSetTable;
 import com.mikelady.smartbell.fragment.SelectExerciseFragment.OnFragmentInteractionListener;
+import com.mikelady.smartbell.primitives.LiftingSet;
 import com.mikelady.smartbell.primitives.Moment;
 import com.mikelady.smartbell.sensor.SensorDataHandler;
 import com.mikelady.smartbell.sensor.TSSBTSensor;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -50,12 +54,16 @@ public class RecordSetFragment extends Fragment {
 	private int workoutId;
 	private int weight;
 	private int reps;
+	private int m_setId;
 	
 	private TextView recordTextView;
 	private TextView repsTextView;
+	private Button startSetButton;
 	private Button endSetButton;
 	private Button nextRepButton;
 	private android.support.v4.app.FragmentManager fragmentManager;
+	
+	private boolean startClicked = false;
 	
 	private OnFragmentInteractionListener mListener;
 	private SensorDataHandler sensorDataHandler;
@@ -98,16 +106,7 @@ public class RecordSetFragment extends Fragment {
 			reps = getArguments().getInt(ARG_REPS);
 		}
 		repTimestamps = new ArrayList<Long>();
-		if(!Moment.TEST){
-			//1 is default
-			sensorDataHandler = new SensorDataHandler(1); // make new thread?
-			
-	   		//Start the sensor updating
-	        Message start_again_message = new Message();
-	    	start_again_message.what = 287;
-	    	sensorDataHandler.sendMessage(start_again_message);
-	        is_polling = true;
-        }
+		
 	}
 
 	@Override
@@ -126,12 +125,31 @@ public class RecordSetFragment extends Fragment {
 		recordTextView = (TextView)this.getView().findViewById(R.id.record_exercise_text);
 		recordTextView.setText(exerciseName);
 		repsTextView = (TextView)this.getView().findViewById(R.id.num_reps_text);
+		startSetButton = (Button)this.getView().findViewById(R.id.start_set_button);
 		endSetButton = (Button)this.getView().findViewById(R.id.end_set_button);
 		nextRepButton = (Button)this.getView().findViewById(R.id.next_rep_button);
 		setClickListeners();
 	}
 	
 	private void setClickListeners(){
+		
+		startSetButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(!Moment.TEST && !startClicked){
+					//1 is default
+					sensorDataHandler = new SensorDataHandler(1); // make new thread?
+					
+			   		//Start the sensor updating
+			        Message start_again_message = new Message();
+			    	start_again_message.what = 287;
+			    	sensorDataHandler.sendMessage(start_again_message);
+			        is_polling = true;
+			        startClicked = true;
+		        }
+			}
+		});
+		
 		endSetButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -147,11 +165,16 @@ public class RecordSetFragment extends Fragment {
 					Log.d("RecordSetFragment", "num moments: "+moments.size());
 					
 					// remove any noise from startup
-					moments.remove(0);
-					moments.remove(0);
-					moments.remove(0);
+					if(moments.size() > 3){
+						moments.remove(0);
+						moments.remove(0);
+						moments.remove(0);
+					}
+					repTimestamps.add(0, moments.get(0).getTimestamp());
+//					
+					addLiftingSet(exerciseName, workoutId, weight, reps, moments, repTimestamps);
 					
-//					BarPathTracker barPathTracker = new BarPathTracker(moments);
+					BarPathTracker barPathTracker = new BarPathTracker(moments);
 //					positions = barPathTracker.determinePosition();
 					
 					fragmentManager = getFragmentManager();
@@ -190,6 +213,31 @@ public class RecordSetFragment extends Fragment {
 //					fragmentManager.popBackStackImmediate();
 				}
 			}
+			
+			protected void addLiftingSet(String exerciseName, int workoutId, int weight, int reps, ArrayList<Moment> moments, ArrayList<Long> repTimestamps) {
+				Activity activity = getActivity();
+				Uri addRow = Uri.parse(SmartBellContentProvider.SET_CONTENT_URI+"/lifting_set/"+0);
+				ContentValues cv = new ContentValues();
+				int exerciseId = LiftingSet.ExerciseId.getId(exerciseName);
+				Log.d("SetClassificationFragment", "exerciseId: "+exerciseId);
+				cv.put(LiftingSetTable.SET_TIMESTAMP, moments.get(0).getTimestamp());
+				cv.put(LiftingSetTable.SET_EXERCISE_ID, exerciseId);
+				cv.put(LiftingSetTable.SET_WORKOUT_ID, workoutId);
+				cv.put(LiftingSetTable.SET_WEIGHT_LIFTED, weight);
+				cv.put(LiftingSetTable.SET_REPS, reps);
+				
+				Log.d("SetClassificationFragment", "activity: "+activity);
+				Log.d("SetClassificationFragment", "activity.getContentResolver(): "+activity.getContentResolver());
+				Log.d("SetClassificationFragment", "addRow: "+addRow);
+				Log.d("SetClassificationFragment", "cv: "+cv);
+				Uri insert = activity.getContentResolver().insert(addRow, cv);
+				Log.d("SetClassificationFragment", "insert: "+insert);
+				m_setId = Integer.valueOf(activity.getContentResolver().insert(addRow, cv).getLastPathSegment());
+				Log.d("SetClassificationFragment", "addSet: "+m_setId);
+//				athleteCursorAdapter.setOnAthleteChangeListener(null);
+//				fillData();
+			}
+			
 		});
 		
 		nextRepButton.setOnClickListener(new OnClickListener() {

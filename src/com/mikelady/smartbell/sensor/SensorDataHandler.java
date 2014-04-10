@@ -58,7 +58,7 @@ public class SensorDataHandler extends Handler {
 			linacc = TSSBTSensor.getInstance().getLinAcc();
 			unixTime = System.currentTimeMillis();
 			moments.add(new Moment(unixTime, euler, linacc));
-			Log.d("ML", "logging in memory");
+			Log.d("SensorDataHandler", "logging in memory");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
