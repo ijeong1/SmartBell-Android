@@ -48,14 +48,15 @@ public class MomentTable {
 	 * Joke IDs are set after insertion into the database. */
 	public static final String DATABASE_CREATE = "create table " + DATABASE_TABLE_MOMENT + " (" + 
 			MOMENT_KEY_ID + " integer primary key autoincrement, " + 
-			MOMENT_TIMESTAMP	+ " text not null, " + 
-			MOMENT_REP_ID 	+ "integer REFERENCES "+RepTable.DATABASE_TABLE_REP+"("+RepTable.REP_KEY_ID+")," +
+			MOMENT_TIMESTAMP + " text not null, " + 
+			MOMENT_REP_ID 	+ " integer REFERENCES "+RepTable.DATABASE_TABLE_REP+"("+RepTable.REP_KEY_ID+")," +
 			MOMENT_EULER_X	+ " float not null, " + 
 			MOMENT_EULER_Y	+ " float not null, " +
 			MOMENT_EULER_Z	+ " float not null, " + 
 			MOMENT_LINACC_X	+ " float not null, " + 
 			MOMENT_LINACC_Y	+ " float not null, " + 
-			MOMENT_LINACC_Z	+ " float not null);";
+			MOMENT_LINACC_Z	+ " float not null "+
+			");";
 	
 	/** SQLite database table removal statement. Only used if upgrading database. */
 	public static final String DATABASE_DROP = "drop table if exists " + DATABASE_TABLE_MOMENT;

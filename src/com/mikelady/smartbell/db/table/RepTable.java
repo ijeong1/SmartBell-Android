@@ -40,7 +40,7 @@ public class RepTable {
 			REP_TIMESTAMP	+ " text not null, " + 
 			REP_SET_ID 	+ " integer REFERENCES "+LiftingSetTable.DATABASE_TABLE_SET+"("+LiftingSetTable.SET_KEY_ID+"), " +
 			REP_SEQ_ID	+ " integer not null, "+
-			REP_CATEGORY	+ " text not null, "+
+			REP_CATEGORY	+ " text not null "+
 			");";
 	
 	/** SQLite database table removal statement. Only used if upgrading database. */

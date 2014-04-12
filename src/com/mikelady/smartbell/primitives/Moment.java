@@ -18,6 +18,15 @@ public class Moment {
 		this.euler = euler;
 		this.linAcc = linacc;
 	}
+	
+	public String toString(){
+		String s = "";
+		
+		s = "Moment "+timestamp+" euler[X] "+this.euler[X]+" euler[Y] "+this.euler[Y]+" euler[Z] "+this.euler[Z]+"\n";
+		s += " linAcc[X] "+this.linAcc[X]+" linAcc[Y] "+this.linAcc[Y]+" linacc[Z] "+this.linAcc[Z];
+		
+		return s;
+	}
 
 	public Long getTimestamp() {
 		return timestamp;

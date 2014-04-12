@@ -146,6 +146,7 @@ public class RecordSetFragment extends Fragment {
 			    	sensorDataHandler.sendMessage(start_again_message);
 			        is_polling = true;
 			        startClicked = true;
+			        startSetButton.setVisibility(View.GONE);
 		        }
 			}
 		});

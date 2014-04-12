@@ -56,7 +56,7 @@ public class SmartBellContentProvider extends ContentProvider {
 	private static final String ATHLETE_BASE_PATH = "athlete_table";
 	private static final String WORKOUT_BASE_PATH = "workout_table";
 	private static final String SET_BASE_PATH = "set_table";
-	private static final String REP_BASE_PATH = "set_table";
+	private static final String REP_BASE_PATH = "rep_table";
 	private static final String MOMENT_BASE_PATH = "moment_table";
 
 	/** This provider's content location. Used by accessing applications to
