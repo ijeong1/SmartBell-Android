@@ -61,11 +61,12 @@ public class SetClassificationFragment extends Fragment {
 	private int workoutId;
 	private static ArrayList<Moment> m_moments;
 	private static ArrayList<Long> m_repTimestamps;
-	private ArrayList<Integer> m_repId = new ArrayList<Integer>();
+	private ArrayList<Integer> m_momentId = new ArrayList<Integer>();
 //	private TextView setQuestionTextView;
 //	private EditText setQuestionEditText;
 
 	private TextView repCategoryText;
+	private CheckBox correctCheckBox;
 	private CheckBox chestDownCheckBox;
 	private CheckBox shouldersDownCheckBox;
 	private CheckBox elbowsDownCheckBox;
@@ -110,6 +111,7 @@ public class SetClassificationFragment extends Fragment {
 		Bundle args = new Bundle();
 		
 		args.putInt(ARG_CURRENT_REP, currentRep);
+		Log.d("SetClassificationFragment", "newInstance currentRep: "+currentRep);
 		args.putInt(ARG_SET_ID, setId);
 		args.putInt(ARG_REPS, reps);
 		
@@ -156,13 +158,7 @@ public class SetClassificationFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			exerciseName = getArguments().getString(ARG_EXERCISE_NAME);
-			reps = getArguments().getInt(ARG_REPS);
-			currentRep = getArguments().getInt(ARG_CURRENT_REP, 0);
-			workoutId = getArguments().getInt(ARG_WORKOUT_ID);
-			m_setId = getArguments().getInt(ARG_SET_ID, 0);
-		}
+
 	}
 
 	@Override
@@ -174,6 +170,15 @@ public class SetClassificationFragment extends Fragment {
 	@Override
 	public void onStart(){
 		super.onStart();
+		Log.d("SetClassificationFragment","onStart getArguments(): "+getArguments());
+		if (getArguments() != null) {
+			exerciseName = getArguments().getString(ARG_EXERCISE_NAME);
+			reps = getArguments().getInt(ARG_REPS);
+			currentRep = getArguments().getInt(ARG_CURRENT_REP, 0);
+			Log.d("SetClassificationFragment","onStart currentRep: "+currentRep);
+			workoutId = getArguments().getInt(ARG_WORKOUT_ID);
+			m_setId = getArguments().getInt(ARG_SET_ID, 0);
+		}
 		initLayout();
 	}
 	
@@ -182,11 +187,12 @@ public class SetClassificationFragment extends Fragment {
 //		setQuestionTextView.setText(exerciseName + " question");
 //		setQuestionEditText = (EditText)this.getView().findViewById(R.id.set_question_edittext);
 		repCategoryText = (TextView)this.getView().findViewById(R.id.rep_category_text);
-		Log.d("SetClassificationFragment", "currentRep: "+currentRep);
-		Log.d("SetClassificationFragment", "repCategoryText: "+repCategoryText);
-		Log.d("SetClassificationFragment", "repCategoryText.getText(): "+repCategoryText.getText());
+		Log.d("SetClassificationFragment", "initLayout currentRep: "+currentRep);
+		Log.d("SetClassificationFragment", "initLayout repCategoryText: "+repCategoryText);
+		Log.d("SetClassificationFragment", "initLayout repCategoryText.getText(): "+repCategoryText.getText());
 		repCategoryText.setText(repCategoryText.getText()+""+currentRep);
 		
+		correctCheckBox = (CheckBox)this.getView().findViewById(R.id.correct_check_box);
 		chestDownCheckBox = (CheckBox)this.getView().findViewById(R.id.chest_down_check_box);
 		shouldersDownCheckBox = (CheckBox)this.getView().findViewById(R.id.shoulders_down_check_box);
 		elbowsDownCheckBox = (CheckBox)this.getView().findViewById(R.id.elbows_down_check_box);
@@ -196,7 +202,7 @@ public class SetClassificationFragment extends Fragment {
 		laybackCheckBox = (CheckBox)this.getView().findViewById(R.id.layback_check_box);
 		wristsCheckBox = (CheckBox)this.getView().findViewById(R.id.wrists_back_check_box);
 		
-		CheckBox[] checks = {chestDownCheckBox, shouldersDownCheckBox, elbowsDownCheckBox, hipsCheckBox,
+		CheckBox[] checks = {correctCheckBox, chestDownCheckBox, shouldersDownCheckBox, elbowsDownCheckBox, hipsCheckBox,
 				barAwayCheckBox, underBarCheckBox, laybackCheckBox, wristsCheckBox};
 		checkBoxes = new ArrayList<CheckBox>(Arrays.asList(checks));
 		setClassificationContinueButton = (Button)this.getView().findViewById(R.id.continue_button);
@@ -214,11 +220,16 @@ public class SetClassificationFragment extends Fragment {
 					
 					String categoryString = buildCategoryString();
 					addRep(categoryString, m_setId, m_moments, m_repTimestamps); 
-					addMoments(m_repId.get(m_repId.size()-1), currentRep, m_moments, m_repTimestamps);
+					addMoments(m_momentId.get(m_momentId.size()-1), currentRep, m_moments, m_repTimestamps);
 					
-					SetClassificationFragment setClassificationFragment = SetClassificationFragment.newInstance(++currentRep, m_setId, reps, m_moments, m_repTimestamps);
+					String setClassificationTag = getResources().getString(R.string.set_classification_tag) + currentRep;
+					currentRep++;
+					Log.d("SetClassificationFragment","continueButton currentRep:"+currentRep);
+					SetClassificationFragment setClassificationFragment = SetClassificationFragment.newInstance(currentRep, m_setId, reps, m_moments, m_repTimestamps);
 					android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 					fragmentTransaction.replace(R.id.start_workout_activity_layout, setClassificationFragment);
+					fragmentTransaction.addToBackStack(setClassificationTag);
+					fragmentTransaction.commit();
 				}
 				else{
 					//go back to exercise detail fragment
@@ -250,8 +261,8 @@ public class SetClassificationFragment extends Fragment {
 				cv.put(RepTable.REP_SEQ_ID, currentRep);
 				cv.put(RepTable.REP_CATEGORY, categoryString);
 				
-				m_repId.add(Integer.valueOf(activity.getContentResolver().insert(addRow, cv).getLastPathSegment()));
-				Log.d("SetClassificationFragment", "addRep: "+m_repId.get(m_repId.size()-1));
+				m_momentId.add(Integer.valueOf(activity.getContentResolver().insert(addRow, cv).getLastPathSegment()));
+				Log.d("SetClassificationFragment", "addRep: "+m_momentId.get(m_momentId.size()-1));
 			
 			}
 			
@@ -274,8 +285,8 @@ public class SetClassificationFragment extends Fragment {
 						cv.put(MomentTable.MOMENT_LINACC_Y, m.getEuler()[Moment.Y]);
 						cv.put(MomentTable.MOMENT_LINACC_Z, m.getEuler()[Moment.Z]);
 						
-						m_repId.add(Integer.valueOf(activity.getContentResolver().insert(addRow, cv).getLastPathSegment()));
-						Log.d("SetClassificationFragment", "addRep1: "+m_repId.get(m_repId.size()-1));
+						m_momentId.add(Integer.valueOf(activity.getContentResolver().insert(addRow, cv).getLastPathSegment()));
+						Log.d("SetClassificationFragment", "addMoment1: "+m_momentId.get(m_momentId.size()-1));
 					}
 					else if(currentRep == repTimestamps.size() - 1 && m.getTimestamp() >= repTimestamps.get(currentRep) ){
 						Uri addRow = Uri.parse(SmartBellContentProvider.MOMENT_CONTENT_URI+"/moment/"+0);
@@ -290,8 +301,8 @@ public class SetClassificationFragment extends Fragment {
 						cv.put(MomentTable.MOMENT_LINACC_Y, m.getEuler()[Moment.Y]);
 						cv.put(MomentTable.MOMENT_LINACC_Z, m.getEuler()[Moment.Z]);
 						
-						m_repId.add(Integer.valueOf(activity.getContentResolver().insert(addRow, cv).getLastPathSegment()));
-						Log.d("SetClassificationFragment", "addRep2: "+m_repId.get(m_repId.size()-1));
+						m_momentId.add(Integer.valueOf(activity.getContentResolver().insert(addRow, cv).getLastPathSegment()));
+						Log.d("SetClassificationFragment", "addMoment2: "+m_momentId.get(m_momentId.size()-1));
 					}
 				}
 				

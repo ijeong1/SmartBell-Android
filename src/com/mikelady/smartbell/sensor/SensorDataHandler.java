@@ -52,7 +52,8 @@ public class SensorDataHandler extends Handler {
     public void handleMessage(Message msg) {
 //		if(csv == null)
 //			csv = new CSVWriter(SelectWorkoutActivity.ctx);
-		
+		Log.d("SensorDataHandler", "msg.what: "+msg.what);
+		Log.d("SensorDataHandler", "keep_going: "+keep_going);
 		try {
 			euler = TSSBTSensor.getInstance().getEulerAngles();
 			linacc = TSSBTSensor.getInstance().getLinAcc();
@@ -68,8 +69,14 @@ public class SensorDataHandler extends Handler {
 		if (msg.what == -1)
 		{
 			keep_going = false;
+			try {
+//				TSSBTSensor.getInstance().close();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		else if (msg.what == 287 && keep_going == false)
+		else if (msg.what == 287)
 		{
 			keep_going = true;
 			//Call yourself again in a bit

@@ -175,7 +175,7 @@ public class RecordSetFragment extends Fragment {
 //					
 					addLiftingSet(exerciseName, workoutId, weight, reps, moments, repTimestamps);
 					
-					BarPathTracker barPathTracker = new BarPathTracker(moments);
+//					BarPathTracker barPathTracker = new BarPathTracker(moments);
 //					positions = barPathTracker.determinePosition();
 					
 					fragmentManager = getFragmentManager();
@@ -185,8 +185,8 @@ public class RecordSetFragment extends Fragment {
 	//				
 					android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 					fragmentTransaction.replace(R.id.start_workout_activity_layout, setClassificationFragment);
-	//				fragmentTransaction.replace(R.id.start_workout_activity_layout, barPathFragment); //setQuestionFragment
-					fragmentTransaction.addToBackStack(null);
+	//				fragmentTransaction.replace(R.id.start_workout_activity_layout, barPathFragment);
+//					fragmentTransaction.addToBackStack(null);
 					fragmentTransaction.commit();
 					
 	//				String selectExerciseTag = getResources().getString(R.string.exercise_detail_tag);
@@ -234,7 +234,7 @@ public class RecordSetFragment extends Fragment {
 				Uri insert = activity.getContentResolver().insert(addRow, cv);
 				Log.d("SetClassificationFragment", "insert: "+insert);
 				m_setId = Integer.valueOf(activity.getContentResolver().insert(addRow, cv).getLastPathSegment());
-				Log.d("SetClassificationFragment", "addSet: "+m_setId);
+				Log.d("SetClassificationFragment", "addLiftingSet: "+m_setId);
 //				athleteCursorAdapter.setOnAthleteChangeListener(null);
 //				fillData();
 			}
@@ -245,7 +245,8 @@ public class RecordSetFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				repTimestamps.add(System.currentTimeMillis());
-				repsTextView.setText(""+repTimestamps.size());
+			
+				repsTextView.setText(""+repTimestamps.size()+" reps");
 			}
 		});
 		

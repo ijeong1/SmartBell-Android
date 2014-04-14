@@ -3,6 +3,8 @@ package com.mikelady.smartbell.db.view;
 import java.util.Date;
 
 import com.mikelady.smartbell.R;
+import com.mikelady.smartbell.activity.SelectAthleteActivity;
+import com.mikelady.smartbell.activity.SelectWorkoutActivity;
 import com.mikelady.smartbell.primitives.Workout;
 
 import android.content.Context;
@@ -96,6 +98,10 @@ public class WorkoutView extends LinearLayout {
 		Log.d("mlady", "m_onWorkoutChangeListener: "+m_onWorkoutChangeListener);
 		if(m_onWorkoutChangeListener != null)
 			m_onWorkoutChangeListener.onWorkoutChanged(this, m_workout);
+		else{
+			setOnWorkoutChangeListener((SelectWorkoutActivity)getContext());
+			m_onWorkoutChangeListener.onWorkoutChanged(this, m_workout);
+		}
 	}
 	
 	/**

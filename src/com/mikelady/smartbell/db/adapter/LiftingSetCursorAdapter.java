@@ -58,10 +58,12 @@ public class LiftingSetCursorAdapter extends android.support.v4.widget.CursorAda
 		
 		int liftingSetID = cursor.getInt(LiftingSetTable.SET_COL_ID);
 		long liftingSetTime = cursor.getLong(LiftingSetTable.SET_COL_TIMESTAMP);
-
+		int exerciseId = cursor.getInt(LiftingSetTable.SET_COL_EXERCISE_ID);
+		
 		LiftingSet retrievedLiftingSet = new LiftingSet();
 		retrievedLiftingSet.setId(liftingSetID);
 		retrievedLiftingSet.setTimestamp(liftingSetTime);
+		retrievedLiftingSet.setExercise(exerciseId);
 		
 		((LiftingSetView)view).setOnLiftingSetChangeListener(null);
 		((LiftingSetView)view).setLiftingSet(retrievedLiftingSet);

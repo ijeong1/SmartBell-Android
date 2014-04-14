@@ -12,6 +12,12 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <CheckBox
+        android:id="@+id/correct_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Correct" />
+    
+    <CheckBox
         android:id="@+id/chest_down_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

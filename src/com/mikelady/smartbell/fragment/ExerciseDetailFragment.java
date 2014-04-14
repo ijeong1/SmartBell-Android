@@ -10,6 +10,7 @@ import com.mikelady.smartbell.db.adapter.LiftingSetCursorAdapter;
 import com.mikelady.smartbell.db.adapter.LiftingSetCursorAdapter;
 import com.mikelady.smartbell.db.provider.SmartBellContentProvider;
 import com.mikelady.smartbell.db.table.LiftingSetTable;
+import com.mikelady.smartbell.db.table.WorkoutTable;
 import com.mikelady.smartbell.db.view.LiftingSetView.OnLiftingSetChangeListener;
 import com.mikelady.smartbell.db.view.LiftingSetView;
 import com.mikelady.smartbell.db.view.LiftingSetView.OnLiftingSetChangeListener;
@@ -214,23 +215,6 @@ public class ExerciseDetailFragment extends Fragment implements android.support.
 		mListener = null;
 	}
 	
-	protected void addLiftingSet(LiftingSet liftingSet){
-		Uri addRow = Uri.parse(SmartBellContentProvider.SET_CONTENT_URI+"/liftingSet/"+liftingSet.getId());
-		ContentValues cv = new ContentValues();
-//		cv.put(LiftingSetTable.SET_KEY_ID, liftingSet.getId());
-		cv.put(LiftingSetTable.SET_TIMESTAMP, liftingSet.getTimestamp());
-		cv.put(LiftingSetTable.SET_EXERCISE_ID, 0);
-		cv.put(LiftingSetTable.SET_WEIGHT_LIFTED, 0);
-		cv.put(LiftingSetTable.SET_REPS, 0);
-		cv.put(LiftingSetTable.SET_WORKOUT_ID, 0);
-		
-
-		liftingSet.setId(Integer.valueOf(getActivity().getContentResolver().insert(addRow, cv).getLastPathSegment()));
-		Log.d("mlady", "liftingSet: "+liftingSet);
-		liftingSetCursorAdapter.setOnLiftingSetChangeListener(null);
-		fillData();
-	}
-	
 	protected void fillData(){
 		getActivity().getSupportLoaderManager().restartLoader(0, null, this);
 		this.liftingSetListViewGroup.setAdapter(liftingSetCursorAdapter);
@@ -248,7 +232,7 @@ public class ExerciseDetailFragment extends Fragment implements android.support.
 
 		Uri m_uri = Uri.parse(SmartBellContentProvider.SET_CONTENT_URI + "/lifting_set/");
 		
-		CursorLoader cl = new CursorLoader(getActivity().getBaseContext(), m_uri, proj, null, null, null);
+		CursorLoader cl = new CursorLoader(getActivity().getBaseContext(), m_uri, proj, null, null, null); //""+LiftingSetTable.SET_COL_WORKOUT_ID+"="+workoutId
 		
 		return cl;
 	}

@@ -1,8 +1,10 @@
 package com.mikelady.smartbell.db.view;
 
 import com.mikelady.smartbell.R;
+import com.mikelady.smartbell.activity.SelectAthleteActivity;
 import com.mikelady.smartbell.primitives.Athlete;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -95,6 +97,10 @@ public class AthleteView extends LinearLayout {
 		Log.d("AthleteView", "notifyOnAthleteChangeListener m_athlete: "+m_athlete+" m_onAthleteChangeListener: "+m_onAthleteChangeListener);
 		if(m_onAthleteChangeListener != null)
 			m_onAthleteChangeListener.onAthleteChanged(this, m_athlete);
+		else{
+			setOnAthleteChangeListener((SelectAthleteActivity)getContext());
+			m_onAthleteChangeListener.onAthleteChanged(this, m_athlete);
+		}
 	}
 	
 	/**
