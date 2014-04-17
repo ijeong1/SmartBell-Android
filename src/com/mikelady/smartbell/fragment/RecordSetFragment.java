@@ -47,13 +47,13 @@ public class RecordSetFragment extends Fragment {
 	private static final String ARG_EXERCISE_NAME = "param1";
 	private static final String ARG_WORKOUT_ID = "workoutId";
 	private static final String ARG_WEIGHT = "weight";
-	private static final String ARG_REPS = "reps";
+	private static final String ARG_REPS = "targetedReps";
 
 	// TODO: Rename and change types of parameters
 	private String exerciseName;
 	private int workoutId;
 	private int weight;
-	private int reps;
+	private int targetedReps;
 	private int m_setId;
 	
 	private TextView recordTextView;
@@ -103,7 +103,12 @@ public class RecordSetFragment extends Fragment {
 			exerciseName = getArguments().getString(ARG_EXERCISE_NAME);
 			workoutId = getArguments().getInt(ARG_WORKOUT_ID);
 			weight = getArguments().getInt(ARG_WEIGHT);
-			reps = getArguments().getInt(ARG_REPS);
+			targetedReps = getArguments().getInt(ARG_REPS);
+			
+			Log.d("RecordSetFragment", "onCreate exerciseName: "+exerciseName);
+			Log.d("RecordSetFragment", "onCreate workoutId: "+workoutId);
+			Log.d("RecordSetFragment", "onCreate weight: "+weight);
+			Log.d("RecordSetFragment", "onCreate targetedReps: "+targetedReps);
 		}
 		repTimestamps = new ArrayList<Long>();
 		
@@ -171,20 +176,35 @@ public class RecordSetFragment extends Fragment {
 						moments.remove(0);
 						moments.remove(0);
 					}
+
+					Log.d("RecordSetFragment", "addLiftingSet exerciseName: "+exerciseName);
+					Log.d("RecordSetFragment", "addLiftingSet workoutId: "+workoutId);
+					Log.d("RecordSetFragment", "addLiftingSet weight: "+weight);
+					Log.d("RecordSetFragment", "addLiftingSet targetedReps: "+targetedReps);
+					Log.d("RecordSetFragment", "addLiftingSet moments: "+moments);
+					for(Moment m : moments){
+						Log.d("RecordSetFragment", "addLiftingSet moment: "+m);
+					}
+					m_setId = addLiftingSet(exerciseName, workoutId, weight, targetedReps, moments, repTimestamps);
+					
 					repTimestamps.add(0, moments.get(0).getTimestamp());
-//					
-					addLiftingSet(exerciseName, workoutId, weight, reps, moments, repTimestamps);
+					
+					Log.d("RecordSetFragment","repTimestamps: "+repTimestamps);
+					Log.d("RecordSetFragment","repTimestamps.size(): "+repTimestamps.size());
+					for(Long timestamp: repTimestamps){
+						Log.d("RecordSetFragment", "repTimestamp: "+timestamp);
+					}
 					
 //					BarPathTracker barPathTracker = new BarPathTracker(moments);
 //					positions = barPathTracker.determinePosition();
 					
 					fragmentManager = getFragmentManager();
-					SetClassificationFragment setClassificationFragment = SetClassificationFragment.newInstance(exerciseName, workoutId, weight, reps, moments, repTimestamps);
+					RepClassificationFragment repClassificationFragment = RepClassificationFragment.newInstance(0, m_setId, repTimestamps.size()-1, moments, repTimestamps);
 					
 	//				BarPathFragment barPathFragment = BarPathFragment.newInstance(moments);
 	//				
 					android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-					fragmentTransaction.replace(R.id.start_workout_activity_layout, setClassificationFragment);
+					fragmentTransaction.replace(R.id.start_workout_activity_layout, repClassificationFragment);
 	//				fragmentTransaction.replace(R.id.start_workout_activity_layout, barPathFragment);
 //					fragmentTransaction.addToBackStack(null);
 					fragmentTransaction.commit();
@@ -215,28 +235,30 @@ public class RecordSetFragment extends Fragment {
 				}
 			}
 			
-			protected void addLiftingSet(String exerciseName, int workoutId, int weight, int reps, ArrayList<Moment> moments, ArrayList<Long> repTimestamps) {
+			protected int addLiftingSet(String exerciseName, int workoutId, int weight, int reps, ArrayList<Moment> moments, ArrayList<Long> repTimestamps) {
 				Activity activity = getActivity();
 				Uri addRow = Uri.parse(SmartBellContentProvider.SET_CONTENT_URI+"/lifting_set/"+0);
 				ContentValues cv = new ContentValues();
 				int exerciseId = LiftingSet.ExerciseId.getId(exerciseName);
-				Log.d("SetClassificationFragment", "exerciseId: "+exerciseId);
+				Log.d("RepClassificationFragment", "exerciseId: "+exerciseId);
 				cv.put(LiftingSetTable.SET_TIMESTAMP, moments.get(0).getTimestamp());
 				cv.put(LiftingSetTable.SET_EXERCISE_ID, exerciseId);
 				cv.put(LiftingSetTable.SET_WORKOUT_ID, workoutId);
 				cv.put(LiftingSetTable.SET_WEIGHT_LIFTED, weight);
-				cv.put(LiftingSetTable.SET_REPS, reps);
+				cv.put(LiftingSetTable.SET_TARGETED_REPS, reps);
+				cv.put(LiftingSetTable.SET_ACTUAL_REPS, repTimestamps.size());
 				
-				Log.d("SetClassificationFragment", "activity: "+activity);
-				Log.d("SetClassificationFragment", "activity.getContentResolver(): "+activity.getContentResolver());
-				Log.d("SetClassificationFragment", "addRow: "+addRow);
-				Log.d("SetClassificationFragment", "cv: "+cv);
+				Log.d("RepClassificationFragment", "activity: "+activity);
+				Log.d("RepClassificationFragment", "activity.getContentResolver(): "+activity.getContentResolver());
+				Log.d("RepClassificationFragment", "addRow: "+addRow);
+				Log.d("RepClassificationFragment", "cv: "+cv);
 				Uri insert = activity.getContentResolver().insert(addRow, cv);
-				Log.d("SetClassificationFragment", "insert: "+insert);
-				m_setId = Integer.valueOf(activity.getContentResolver().insert(addRow, cv).getLastPathSegment());
-				Log.d("SetClassificationFragment", "addLiftingSet: "+m_setId);
+				Log.d("RepClassificationFragment", "insert: "+insert);
+				int setId = Integer.valueOf(activity.getContentResolver().insert(addRow, cv).getLastPathSegment());
+				Log.d("RepClassificationFragment", "addLiftingSet: "+setId);
 //				athleteCursorAdapter.setOnAthleteChangeListener(null);
 //				fillData();
+				return setId;
 			}
 			
 		});

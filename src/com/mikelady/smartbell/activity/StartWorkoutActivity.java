@@ -7,6 +7,7 @@ import com.mikelady.smartbell.R.menu;
 import com.mikelady.smartbell.R.string;
 import com.mikelady.smartbell.fragment.SelectExerciseFragment;
 import com.mikelady.smartbell.fragment.SelectExerciseFragment.OnFragmentInteractionListener;
+import com.parse.Parse;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,7 @@ public class StartWorkoutActivity extends FragmentActivity
 		super.onCreate(savedInstanceState);
 		ctx = this;
 		initLayout();
+		Parse.initialize(this, "6YKFkBFeURXqEB3cK9YvPLzRDiMHYvqGsHZy5YMt", "YukuM4BgD5YT1jsV9npeU7iLnUjolmvmNz1bNONX");
 	}
 
 	@Override

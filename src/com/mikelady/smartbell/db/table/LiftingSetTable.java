@@ -29,11 +29,14 @@ public class LiftingSetTable {
 	public static final String SET_WEIGHT_LIFTED = "weight_lifted";
 	public static final int SET_COL_WEIGHT_LIFTED = SET_COL_ID + 4;
 	
-	public static final String SET_REPS = "reps";
-	public static final int SET_COL_REPS = SET_COL_ID + 5;
+	public static final String SET_TARGETED_REPS = "targeted_reps";
+	public static final int SET_COL_TARGETED_REPS = SET_COL_ID + 5;
+	
+	public static final String SET_ACTUAL_REPS = "actual_reps";
+	public static final int SET_COL_ACTUAL_REPS = SET_COL_ID + 6;
 	
 	public static final String[] SET_COL_NAMES = {SET_KEY_ID, SET_TIMESTAMP, 
-		SET_EXERCISE_ID, SET_WORKOUT_ID, SET_WEIGHT_LIFTED, SET_REPS};
+		SET_EXERCISE_ID, SET_WORKOUT_ID, SET_WEIGHT_LIFTED, SET_TARGETED_REPS, SET_ACTUAL_REPS};
 	
 	/** SQLite database creation statement. Auto-increments IDs of inserted jokes.
 	 * Joke IDs are set after insertion into the database. */
@@ -43,7 +46,8 @@ public class LiftingSetTable {
 			SET_EXERCISE_ID	+ " integer not null, " + 
 			SET_WORKOUT_ID 	+ " integer REFERENCES "+WorkoutTable.DATABASE_TABLE_WORKOUT+"("+WorkoutTable.WORKOUT_KEY_ID+"), " +
 			SET_WEIGHT_LIFTED + " integer not null," + 
-			SET_REPS + " integer not null "+");";
+			SET_TARGETED_REPS + " integer not null " +
+			SET_ACTUAL_REPS + " integer not null " + ");";
 	
 	/** SQLite database table removal statement. Only used if upgrading database. */
 	public static final String DATABASE_DROP = "drop table if exists " + DATABASE_TABLE_SET;

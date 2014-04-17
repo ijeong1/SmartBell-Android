@@ -3,6 +3,7 @@ package com.mikelady.smartbell.activity;
 import com.mikelady.smartbell.R;
 import com.mikelady.smartbell.R.layout;
 import com.mikelady.smartbell.R.menu;
+import com.parse.Parse;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -14,6 +15,7 @@ public class SetAthleteDetailsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_set_athlete_details);
+		Parse.initialize(this, "6YKFkBFeURXqEB3cK9YvPLzRDiMHYvqGsHZy5YMt", "YukuM4BgD5YT1jsV9npeU7iLnUjolmvmNz1bNONX");
 	}
 
 	@Override

@@ -9,7 +9,7 @@ public class LiftingSet {
 	public static enum ExerciseId{
 		PRESS(0),
 		BENCH(1),
-		BACK_SQUAT(2);
+		SQUAT(2);
 		private int id;
 		private ExerciseId(int id){
 			this.id = id;
@@ -32,7 +32,7 @@ public class LiftingSet {
 	int num_reps;
 	
 	public LiftingSet() {
-		exercise = ExerciseId.BACK_SQUAT.getId();
+		exercise = ExerciseId.SQUAT.getId();
 //		moments = new ArrayList<Moment>();
 		reps = new ArrayList<Rep>();
 		weightLifted = 135;

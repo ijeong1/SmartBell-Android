@@ -225,7 +225,8 @@ public class ExerciseDetailFragment extends Fragment implements android.support.
 		String[] proj = new String[LiftingSetTable.SET_COL_NAMES.length];
 		proj[LiftingSetTable.SET_COL_ID] = LiftingSetTable.SET_KEY_ID;
 		proj[LiftingSetTable.SET_COL_EXERCISE_ID] = LiftingSetTable.SET_EXERCISE_ID;
-		proj[LiftingSetTable.SET_COL_REPS] = LiftingSetTable.SET_REPS;
+		proj[LiftingSetTable.SET_COL_TARGETED_REPS] = LiftingSetTable.SET_TARGETED_REPS;
+		proj[LiftingSetTable.SET_COL_ACTUAL_REPS] = LiftingSetTable.SET_ACTUAL_REPS;
 		proj[LiftingSetTable.SET_COL_TIMESTAMP] = LiftingSetTable.SET_TIMESTAMP;
 		proj[LiftingSetTable.SET_COL_WEIGHT_LIFTED] = LiftingSetTable.SET_WEIGHT_LIFTED;
 		proj[LiftingSetTable.SET_COL_WORKOUT_ID] = LiftingSetTable.SET_WORKOUT_ID;

@@ -11,6 +11,7 @@ import com.mikelady.smartbell.db.view.WorkoutView.OnWorkoutChangeListener;
 
 import com.mikelady.smartbell.primitives.Workout;
 import com.mikelady.smartbell.primitives.Workout;
+import com.parse.Parse;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -53,6 +54,7 @@ public class SelectWorkoutActivity extends FragmentActivity implements android.s
 		workoutCursorAdapter = new WorkoutCursorAdapter(this, null, 0);
 		getSupportLoaderManager().initLoader(LOADER_ID, null, this);
 		initLayout();
+		Parse.initialize(this, "6YKFkBFeURXqEB3cK9YvPLzRDiMHYvqGsHZy5YMt", "YukuM4BgD5YT1jsV9npeU7iLnUjolmvmNz1bNONX");
 	}
 
 	@Override
