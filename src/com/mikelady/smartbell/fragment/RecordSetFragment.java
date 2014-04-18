@@ -19,6 +19,7 @@ import com.mikelady.smartbell.sensor.TSSBTSensor;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -143,7 +144,7 @@ public class RecordSetFragment extends Fragment {
 			public void onClick(View v) {
 				if(!Moment.TEST && !startClicked){
 					//1 is default
-					sensorDataHandler = new SensorDataHandler(1); // make new thread?
+					sensorDataHandler = new SensorDataHandler(1, getActivity()); // make new thread?
 					
 			   		//Start the sensor updating
 			        Message start_again_message = new Message();
@@ -152,6 +153,11 @@ public class RecordSetFragment extends Fragment {
 			        is_polling = true;
 			        startClicked = true;
 			        startSetButton.setVisibility(View.GONE);
+			        repsTextView.setVisibility(View.VISIBLE);
+			        endSetButton.setVisibility(View.VISIBLE);
+			        nextRepButton.setVisibility(View.VISIBLE);
+			        
+			        
 		        }
 			}
 		});

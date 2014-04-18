@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import com.mikelady.smartbell.activity.SelectWorkoutActivity;
 import com.mikelady.smartbell.primitives.Moment;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 // code from yei technologies demo project
 public class SensorDataHandler extends Handler {
@@ -20,10 +22,11 @@ public class SensorDataHandler extends Handler {
 	Float[] euler;
 	Float[] linacc;
 	long unixTime;
+	Context context;
 	
-	public SensorDataHandler(int mode){
+	public SensorDataHandler(int mode, Context context){
 		super();
-		
+		this.context = context;
 		try {
 			TSSBTSensor.getInstance().setTareCurrentOrient();
 			TSSBTSensor.getInstance().setFilterMode(mode);
@@ -40,7 +43,7 @@ public class SensorDataHandler extends Handler {
 			}
 			Log.d("ml", "end timestamp: "+unixTime);*/
 			
-
+			Toast.makeText(context, "Acquired Bluetooth Sensor", Toast.LENGTH_SHORT).show();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,6 +63,7 @@ public class SensorDataHandler extends Handler {
 			unixTime = System.currentTimeMillis();
 			moments.add(new Moment(unixTime, euler, linacc));
 			Log.d("SensorDataHandler", ""+moments.get(moments.size()-1).toString());
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

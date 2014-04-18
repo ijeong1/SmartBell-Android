@@ -372,7 +372,7 @@ public class TSSBTSensor{
     	a 4 places the sensor into Quaternion Gradient Descent Filter Mode.
     	*/
     	call_lock.lock();
-    	byte[] send_data =new byte[]{(byte)0x7b, (byte)mode};
+    	byte[] send_data = new byte[]{(byte)0x7b, (byte)mode};
     	write(send_data);
     	call_lock.unlock();
     }
