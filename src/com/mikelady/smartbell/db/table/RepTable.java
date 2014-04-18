@@ -26,8 +26,8 @@ public class RepTable {
 	public static final String REP_SEQ_ID = "seq_id";
 	public static final int REP_COL_SEQ_ID = REP_COL_ID + 3;
 	
-	public static final String REP_CATEGORY = "orient_category";
-	public static final int REP_COL_ORIENT_CATEGORY = REP_COL_ID + 4;
+	public static final String REP_CATEGORY = "category";
+	public static final int REP_COL_CATEGORY = REP_COL_ID + 4;
 	
 	
 	public static final String[] REP_COL_NAMES = {REP_KEY_ID, REP_TIMESTAMP, 

@@ -168,7 +168,7 @@ public class RepClassificationFragment extends Fragment {
 		Log.d("RepClassificationFragment", "initLayout currentRep: "+currentRep);
 		Log.d("RepClassificationFragment", "initLayout repCategoryText: "+repCategoryText);
 		Log.d("RepClassificationFragment", "initLayout repCategoryText.getText(): "+repCategoryText.getText());
-		repCategoryText.setText(repCategoryText.getText()+""+currentRep);
+		repCategoryText.setText(repCategoryText.getText()+""+(currentRep+1));
 		
 		correctCheckBox = (CheckBox)this.getView().findViewById(R.id.correct_check_box);
 		
@@ -197,50 +197,54 @@ public class RepClassificationFragment extends Fragment {
 			public void onClick(View v) {
 				fragmentManager = getFragmentManager();
 				
-				if(currentRep < actualReps){
-					
+			
 					String categoryString = buildCategoryString();
 					Log.d("RepClassificationFragment", "addRep categoryString: "+categoryString);
 					Log.d("RepClassificationFragment", "addRep m_setId: "+m_setId);
-
-					m_repIds.add(addRep(categoryString, m_setId, m_moments, m_repTimestamps)); 
+					
+					int repId = addRep(categoryString, m_setId, m_moments, m_repTimestamps);
+					m_repIds.add(repId); 
 					
 					addMoments(m_repIds.get(m_repIds.size()-1), currentRep, m_moments, m_repTimestamps);
 					
 					String setClassificationTag = getResources().getString(R.string.set_classification_tag) + currentRep;
 					currentRep++;
 					Log.d("RepClassificationFragment","continueButton currentRep:"+currentRep);
-					RepClassificationFragment repClassificationFragment = RepClassificationFragment.newInstance(currentRep, m_setId, actualReps, m_moments, m_repTimestamps);
-					android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-					fragmentTransaction.replace(R.id.start_workout_activity_layout, repClassificationFragment);
-					fragmentTransaction.addToBackStack(setClassificationTag);
-					fragmentTransaction.commit();
-				}
-				else{
-					//go back to exercise detail fragment
-					String exerciseDetailTag = getResources().getString(R.string.exercise_detail_tag);
-					fragmentManager.popBackStackImmediate(exerciseDetailTag, 1);
 					
-					Log.d("RepClassificationFragment", "getActivity(): "+getActivity());
-					Log.d("RepClassificationFragment", "activity: "+activity);
-					Log.d("RepClassificationFragment", "activity.getFilesDir(): "+activity.getFilesDir());
-					Log.d("RepClassificationFragment", "activity.getFilesDir().getPath(): "+activity.getFilesDir().getPath());
-					Log.d("RepClassificationFragment", "db path: "+activity.getFilesDir().getPath()+"/"+SmartBellDatabaseHelper.DATABASE_NAME);
-					File databaseFile = activity.getDatabasePath(SmartBellDatabaseHelper.DATABASE_NAME);
-					byte[] databaseBytes = null;
-					try {
-						databaseBytes = org.apache.commons.io.FileUtils.readFileToByteArray(databaseFile);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					if(currentRep < actualReps){
+						RepClassificationFragment repClassificationFragment = RepClassificationFragment.newInstance(currentRep, m_setId, actualReps, m_moments, m_repTimestamps);
+						android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+						fragmentTransaction.replace(R.id.start_workout_activity_layout, repClassificationFragment);
+						fragmentTransaction.addToBackStack(setClassificationTag);
+						fragmentTransaction.commit();
 					}
-					Log.d("RepClassificationFragment","databaseBytes: "+databaseBytes);
-					ParseFile databaseParseFile = new ParseFile("database.sqlite",databaseBytes);
-					ParseObject databaseObject = new ParseObject("database");
-					databaseObject.put("database", databaseParseFile);
-					databaseObject.saveInBackground();
-					Log.d("RepClassificationFragment","saved database to parse");
-				}
+					else{
+						//go back to exercise detail fragment
+						String exerciseDetailTag = getResources().getString(R.string.exercise_detail_tag);
+						fragmentManager.popBackStackImmediate(exerciseDetailTag, 1);
+						
+						Log.d("RepClassificationFragment", "getActivity(): "+getActivity());
+						Log.d("RepClassificationFragment", "activity: "+activity);
+						Log.d("RepClassificationFragment", "activity.getFilesDir(): "+activity.getFilesDir());
+						Log.d("RepClassificationFragment", "activity.getFilesDir().getPath(): "+activity.getFilesDir().getPath());
+						Log.d("RepClassificationFragment", "db path: "+activity.getFilesDir().getPath()+"/"+SmartBellDatabaseHelper.DATABASE_NAME);
+						File databaseFile = activity.getDatabasePath(SmartBellDatabaseHelper.DATABASE_NAME);
+						byte[] databaseBytes = null;
+						try {
+							databaseBytes = org.apache.commons.io.FileUtils.readFileToByteArray(databaseFile);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						Log.d("RepClassificationFragment","databaseBytes: "+databaseBytes);
+						ParseFile databaseParseFile = new ParseFile("database.sqlite",databaseBytes);
+						ParseObject databaseObject = new ParseObject("database");
+						databaseObject.put("database", databaseParseFile);
+						databaseObject.saveInBackground();
+						Log.d("RepClassificationFragment","saved database to parse");
+					}
+					
+				
 				
 				
 				//logic for figuring out what question is next, or to close out set
@@ -261,13 +265,12 @@ public class RepClassificationFragment extends Fragment {
 				Uri addRow = Uri.parse(SmartBellContentProvider.REP_CONTENT_URI+"/rep/"+0);
 				ContentValues cv = new ContentValues();
 
-				cv.put(RepTable.REP_TIMESTAMP, moments.get(0).getTimestamp());
+				cv.put(RepTable.REP_TIMESTAMP, repTimestamps.get(currentRep));
 				cv.put(RepTable.REP_SET_ID, setId);
 				cv.put(RepTable.REP_SEQ_ID, currentRep);
 				cv.put(RepTable.REP_CATEGORY, categoryString);
 				int repId = Integer.valueOf(activity.getContentResolver().insert(addRow, cv).getLastPathSegment());
-				Log.d("RepClassificationFragment", "addedRep id: "+m_repIds.get(m_repIds.size()-1));
-				Log.d("RepClassificationFragment", "addRep: "+m_repIds.get(m_repIds.size()-1));
+				Log.d("RepClassificationFragment", "added repId: "+repId);
 				return repId;
 			}
 			

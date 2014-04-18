@@ -131,6 +131,7 @@ public class ExerciseDetailFragment extends Fragment implements android.support.
 		liftingSetCursorAdapter.setOnLiftingSetChangeListener(this);
 		liftingSetListViewGroup.setAdapter(liftingSetCursorAdapter);
 		setClickListeners();
+		fillData();
 	}
 	
 	private void setClickListeners(){
@@ -153,11 +154,10 @@ public class ExerciseDetailFragment extends Fragment implements android.support.
 			@Override
 			public void onClick(View v) {
 				fragmentManager = getFragmentManager();
-//				RecordSetFragment recordSetFragment = RecordSetFragment.newInstance(exerciseName);
 				SetQuestionFragment setQuestionFragment = SetQuestionFragment.newInstance(exerciseName, workoutId);
 				
 				android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-				fragmentTransaction.replace(R.id.start_workout_activity_layout, setQuestionFragment); //recordSetFragment
+				fragmentTransaction.replace(R.id.start_workout_activity_layout, setQuestionFragment);
 				String exerciseDetailTag = getResources().getString(R.string.exercise_detail_tag);
 				fragmentTransaction.addToBackStack(exerciseDetailTag);
 				fragmentTransaction.commit();
@@ -169,7 +169,6 @@ public class ExerciseDetailFragment extends Fragment implements android.support.
 			public void onClick(View v) {
 				fragmentManager = getFragmentManager();
 				
-				//save set data to database
 				String selectExerciseTag = getResources().getString(R.string.select_exercise_tag);
 				fragmentManager.popBackStackImmediate(selectExerciseTag, 1);
 				
@@ -232,9 +231,12 @@ public class ExerciseDetailFragment extends Fragment implements android.support.
 		proj[LiftingSetTable.SET_COL_WORKOUT_ID] = LiftingSetTable.SET_WORKOUT_ID;
 
 		Uri m_uri = Uri.parse(SmartBellContentProvider.SET_CONTENT_URI + "/lifting_set/");
-		
-		CursorLoader cl = new CursorLoader(getActivity().getBaseContext(), m_uri, proj, null, null, null); //""+LiftingSetTable.SET_COL_WORKOUT_ID+"="+workoutId
-		
+		int exerciseId = LiftingSet.ExerciseId.getId(exerciseName);
+		Log.d("ExerciseDetailFragment","exerciseName: "+exerciseName);
+		Log.d("ExerciseDetailFragment","exerciseId: "+exerciseId);
+		CursorLoader cl = new CursorLoader(getActivity().getBaseContext(), m_uri, proj, ""+LiftingSetTable.SET_WORKOUT_ID+"="+workoutId+
+				" AND "+LiftingSetTable.SET_EXERCISE_ID+"="+exerciseId, null, null);
+
 		return cl;
 	}
 

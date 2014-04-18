@@ -252,12 +252,10 @@ public class RecordSetFragment extends Fragment {
 				Log.d("RepClassificationFragment", "activity.getContentResolver(): "+activity.getContentResolver());
 				Log.d("RepClassificationFragment", "addRow: "+addRow);
 				Log.d("RepClassificationFragment", "cv: "+cv);
-				Uri insert = activity.getContentResolver().insert(addRow, cv);
-				Log.d("RepClassificationFragment", "insert: "+insert);
+
 				int setId = Integer.valueOf(activity.getContentResolver().insert(addRow, cv).getLastPathSegment());
 				Log.d("RepClassificationFragment", "addLiftingSet: "+setId);
-//				athleteCursorAdapter.setOnAthleteChangeListener(null);
-//				fillData();
+
 				return setId;
 			}
 			

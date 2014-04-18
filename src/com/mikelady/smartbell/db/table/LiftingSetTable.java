@@ -46,7 +46,7 @@ public class LiftingSetTable {
 			SET_EXERCISE_ID	+ " integer not null, " + 
 			SET_WORKOUT_ID 	+ " integer REFERENCES "+WorkoutTable.DATABASE_TABLE_WORKOUT+"("+WorkoutTable.WORKOUT_KEY_ID+"), " +
 			SET_WEIGHT_LIFTED + " integer not null," + 
-			SET_TARGETED_REPS + " integer not null " +
+			SET_TARGETED_REPS + " integer not null, " +
 			SET_ACTUAL_REPS + " integer not null " + ");";
 	
 	/** SQLite database table removal statement. Only used if upgrading database. */
