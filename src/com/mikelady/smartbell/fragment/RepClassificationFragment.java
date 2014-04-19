@@ -294,9 +294,9 @@ public class RepClassificationFragment extends Fragment {
 						cv.put(MomentTable.MOMENT_EULER_Y, m.getEuler()[Moment.Y]);
 						cv.put(MomentTable.MOMENT_EULER_Z, m.getEuler()[Moment.Z]);
 						
-						cv.put(MomentTable.MOMENT_LINACC_X, m.getEuler()[Moment.X]);
-						cv.put(MomentTable.MOMENT_LINACC_Y, m.getEuler()[Moment.Y]);
-						cv.put(MomentTable.MOMENT_LINACC_Z, m.getEuler()[Moment.Z]);
+						cv.put(MomentTable.MOMENT_LINACC_X, m.getLinAcc()[Moment.X]);
+						cv.put(MomentTable.MOMENT_LINACC_Y, m.getLinAcc()[Moment.Y]);
+						cv.put(MomentTable.MOMENT_LINACC_Z, m.getLinAcc()[Moment.Z]);
 						
 						m_repIds.add(Integer.valueOf(activity.getContentResolver().insert(addRow, cv).getLastPathSegment()));
 						Log.d("RepClassificationFragment", "addMoment1: "+m_repIds.get(m_repIds.size()-1));
