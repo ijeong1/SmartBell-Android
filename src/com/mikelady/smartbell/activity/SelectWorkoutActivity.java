@@ -38,7 +38,7 @@ public class SelectWorkoutActivity extends FragmentActivity implements android.s
 	
 	protected Button newWorkoutButton;
 	protected ListView workoutListViewGroup;
-	protected Button userDetailsButton;
+//	protected Button userDetailsButton;
 	int athleteId;
 	
 	protected Cursor workoutCursor;
@@ -72,7 +72,7 @@ public class SelectWorkoutActivity extends FragmentActivity implements android.s
 		workoutCursorAdapter.setOnWorkoutChangeListener(this);
 		
 		workoutListViewGroup = (ListView)this.findViewById(R.id.view_previous_workouts_view_group);
-		userDetailsButton = (Button)this.findViewById(R.id.user_details_button);
+//		userDetailsButton = (Button)this.findViewById(R.id.user_details_button);
 		workoutListViewGroup.setAdapter(workoutCursorAdapter);
 		
 		newWorkoutButton.setOnClickListener(new OnClickListener() {
@@ -83,13 +83,13 @@ public class SelectWorkoutActivity extends FragmentActivity implements android.s
 			}
 		});
 		
-		userDetailsButton.setOnClickListener(new OnClickListener(){
+/*		userDetailsButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(SelectWorkoutActivity.this, SetAthleteDetailsActivity.class);
 				startActivity(intent);
 			}
-		});
+		});*/
 	}
 	
 	/**

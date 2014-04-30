@@ -13,6 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.util.Log;
 
 public class TSSBTSensor{
 	private BluetoothSocket btSocket = null;
@@ -89,6 +90,7 @@ public class TSSBTSensor{
         System.arraycopy(data, 0, msgBuffer, 1, data.length);
         msgBuffer[0] = (byte)0xf7;
         msgBuffer[data.length + 1] = createChecksum(data);
+        Log.d("TSSBTSensor", "length of outgoing packet is: "+msgBuffer.length); //check to see if anywhere near 2.1Mbps
         try {
         		BTOutStream.write(msgBuffer);
         		BTOutStream.flush();
@@ -109,6 +111,7 @@ public class TSSBTSensor{
 	        catch (IOException e) {
 	        }
     	}
+    	Log.d("TSSBTSensor", "length of incoming packet is: "+response.length);//check to see if anywhere near 2.1Mbps
         return response;
     }
     

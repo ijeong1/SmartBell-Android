@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/rep_category_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Categorize rep "
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <CheckBox
+        android:id="@+id/correct_check_box_press"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Correct" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tightness errors" />
+    
+    <CheckBox
+        android:id="@+id/chest_down_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chest/Shoulders/Elbows down" />
+    
+<!--     <CheckBox
+        android:id="@+id/shoulders_down_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Shoulders down" />
+    
+    <CheckBox
+        android:id="@+id/elbows_down_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Elbows down" /> -->
+    
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bar path errors" />
+    
+    <CheckBox
+        android:id="@+id/hips_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Didn't use hips" />
+    
+    <CheckBox
+        android:id="@+id/bar_away_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pushed bar away / started too far out" />
+    
+    <CheckBox
+        android:id="@+id/under_bar_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Didn't get under bar" />
+    
+    <CheckBox
+        android:id="@+id/layback_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Too much layback" />
+    
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Other errors" />
+    
+    <CheckBox
+        android:id="@+id/wrists_back_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wrists rolled back" />
+    
+    <CheckBox
+        android:id="@+id/jerky_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jerky, uncontrolled rep" />
+
+    <CheckBox
+        android:id="@+id/elbows_out_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Elbows out" />
+    
+    <CheckBox
+        android:id="@+id/inc_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Did not complete rep" />
+ 
+    
+    <Button
+        android:id="@+id/continue_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Continue" />
+
+</LinearLayout>

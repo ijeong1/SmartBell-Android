@@ -12,67 +12,67 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <CheckBox
-        android:id="@+id/correct_check_box"
+        android:id="@+id/correct_check_box_bench"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Correct" />
-    
-    <CheckBox
-        android:id="@+id/chest_down_check_box"
+
+    <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Chest down" />
+        android:text="Tightness errors" />
     
     <CheckBox
-        android:id="@+id/shoulders_down_check_box"
+        android:id="@+id/upper_back_tight_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Shoulders down" />
+        android:text="Upper back not tight / elbows out" />
     
     <CheckBox
-        android:id="@+id/elbows_down_check_box"
+        android:id="@+id/glutes_check_box_bench"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Elbows down" />
-    
+        android:text="Glutes not engaged" />   
+
     <CheckBox
-        android:id="@+id/hips_check_box"
+        android:id="@+id/arch_check_box_bench"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Didn't use hips" />
+        android:text="Excessive lower back arch" />  
     
-    <CheckBox
-        android:id="@+id/bar_away_check_box"
+    <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pushed bar away" />
-    
+        android:text="Other errors" />
+
     <CheckBox
-        android:id="@+id/under_bar_check_box"
+        android:id="@+id/chest_bounce_check_box_bench"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Didn't get under bar" />
-    
-    <CheckBox
-        android:id="@+id/layback_check_box"
+        android:text="Bounce off of chest" />    
+
+	<CheckBox
+        android:id="@+id/rom_check_box_bench"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Too much layback" />
+        android:text="Not full range of motion" />
     
     <CheckBox
-        android:id="@+id/wrists_back_check_box"
+        android:id="@+id/wrists_back_check_box_bench"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Wrists rolled back" />
     
     <CheckBox
-        android:id="@+id/inc_check_box"
+        android:id="@+id/inc_check_box_bench"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Did not complete rep" />
     
     <Button
-        android:id="@+id/continue_button"
+        android:id="@+id/continue_button_bench"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Continue" />

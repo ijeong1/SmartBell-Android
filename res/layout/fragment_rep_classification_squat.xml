@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/rep_category_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Categorize rep "
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <CheckBox
+        android:id="@+id/correct_check_box_squat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Correct" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back errors" />
+    
+    <CheckBox
+        android:id="@+id/upper_back_round_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upper back round" />
+    
+    <CheckBox
+        android:id="@+id/lower_back_round_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lower back round / butt wink" />
+    
+    <CheckBox
+        android:id="@+id/over_extension_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Over extension / too vertical" />      
+    
+    <CheckBox
+        android:id="@+id/chase_back_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chasing with back" />
+    
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Other errors" />
+    
+    <CheckBox
+        android:id="@+id/knees_out_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Knees not spread out" />
+    
+    <CheckBox
+        android:id="@+id/heels_up_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Heels coming up off of the ground" />
+    
+    <CheckBox
+        android:id="@+id/wrists_roll_check_box_squat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wrists rolled back" />
+    
+    <CheckBox
+        android:id="@+id/incomplete_check_box_squat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Did not complete rep" />
+    
+    <Button
+        android:id="@+id/continue_button_squat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Continue" />
+
+</LinearLayout>

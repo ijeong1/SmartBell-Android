@@ -205,7 +205,7 @@ public class RecordSetFragment extends Fragment {
 //					positions = barPathTracker.determinePosition();
 					
 					fragmentManager = getFragmentManager();
-					RepClassificationFragment repClassificationFragment = RepClassificationFragment.newInstance(0, m_setId, repTimestamps.size()-1, moments, repTimestamps);
+					RepClassificationFragment repClassificationFragment = RepClassificationFragment.newInstance(exerciseName, 0, m_setId, repTimestamps.size()-1, moments, repTimestamps);
 					
 	//				BarPathFragment barPathFragment = BarPathFragment.newInstance(moments);
 	//				
