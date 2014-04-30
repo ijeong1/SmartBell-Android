@@ -131,7 +131,7 @@ public class RecordSetFragment extends Fragment {
 		recordTextView = (TextView)this.getView().findViewById(R.id.record_exercise_text);
 		recordTextView.setText(exerciseName);
 		repsTextView = (TextView)this.getView().findViewById(R.id.num_reps_text);
-		startSetButton = (Button)this.getView().findViewById(R.id.start_set_button);
+		startSetButton = (Button)this.getView().findViewById(R.id.start_set_button_exercise_detail);
 		endSetButton = (Button)this.getView().findViewById(R.id.end_set_button);
 		nextRepButton = (Button)this.getView().findViewById(R.id.next_rep_button);
 		setClickListeners();

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 
 public class StartWorkoutActivity extends FragmentActivity 
 		implements OnFragmentInteractionListener{
@@ -43,18 +44,13 @@ public class StartWorkoutActivity extends FragmentActivity
 		Log.d("StartWorkoutActivity","intent.getIntExtra(): "+intent.getIntExtra(getString(R.string.workout_id), 0));
 		int workout = intent.getIntExtra(getString(R.string.workout_id), 0);
 		
-		if(workout > 0){
-			
-		}
-		else{
-			
-		}
-		
 		setContentView(R.layout.activity_start_workout);
 		fragmentManager = getSupportFragmentManager();
+		FragmentManager.enableDebugLogging(true);
 		SelectExerciseFragment selectExerciseFragment = SelectExerciseFragment.newInstance(workout);
 		
 		android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		
 		fragmentTransaction.replace(R.id.start_workout_activity_layout, selectExerciseFragment);
 //		String startWorkoutActivityTag = getResources().getString(R.string.start_workout_activity_tag);
 //		fragmentTransaction.addToBackStack(startWorkoutActivityTag);

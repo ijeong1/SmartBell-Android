@@ -123,7 +123,7 @@ public class ExerciseDetailFragment extends Fragment implements android.support.
 		exerciseDetailTitle.setText(exerciseName);
 		
 //		instructionsButton = (Button)this.getView().findViewById(R.id.instructions_button);
-		startSetButton = (Button)this.getView().findViewById(R.id.start_set_button);
+		startSetButton = (Button)this.getView().findViewById(R.id.start_set_button_exercise_detail);
 		endExerciseButton = (Button)this.getView().findViewById(R.id.end_exercise_button);
 //		showBarpathButton = (Button)this.getView().findViewById(R.id.bar_path_button);
 		

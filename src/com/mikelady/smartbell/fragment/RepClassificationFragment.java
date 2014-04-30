@@ -378,9 +378,13 @@ public class RepClassificationFragment extends Fragment {
 			databaseObject.saveInBackground();
 			Log.d("RepClassificationFragment","saved database to parse");
 			
+			getActivity().finish();
+			
 			//go back to exercise detail fragment
-			String exerciseDetailTag = getResources().getString(R.string.exercise_detail_tag);
-			fragmentManager.popBackStackImmediate(exerciseDetailTag, 1);
+//			String exerciseDetailTag = getResources().getString(R.string.exercise_detail_tag);
+//			fragmentManager.popBackStackImmediate(exerciseDetailTag, 1);
+			
+			
 			
 			
 		}
