@@ -197,9 +197,9 @@ public class RecordSetFragment extends Fragment {
 					
 					Log.d("RecordSetFragment","repTimestamps: "+repTimestamps);
 					Log.d("RecordSetFragment","repTimestamps.size(): "+repTimestamps.size());
-					for(Long timestamp: repTimestamps){
-						Log.d("RecordSetFragment", "repTimestamp: "+timestamp);
-					}
+//					for(Long timestamp: repTimestamps){
+//						Log.d("RecordSetFragment", "repTimestamp: "+timestamp);
+//					}
 					
 //					BarPathTracker barPathTracker = new BarPathTracker(moments);
 //					positions = barPathTracker.determinePosition();

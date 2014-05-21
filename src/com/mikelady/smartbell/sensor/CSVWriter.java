@@ -58,7 +58,7 @@ public class CSVWriter {
 				e.printStackTrace();
 			}
 			quatOut = new FileOutputStream(quatFile);
-			eulerOut = new FileOutputStream(new File(dir, "euler.csv"));
+			eulerOut = new FileOutputStream(new File(dir, "quat.csv"));
 			rotOut = new FileOutputStream(new File(dir,"rot.csv"));
 			axisOut = new FileOutputStream(new File(dir, "axis.csv"));
 			twoVecOut = new FileOutputStream(new File(dir,"twoVec.csv"));

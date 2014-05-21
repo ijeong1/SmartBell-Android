@@ -12,6 +12,12 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <CheckBox
+        android:id="@+id/golden_squat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Golden" />
+    
+    <CheckBox
         android:id="@+id/correct_check_box_squat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,6 +28,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Back errors" />
+    
+    <CheckBox
+        android:id="@+id/chin_tuck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chin not tucked" />
     
     <CheckBox
         android:id="@+id/upper_back_round_check_box"
@@ -47,12 +59,30 @@
         android:layout_height="wrap_content"
         android:text="Chasing with back" />
     
+    <CheckBox
+        android:id="@+id/hips_roll_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hips roll under spine" />
+    
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Other errors" />
     
+    <CheckBox
+        android:id="@+id/not_parallel_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Did not get to parallel" />
+    
+    <CheckBox
+        android:id="@+id/stand_up_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Did not stand all the way up" />
+    	
     <CheckBox
         android:id="@+id/knees_out_check_box"
         android:layout_width="wrap_content"

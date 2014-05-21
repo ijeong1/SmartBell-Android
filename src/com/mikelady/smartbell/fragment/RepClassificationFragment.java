@@ -88,17 +88,23 @@ public class RepClassificationFragment extends Fragment {
 	private CheckBox jerkyCheckBox;
 	private CheckBox elbowsCheckBox;
 	private CheckBox incCheckBox;
+	private CheckBox pressGoldenCheckBox;
 	
 	//squat checkboxes
 	private CheckBox squatCorrectCheckBox;
+	private CheckBox chinTuckCheckBox;
 	private CheckBox upperBackRoundCheckBox;
 	private CheckBox lowerBackRoundCheckBox;
 	private CheckBox overExtensionCheckBox;
 	private CheckBox chaseBackCheckBox;
+	private CheckBox hipRollUnderCheckBox;
 	private CheckBox kneesSpreadCheckBox;
 	private CheckBox heelsCheckBox;
+	private CheckBox notParallelCheckBox;
+	private CheckBox standUpCheckBox;
 	private CheckBox wristsSquatCheckBox;
 	private CheckBox incSquatCheckBox;
+	private CheckBox squatGoldenCheckBox;
 	
 	//bench checkboxes
 	private CheckBox benchCorrectCheckBox;
@@ -109,6 +115,7 @@ public class RepClassificationFragment extends Fragment {
 	private CheckBox RangeOfMotionCheckBox;
 	private CheckBox wristsBenchCheckBox;
 	private CheckBox incBenchCheckBox;
+	private CheckBox benchGoldenCheckBox;
 	
 	private ArrayList<CheckBox> checkBoxes;
 	private Button pressContinueButton;
@@ -221,6 +228,7 @@ public class RepClassificationFragment extends Fragment {
 	}
 	
 	private void initLayoutBench(){
+		benchGoldenCheckBox = (CheckBox)this.getView().findViewById(R.id.golden_bench);
 		benchCorrectCheckBox = (CheckBox)this.getView().findViewById(R.id.correct_check_box_bench);
 		upperBackTightCheckBox = (CheckBox)this.getView().findViewById(R.id.upper_back_tight_check_box);
 		glutesCheckBox = (CheckBox)this.getView().findViewById(R.id.glutes_check_box_bench);
@@ -229,7 +237,7 @@ public class RepClassificationFragment extends Fragment {
 		wristsBenchCheckBox = (CheckBox)this.getView().findViewById(R.id.wrists_back_check_box_bench);
 		incBenchCheckBox = (CheckBox)this.getView().findViewById(R.id.inc_check_box_bench);
 		
-		CheckBox[] checks = {benchCorrectCheckBox, upperBackTightCheckBox, glutesCheckBox, lowerBackArchCheckBox,
+		CheckBox[] checks = {benchGoldenCheckBox, benchCorrectCheckBox, upperBackTightCheckBox, glutesCheckBox, lowerBackArchCheckBox,
 				chestBounceCheckBox, wristsBenchCheckBox, incBenchCheckBox};
 		checkBoxes = new ArrayList<CheckBox>(Arrays.asList(checks));
 		benchContinueButton = (Button)this.getView().findViewById(R.id.continue_button_bench);
@@ -248,23 +256,26 @@ public class RepClassificationFragment extends Fragment {
 	}
 	
 	private void initLayoutSquat(){
-
+		squatGoldenCheckBox = (CheckBox)this.getView().findViewById(R.id.golden_squat);
 		squatCorrectCheckBox = (CheckBox)this.getView().findViewById(R.id.correct_check_box_squat);
 	
 		upperBackRoundCheckBox = (CheckBox)this.getView().findViewById(R.id.upper_back_round_check_box);
 //		shouldersDownCheckBox = (CheckBox)this.getView().findViewById(R.id.shoulders_down_check_box);
 //		elbowsDownCheckBox = (CheckBox)this.getView().findViewById(R.id.elbows_down_check_box);
-		
+		chinTuckCheckBox = (CheckBox)this.getView().findViewById(R.id.chin_tuck);
 		lowerBackRoundCheckBox = (CheckBox)this.getView().findViewById(R.id.lower_back_round_check_box);
 		overExtensionCheckBox = (CheckBox)this.getView().findViewById(R.id.over_extension_check_box);
 		chaseBackCheckBox = (CheckBox)this.getView().findViewById(R.id.chase_back_check_box);
+		hipRollUnderCheckBox = (CheckBox)this.getView().findViewById(R.id.hips_roll_check_box);
 		kneesSpreadCheckBox = (CheckBox)this.getView().findViewById(R.id.knees_out_check_box);
+		notParallelCheckBox =  (CheckBox)this.getView().findViewById(R.id.not_parallel_check_box);
+		standUpCheckBox =  (CheckBox)this.getView().findViewById(R.id.stand_up_check_box);
 		heelsCheckBox = (CheckBox)this.getView().findViewById(R.id.heels_up_check_box);
 		wristsSquatCheckBox = (CheckBox)this.getView().findViewById(R.id.wrists_roll_check_box_squat);
 		incSquatCheckBox = (CheckBox)this.getView().findViewById(R.id.incomplete_check_box_squat);
 
-		CheckBox[] checks = {squatCorrectCheckBox, upperBackRoundCheckBox, lowerBackRoundCheckBox, overExtensionCheckBox,
-				chaseBackCheckBox, kneesSpreadCheckBox, heelsCheckBox, wristsSquatCheckBox, incSquatCheckBox};
+		CheckBox[] checks = {squatGoldenCheckBox, squatCorrectCheckBox, chinTuckCheckBox, upperBackRoundCheckBox, lowerBackRoundCheckBox, overExtensionCheckBox,
+				chaseBackCheckBox, hipRollUnderCheckBox, notParallelCheckBox, standUpCheckBox, kneesSpreadCheckBox, heelsCheckBox, wristsSquatCheckBox, incSquatCheckBox};
 		checkBoxes = new ArrayList<CheckBox>(Arrays.asList(checks));
 		squatContinueButton = (Button)this.getView().findViewById(R.id.continue_button_squat);
 
@@ -283,7 +294,7 @@ public class RepClassificationFragment extends Fragment {
 	
 	private void initLayoutPress(){
 
-		
+		pressGoldenCheckBox = (CheckBox)this.getView().findViewById(R.id.golden_press);
 		pressCorrectCheckBox = (CheckBox)this.getView().findViewById(R.id.correct_check_box_press);
 	
 		chestDownCheckBox = (CheckBox)this.getView().findViewById(R.id.chest_down_check_box);
@@ -298,7 +309,7 @@ public class RepClassificationFragment extends Fragment {
 		jerkyCheckBox = (CheckBox)this.getView().findViewById(R.id.jerky_check_box);
 		elbowsCheckBox = (CheckBox)this.getView().findViewById(R.id.elbows_out_check_box);
 		incCheckBox = (CheckBox)this.getView().findViewById(R.id.inc_check_box);
-		CheckBox[] checks = {pressCorrectCheckBox, chestDownCheckBox, /*shouldersDownCheckBox, elbowsDownCheckBox,*/ hipsCheckBox,
+		CheckBox[] checks = {pressGoldenCheckBox, pressCorrectCheckBox, chestDownCheckBox, /*shouldersDownCheckBox, elbowsDownCheckBox,*/ hipsCheckBox,
 				barAwayCheckBox, underBarCheckBox, laybackCheckBox, wristsCheckBox, jerkyCheckBox, elbowsCheckBox, incCheckBox};
 		checkBoxes = new ArrayList<CheckBox>(Arrays.asList(checks));
 		pressContinueButton = (Button)this.getView().findViewById(R.id.continue_button);
@@ -420,13 +431,18 @@ public class RepClassificationFragment extends Fragment {
 				ContentValues cv = new ContentValues();
 				cv.put(MomentTable.MOMENT_TIMESTAMP, m.getTimestamp());
 				cv.put(MomentTable.MOMENT_REP_ID, repId);
-				cv.put(MomentTable.MOMENT_EULER_X, m.getEuler()[Moment.X]);
-				cv.put(MomentTable.MOMENT_EULER_Y, m.getEuler()[Moment.Y]);
-				cv.put(MomentTable.MOMENT_EULER_Z, m.getEuler()[Moment.Z]);
+				cv.put(MomentTable.MOMENT_QUAT_W, m.getQuat()[Moment.qW]);
+				cv.put(MomentTable.MOMENT_QUAT_X, m.getQuat()[Moment.qX]);
+				cv.put(MomentTable.MOMENT_QUAT_Y, m.getQuat()[Moment.qY]);
+				cv.put(MomentTable.MOMENT_QUAT_Z, m.getQuat()[Moment.qZ]);
 				
 				cv.put(MomentTable.MOMENT_LINACC_X, m.getLinAcc()[Moment.X]);
 				cv.put(MomentTable.MOMENT_LINACC_Y, m.getLinAcc()[Moment.Y]);
 				cv.put(MomentTable.MOMENT_LINACC_Z, m.getLinAcc()[Moment.Z]);
+				
+				cv.put(MomentTable.MOMENT_COMPASS_X, m.getCompass()[Moment.X]);
+				cv.put(MomentTable.MOMENT_COMPASS_Y, m.getCompass()[Moment.Y]);
+				cv.put(MomentTable.MOMENT_COMPASS_Z, m.getCompass()[Moment.Z]);
 				
 				m_repIds.add(Integer.valueOf(activity.getContentResolver().insert(addRow, cv).getLastPathSegment()));
 				Log.d("RepClassificationFragment", "addMoment1: "+m_repIds.get(m_repIds.size()-1));
