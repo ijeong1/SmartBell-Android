@@ -4,7 +4,7 @@ import com.mikelady.smartbell.R;
 import com.mikelady.smartbell.R.id;
 import com.mikelady.smartbell.R.layout;
 import com.mikelady.smartbell.R.string;
-import com.mikelady.smartbell.activity.BarPathActivity;
+
 import com.mikelady.smartbell.activity.SelectWorkoutActivity;
 import com.mikelady.smartbell.db.adapter.LiftingSetCursorAdapter;
 import com.mikelady.smartbell.db.adapter.LiftingSetCursorAdapter;

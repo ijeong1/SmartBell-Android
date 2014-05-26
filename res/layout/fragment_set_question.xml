@@ -4,6 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <Button
+        android:id="@+id/tare_sensor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tare sensor"
+        android:layout_marginBottom="50dp" />
+    
     <TextView
         android:id="@+id/set_question_text"
         android:layout_width="wrap_content"
@@ -36,5 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start recording" />
+    
+    
    
 </LinearLayout>

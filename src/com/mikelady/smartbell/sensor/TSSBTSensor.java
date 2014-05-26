@@ -13,6 +13,7 @@ import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
 
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -146,15 +147,17 @@ public class TSSBTSensor{
 		int amnt_read = 0;
 		while (amnt_read < amnt)
 		{
-			Log.d("TSSBTSensor", "amnt: "+amnt);
-			Log.d("TSSBTSensor", "amnt_read: "+amnt_read);
+			
 			try {
 				amnt_read += BTInStream.read(response, amnt_read, amnt - amnt_read);
 			}
 			catch (IOException e) {
 				Log.d("TSSBTSensor", "IOException e: "+e.getMessage());
 			}
+//			Log.d("TSSBTSensor", "amnt: "+amnt);
+			
 		}
+//		Log.d("TSSBTSensor", "amnt_read: "+amnt_read);
 		//    	Log.d("TSSBTSensor", "length of incoming packet is: "+response.length);//check to see if anywhere near 2.1Mbps
 		return response;
 	}
@@ -574,17 +577,20 @@ public class TSSBTSensor{
 
 	public static byte TSS_GET_TARED_ORIENTATION_AS_QUATERNION = 0x00;
 	public static byte TSS_GET_CORRECTED_LINEAR_ACCELERATION_IN_GLOBAL_SPACE = 0x29;
-	public static byte TSS_GET_CORRECTED_COMPASS = (byte)0xfa; //really 28 ML
+	public static byte TSS_GET_CORRECTED_COMPASS = (byte)0x28; //really 28 ML
+	public static byte TSS_GET_CORRECTED_VALUES = 0x25;
 	public static byte TSS_GET_RAW_VALUES = 0x40;
 	public static byte TSS_NULL = (byte) 0xff;
 	public static byte TSS_SET_STREAMING_SLOTS = 0x50;
 	public static byte TSS_SET_STREAMING_TIMING = 0x52;
 	public static byte TSS_START_STREAMING = 0x55;
 	public static byte TSS_STOP_STREAMING = 0x56;
+	
 
 	public static int TSS_QUAT_LEN = 16;
 	public static int TSS_LIN_ACC_LEN = 12;
 	public static int TSS_COMPASS_LEN = 12;
+	public static int TSS_CORRECTED_LEN = 36;
 	public static int TSS_RAW_LEN = 36;
 
 	public void setupStreaming() {
@@ -593,11 +599,11 @@ public class TSSBTSensor{
 		call_lock.lock();
 
 		byte[] send_data = {TSS_SET_STREAMING_SLOTS, TSS_GET_TARED_ORIENTATION_AS_QUATERNION, TSS_GET_CORRECTED_LINEAR_ACCELERATION_IN_GLOBAL_SPACE,
-				TSS_GET_CORRECTED_COMPASS, TSS_NULL, TSS_NULL, TSS_NULL, TSS_NULL, TSS_NULL};
+				TSS_GET_CORRECTED_COMPASS, TSS_GET_CORRECTED_VALUES, TSS_GET_RAW_VALUES, TSS_NULL, TSS_NULL, TSS_NULL};
 		Log.d("TSSBTSensor","setupStreaming send_data");
 		write(send_data);
 		call_lock.unlock();
-
+		
 		call_lock.lock();
 		//Interval determines how often the streaming session will output data from the requested commands
 		//An interval of 0 will output data at the max filter rate
@@ -611,34 +617,8 @@ public class TSSBTSensor{
 		// streaming
 		byte delay = 0; // microseconds
 
-		ArrayList<Byte> send_data_streaming = new ArrayList<Byte>();
-
-		send_data_streaming.add(TSS_SET_STREAMING_TIMING);
-
-		byte[] interval_arr = {interval};
-		byte[] duration_arr = {duration};
-		byte[] delay_arr = {delay};
-
-		ByteBuffer bb = ByteBuffer.wrap(interval_arr);
-//		bb.order(ByteOrder.BIG_ENDIAN);
-		send_data_streaming.add(bb.array()[0]);
-
-		bb = ByteBuffer.wrap(duration_arr);
-//		bb.order(ByteOrder.BIG_ENDIAN);
-		send_data_streaming.add(bb.array()[0]);
-
-		bb = ByteBuffer.wrap(delay_arr);
-//		bb.order(ByteOrder.BIG_ENDIAN);
-		send_data_streaming.add(bb.array()[0]);
-
-		Byte[] byte_arr = send_data_streaming.toArray(new Byte[send_data_streaming.size()]);
-		byte[] real_byte_arr = new byte[byte_arr.length];
-
-		for(int i = 0; i < byte_arr.length; i++){
-			real_byte_arr[i] = byte_arr[i];
-		}
-		Log.d("TSSBTSensor","setupStreaming real_byte_arr");
-		write(real_byte_arr);
+		byte [] timing = {0x52,0x00, 0x00,0x00, 0x00, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, 0x00, 0x00, 0x00, 0x00};
+		write(timing);
 
 		call_lock.unlock();
 	}
@@ -654,8 +634,25 @@ public class TSSBTSensor{
 	public void stopStreaming(){
 		call_lock.lock();
 		byte[] send_data = {TSS_STOP_STREAMING};
-		Log.d("TSSBTSensor","startStreaming");
+		Log.d("TSSBTSensor","stopStreaming");
 		write(send_data);
+		clearInputStream();
 		call_lock.unlock();
+	}
+	
+	private void clearInputStream(){
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			long skipped = BTInStream.skip(1000);
+			Log.d("TSSBTSensor:clearInputStream()", "skipped "+skipped+" bytes");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

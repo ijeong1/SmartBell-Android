@@ -18,12 +18,16 @@ public class Moment {
 	Float[] quat;
 	Float[] linAcc;
 	Float[] compass;
+	Float[] rawGyro;
+	Float[] rawAcc;
+	Float[] rawCompass;
 	
-	public Moment(Long timestamp, Float[] quat, Float[] linacc, Float[] compass) {
+	public Moment(Long timestamp, Float[] quat, Float[] linacc, Float[] compass, Float[] corrected, Float[] raw) {
 		this.timestamp = timestamp;
 		this.quat = quat;
 		this.linAcc = linacc;
 		this.compass = compass;
+	
 	}
 	
 	public String toString(){

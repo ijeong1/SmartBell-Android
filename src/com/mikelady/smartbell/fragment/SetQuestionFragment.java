@@ -5,6 +5,7 @@ import com.mikelady.smartbell.R.id;
 import com.mikelady.smartbell.R.layout;
 import com.mikelady.smartbell.R.string;
 import com.mikelady.smartbell.fragment.SelectExerciseFragment.OnFragmentInteractionListener;
+import com.mikelady.smartbell.sensor.TSSBTSensor;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -42,6 +44,7 @@ public class SetQuestionFragment extends Fragment {
 	private EditText weightEditText;
 	private EditText repEditText;
 	private Button startRecordingButton;
+	private Button tareSensorButton;
 	private android.support.v4.app.FragmentManager fragmentManager;
 	
 	private OnFragmentInteractionListener mListener;
@@ -95,7 +98,7 @@ public class SetQuestionFragment extends Fragment {
 		weightEditText = (EditText)this.getView().findViewById(R.id.enter_weight_edit_text);
 		repEditText = (EditText)this.getView().findViewById(R.id.enter_reps_edit_text);
 		startRecordingButton = (Button)this.getView().findViewById(R.id.start_recording_button);
-
+		tareSensorButton = (Button)this.getView().findViewById(R.id.tare_sensor);
 		setClickListeners();
 	}
 	
@@ -129,7 +132,19 @@ public class SetQuestionFragment extends Fragment {
 //				fragmentTransaction.commit();
 			}
 		});
-		
+	
+		tareSensorButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+					TSSBTSensor.getInstance().setTareCurrentOrient();
+					Toast.makeText(getActivity(), "Tared sensor", Toast.LENGTH_SHORT).show();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	// TODO: Rename method, update argument and hook method into UI event

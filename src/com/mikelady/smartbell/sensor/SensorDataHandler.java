@@ -25,8 +25,16 @@ public class SensorDataHandler extends Handler {
 	Float[] quat;
 	Float[] linacc;
 	Float[] compass;
+	Float[] corrected;
+	Float[] raw;
 	long unixTime;
 	Context context;
+	
+	int dataLength = com.mikelady.smartbell.sensor.TSSBTSensor.TSS_QUAT_LEN +
+	com.mikelady.smartbell.sensor.TSSBTSensor.TSS_LIN_ACC_LEN +
+	com.mikelady.smartbell.sensor.TSSBTSensor.TSS_COMPASS_LEN+
+	com.mikelady.smartbell.sensor.TSSBTSensor.TSS_CORRECTED_LEN+
+	com.mikelady.smartbell.sensor.TSSBTSensor.TSS_RAW_LEN;
 
 	public SensorDataHandler(int mode, Context context){
 		super();
@@ -56,59 +64,27 @@ public class SensorDataHandler extends Handler {
 		}
 	}
 
-	//refactor this later
+	
 	@Override
 	public void handleMessage(Message msg) {
 		//		if(csv == null)
 		//			csv = new CSVWriter(SelectWorkoutActivity.ctx);
-		Log.d("SensorDataHandler", "msg.what: "+msg.what);
-		Log.d("SensorDataHandler", "keep_going: "+keep_going);
+//		Log.d("SensorDataHandler:handleMessage()", "msg.what: "+msg.what);
+//		Log.d("SensorDataHandler:handleMessage()", "keep_going: "+keep_going);
 
 		//Check if we are supposed to keep going or not
 		if (msg.what == -1)
 		{
 			keep_going = false;
 			try {
-				TSSBTSensor.getInstance().stopStreaming();
-				Log.d("SensorDataHandler", "Called stopStreaming");
+//				TSSBTSensor.getInstance().stopStreaming();
+				Log.d("SensorDataHandler:handleMessage()", "Called stopStreaming");
 				//						TSSBTSensor.getInstance().close();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			byte[] bytes, quat_bytes, linacc_bytes, compass_bytes;
-			int j;
-			//process collected bytes in timestamp_bytes_map and add them to moments
-			Long[] timestamps = timestamp_bytes_map.keySet().toArray(new Long[timestamp_bytes_map.keySet().size()]);
-			Arrays.sort(timestamps);
-			for(int i =  0; i < timestamps.length; i++){
-				bytes = timestamp_bytes_map.get(timestamps[i]);
-				quat_bytes = new byte[TSSBTSensor.TSS_QUAT_LEN];
-				linacc_bytes = new byte[TSSBTSensor.TSS_LIN_ACC_LEN];
-				compass_bytes = new byte[TSSBTSensor.TSS_COMPASS_LEN];
-				for(j = 0; j < bytes.length; j++){
-					if(j < TSSBTSensor.TSS_QUAT_LEN){
-						quat_bytes[j] = bytes[j];
-					}
-					else if(j > TSSBTSensor.TSS_QUAT_LEN &&
-							j < TSSBTSensor.TSS_QUAT_LEN + TSSBTSensor.TSS_LIN_ACC_LEN){ //also include raw values
-						linacc_bytes[j - TSSBTSensor.TSS_QUAT_LEN] = bytes[j];
-					}
-					else{
-						compass_bytes[j - TSSBTSensor.TSS_QUAT_LEN - TSSBTSensor.TSS_LIN_ACC_LEN] = bytes[j];
-					}
-				}
-				try {
-					quat = TSSBTSensor.getInstance().binToFloat(quat_bytes);
-					linacc = TSSBTSensor.getInstance().binToFloat(linacc_bytes);
-					compass = TSSBTSensor.getInstance().binToFloat(compass_bytes);
-					moments.add(new Moment(timestamps[i], quat, linacc, compass));
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
+			
 		}
 		else if (msg.what == 287)
 		{
@@ -118,9 +94,10 @@ public class SensorDataHandler extends Handler {
 			tmp_message.what = 1;
 //			Log.d("SensorDataHandler", "on 287 message");
 			try {
-				Log.d("SensorDataHandler", "Going to call startStreaming");
+				Log.d("SensorDataHandler:handleMessage()", "Going to call startStreaming");
 				TSSBTSensor.getInstance().startStreaming();
-				Log.d("SensorDataHandler", "Called startStreaming");
+				Log.d("SensorDataHandler:handleMessage()", "Called startStreaming");
+				Log.d("SensorDataHandler:handleMessage()","Expected length of data: "+dataLength);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -130,17 +107,17 @@ public class SensorDataHandler extends Handler {
 		else if(msg.what == 1)
 		{
 			try {
-				Log.d("SensorDataHandler", "before read");
-				byte[] stream_data = TSSBTSensor.getInstance().read(com.mikelady.smartbell.sensor.TSSBTSensor.TSS_QUAT_LEN +
-						com.mikelady.smartbell.sensor.TSSBTSensor.TSS_LIN_ACC_LEN +
-						com.mikelady.smartbell.sensor.TSSBTSensor.TSS_COMPASS_LEN);
+//				Log.d("SensorDataHandler:handleMessage()", "before read");
+				
+				byte[] stream_data = TSSBTSensor.getInstance().read(dataLength);
+				
 				//			quat = TSSBTSensor.getInstance().getEulerAngles();
 				//			linacc = TSSBTSensor.getInstance().getLinAcc();
 				//			compass =
 
 				unixTime = System.currentTimeMillis();
 				timestamp_bytes_map.put(unixTime, stream_data);
-				Log.d("SensorDataHandler", "steam_data[0]: "+(byte)stream_data[0]);
+//				Log.d("SensorDataHandler", "steam_data[0]: "+(byte)stream_data[0]);
 				//			moments.add(new Moment(unixTime, quat, linacc));
 				//			Log.d("SensorDataHandler", ""+moments.get(moments.size()-1).toString());
 
@@ -166,6 +143,53 @@ public class SensorDataHandler extends Handler {
 	}
 
 	public ArrayList<Moment> getMoments() {
+		if(moments.isEmpty()){
+			byte[] bytes, quat_bytes, linacc_bytes, compass_bytes, corrected_bytes, raw_bytes;
+			int j;
+			//process collected bytes in timestamp_bytes_map and add them to moments
+			Long[] timestamps = timestamp_bytes_map.keySet().toArray(new Long[timestamp_bytes_map.keySet().size()]);
+			Arrays.sort(timestamps);
+			Long start = timestamps[0];
+			Long end = timestamps[timestamps.length-1];
+			Long time = end - start;
+			Log.d("SensorDataHandler:getMoments()", "Sensor ran for "+time+" ms");
+			Log.d("SensorDataHandler:getMoments()", "Sensor collected "+timestamps.length+" moments");
+			Double momentsPerSecond = timestamps.length / (time / 1000.0);
+			Log.d("SensorDataHandler:getMoments()", "Data rate is "+ momentsPerSecond +" moments/second");
+			for(int i =  0; i < timestamps.length; i++){
+				bytes = timestamp_bytes_map.get(timestamps[i]);
+				quat_bytes = new byte[TSSBTSensor.TSS_QUAT_LEN];
+				linacc_bytes = new byte[TSSBTSensor.TSS_LIN_ACC_LEN];
+				compass_bytes = new byte[TSSBTSensor.TSS_COMPASS_LEN];
+				corrected_bytes = new byte[TSSBTSensor.TSS_CORRECTED_LEN];
+				raw_bytes = new byte[TSSBTSensor.TSS_RAW_LEN];
+				/*for(j = 0; j < bytes.length; j++){
+					if(j < TSSBTSensor.TSS_QUAT_LEN){
+						quat_bytes[j] = bytes[j];
+					}
+					else if(j > TSSBTSensor.TSS_QUAT_LEN &&
+							j < TSSBTSensor.TSS_QUAT_LEN + TSSBTSensor.TSS_LIN_ACC_LEN){ //also include raw values
+						linacc_bytes[j - TSSBTSensor.TSS_QUAT_LEN] = bytes[j];
+					}
+					else{
+						compass_bytes[j - TSSBTSensor.TSS_QUAT_LEN - TSSBTSensor.TSS_LIN_ACC_LEN] = bytes[j];
+					}
+				}*/
+				try {
+/*					quat = TSSBTSensor.getInstance().binToFloat(quat_bytes);
+					linacc = TSSBTSensor.getInstance().binToFloat(linacc_bytes);
+					compass = TSSBTSensor.getInstance().binToFloat(compass_bytes);
+					corrected = TSSBTSensor.getInstance().binToFloat(corrected_bytes);
+					raw = TSSBTSensor.getInstance().binToFloat(raw_bytes);
+					moments.add(new Moment(timestamps[i], quat, linacc, compass, corrected, raw));*/
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		}
+		
 		return moments;
 	}
 

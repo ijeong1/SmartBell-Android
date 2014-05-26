@@ -5,10 +5,8 @@ import java.util.ArrayList;
 import com.mikelady.smartbell.R;
 import com.mikelady.smartbell.R.id;
 import com.mikelady.smartbell.R.layout;
-import com.mikelady.smartbell.activity.BarPathActivity;
 import com.mikelady.smartbell.activity.SelectWorkoutActivity;
 import com.mikelady.smartbell.activity.StartWorkoutActivity;
-import com.mikelady.smartbell.barpath.BarPathTracker;
 import com.mikelady.smartbell.db.provider.SmartBellContentProvider;
 import com.mikelady.smartbell.db.table.LiftingSetTable;
 import com.mikelady.smartbell.fragment.SelectExerciseFragment.OnFragmentInteractionListener;
@@ -172,6 +170,12 @@ public class RecordSetFragment extends Fragment {
 				    	stop_message.what = -1;
 				    	sensorDataHandler.sendMessage(stop_message);
 				    	is_polling = false;
+				    	try {
+							TSSBTSensor.getInstance().stopStreaming();
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 			    	}
 					ArrayList<Moment> moments = sensorDataHandler.getMoments();
 					Log.d("RecordSetFragment", "num moments: "+moments.size());
