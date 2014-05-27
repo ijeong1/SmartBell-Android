@@ -109,10 +109,12 @@ public class RepClassificationFragment extends Fragment {
 	//bench checkboxes
 	private CheckBox benchCorrectCheckBox;
 	private CheckBox upperBackTightCheckBox;
+	private CheckBox elbows_out_check_box;
 	private CheckBox glutesCheckBox;
 	private CheckBox lowerBackArchCheckBox;
 	private CheckBox chestBounceCheckBox;
-	private CheckBox RangeOfMotionCheckBox;
+	private CheckBox touch_chest_check_box_bench;
+	private CheckBox lock_out_check_box_bench;
 	private CheckBox wristsBenchCheckBox;
 	private CheckBox incBenchCheckBox;
 	private CheckBox benchGoldenCheckBox;
@@ -231,14 +233,19 @@ public class RepClassificationFragment extends Fragment {
 		benchGoldenCheckBox = (CheckBox)this.getView().findViewById(R.id.golden_bench);
 		benchCorrectCheckBox = (CheckBox)this.getView().findViewById(R.id.correct_check_box_bench);
 		upperBackTightCheckBox = (CheckBox)this.getView().findViewById(R.id.upper_back_tight_check_box);
+		elbows_out_check_box = (CheckBox)this.getView().findViewById(R.id.elbows_out_check_box);
 		glutesCheckBox = (CheckBox)this.getView().findViewById(R.id.glutes_check_box_bench);
 		lowerBackArchCheckBox = (CheckBox)this.getView().findViewById(R.id.arch_check_box_bench);
 		chestBounceCheckBox = (CheckBox)this.getView().findViewById(R.id.chest_bounce_check_box_bench);
+		
+		touch_chest_check_box_bench = (CheckBox)this.getView().findViewById(R.id.touch_chest_check_box_bench);
+		lock_out_check_box_bench = (CheckBox)this.getView().findViewById(R.id.lock_out_check_box_bench);
+		
 		wristsBenchCheckBox = (CheckBox)this.getView().findViewById(R.id.wrists_back_check_box_bench);
 		incBenchCheckBox = (CheckBox)this.getView().findViewById(R.id.inc_check_box_bench);
 		
-		CheckBox[] checks = {benchGoldenCheckBox, benchCorrectCheckBox, upperBackTightCheckBox, glutesCheckBox, lowerBackArchCheckBox,
-				chestBounceCheckBox, wristsBenchCheckBox, incBenchCheckBox};
+		CheckBox[] checks = {benchGoldenCheckBox, benchCorrectCheckBox, upperBackTightCheckBox, elbows_out_check_box, glutesCheckBox, lowerBackArchCheckBox,
+				chestBounceCheckBox, touch_chest_check_box_bench, lock_out_check_box_bench, wristsBenchCheckBox, incBenchCheckBox};
 		checkBoxes = new ArrayList<CheckBox>(Arrays.asList(checks));
 		benchContinueButton = (Button)this.getView().findViewById(R.id.continue_button_bench);
 
@@ -274,8 +281,10 @@ public class RepClassificationFragment extends Fragment {
 		wristsSquatCheckBox = (CheckBox)this.getView().findViewById(R.id.wrists_roll_check_box_squat);
 		incSquatCheckBox = (CheckBox)this.getView().findViewById(R.id.incomplete_check_box_squat);
 
-		CheckBox[] checks = {squatGoldenCheckBox, squatCorrectCheckBox, chinTuckCheckBox, upperBackRoundCheckBox, lowerBackRoundCheckBox, overExtensionCheckBox,
-				chaseBackCheckBox, hipRollUnderCheckBox, notParallelCheckBox, standUpCheckBox, kneesSpreadCheckBox, heelsCheckBox, wristsSquatCheckBox, incSquatCheckBox};
+		CheckBox[] checks = {squatGoldenCheckBox, squatCorrectCheckBox, chinTuckCheckBox,
+				upperBackRoundCheckBox, lowerBackRoundCheckBox, overExtensionCheckBox,
+				chaseBackCheckBox, hipRollUnderCheckBox, notParallelCheckBox, standUpCheckBox,
+				kneesSpreadCheckBox, heelsCheckBox, wristsSquatCheckBox, incSquatCheckBox};
 		checkBoxes = new ArrayList<CheckBox>(Arrays.asList(checks));
 		squatContinueButton = (Button)this.getView().findViewById(R.id.continue_button_squat);
 

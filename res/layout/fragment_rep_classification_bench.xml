@@ -33,7 +33,13 @@
         android:id="@+id/upper_back_tight_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Upper back not tight / elbows out" />
+        android:text="Upper back not tight" />
+    
+    <CheckBox
+        android:id="@+id/elbows_out_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Elbows out" />
     
     <CheckBox
         android:id="@+id/glutes_check_box_bench"
@@ -60,10 +66,16 @@
         android:text="Bounce off of chest" />    
 
 	<CheckBox
-        android:id="@+id/rom_check_box_bench"
+        android:id="@+id/touch_chest_check_box_bench"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Not full range of motion" />
+        android:text="Did not touch chest" />
+	
+	<CheckBox
+        android:id="@+id/lock_out_check_box_bench"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Did not lock out" />
     
     <CheckBox
         android:id="@+id/wrists_back_check_box_bench"

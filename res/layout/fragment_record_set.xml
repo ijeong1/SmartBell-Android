@@ -13,35 +13,31 @@
 
     <Button
         android:id="@+id/start_set_button_exercise_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="94dp"
+        android:layout_weight="0.00"
         android:text="Start set" />
-    
+
     <Button
         android:id="@+id/end_set_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="End set"
-        android:visibility="gone"
-         />
-    
-     <TextView
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/num_reps_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0 reps"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:visibility="gone"
-         />
-    
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/next_rep_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Next rep" 
-        android:visibility="gone"
-        />
-    
-    
+        android:text="Next rep"
+        android:visibility="gone" />
 
 </LinearLayout>

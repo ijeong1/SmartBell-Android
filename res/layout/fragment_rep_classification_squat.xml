@@ -33,7 +33,7 @@
         android:id="@+id/chin_tuck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Chin not tucked" />
+        android:text="Chin not tucked / head not neutral" />
     
     <CheckBox
         android:id="@+id/upper_back_round_check_box"
@@ -57,7 +57,7 @@
         android:id="@+id/chase_back_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Chasing with back" />
+        android:text="Hips out / Chasing with back" />
     
     <CheckBox
         android:id="@+id/hips_roll_check_box"
