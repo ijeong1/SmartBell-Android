@@ -599,7 +599,8 @@ public class TSSBTSensor{
 		call_lock.lock();
 
 		byte[] send_data = {TSS_SET_STREAMING_SLOTS, TSS_GET_TARED_ORIENTATION_AS_QUATERNION, TSS_GET_CORRECTED_LINEAR_ACCELERATION_IN_GLOBAL_SPACE,
-				TSS_GET_CORRECTED_COMPASS, TSS_GET_CORRECTED_VALUES, TSS_GET_RAW_VALUES, TSS_NULL, TSS_NULL, TSS_NULL};
+				TSS_GET_CORRECTED_VALUES, TSS_GET_RAW_VALUES, TSS_NULL, TSS_NULL, TSS_NULL, TSS_NULL};
+		
 		Log.d("TSSBTSensor","setupStreaming send_data");
 		write(send_data);
 		call_lock.unlock();
@@ -615,9 +616,9 @@ public class TSSBTSensor{
 
 		// Delay determines how long the sensor should wait after a start command is issued to actually begin
 		// streaming
-		byte delay = 0; // microseconds
+		int delay = 500000; // microseconds
 
-		byte [] timing = {0x52,0x00, 0x00,0x00, 0x00, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, 0x00, 0x00, 0x00, 0x00};
+		byte [] timing = {0x52,0x00, 0x00,0x00, 0x00, (byte)0xff, (byte)0xff, (byte)0xff, (byte)0xff, 0x00, 0x07, (byte)0xa1, 0x20};
 		write(timing);
 
 		call_lock.unlock();
@@ -642,13 +643,13 @@ public class TSSBTSensor{
 	
 	private void clearInputStream(){
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
-			long skipped = BTInStream.skip(1000);
+			long skipped = BTInStream.skip(10000);
 			Log.d("TSSBTSensor:clearInputStream()", "skipped "+skipped+" bytes");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

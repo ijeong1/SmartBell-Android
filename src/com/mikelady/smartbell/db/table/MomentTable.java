@@ -43,19 +43,70 @@ public class MomentTable {
 	public static final String MOMENT_LINACC_Z = "lin_acc_Z";
 	public static final int MOMENT_COL_LINACC_Z = MOMENT_COL_ID + 9;
 	
-	public static final String MOMENT_COMPASS_X = "compass_X";
-	public static final int MOMENT_COL_COMPASS_X = MOMENT_COL_ID + 10;
+	public static final String MOMENT_CORRECTED_GYRO_X = "corrected_gyro_X";
+	public static final int MOMENT_COL_CORRECTED_GYRO_X = MOMENT_COL_ID + 10;
 	
-	public static final String MOMENT_COMPASS_Y = "compass_Y";
-	public static final int MOMENT_COL_COMPASS_Y = MOMENT_COL_ID + 11;
+	public static final String MOMENT_CORRECTED_GYRO_Y = "corrected_gyro_Y";
+	public static final int MOMENT_COL_CORRECTED_GYRO_Y = MOMENT_COL_ID + 11;
 	
-	public static final String MOMENT_COMPASS_Z = "compass_Z";
-	public static final int MOMENT_COL_COMPASS_Z = MOMENT_COL_ID + 12;
+	public static final String MOMENT_CORRECTED_GYRO_Z = "corrected_gyro_Z";
+	public static final int MOMENT_COL_CORRECTED_GYRO_Z = MOMENT_COL_ID + 12;
+	
+	public static final String MOMENT_CORRECTED_ACC_X = "corrected_acc_X";
+	public static final int MOMENT_COL_CORRECTED_ACC_X = MOMENT_COL_ID + 13;
+	
+	public static final String MOMENT_CORRECTED_ACC_Y = "corrected_acc_Y";
+	public static final int MOMENT_COL_CORRECTED_ACC_Y = MOMENT_COL_ID + 14;
+	
+	public static final String MOMENT_CORRECTED_ACC_Z = "corrected_acc_Z";
+	public static final int MOMENT_COL_CORRECTED_ACC_Z = MOMENT_COL_ID + 15;
+	
+	public static final String MOMENT_CORRECTED_COMPASS_X = "corrected_compass_X";
+	public static final int MOMENT_COL_CORRECTED_COMPASS_X = MOMENT_COL_ID + 16;
+	
+	public static final String MOMENT_CORRECTED_COMPASS_Y = "corrected_compass_Y";
+	public static final int MOMENT_COL_CORRECTED_COMPASS_Y = MOMENT_COL_ID + 17;
+	
+	public static final String MOMENT_CORRECTED_COMPASS_Z = "corrected_compas_Z";
+	public static final int MOMENT_COL_CORRECTED_COMPASS_Z = MOMENT_COL_ID + 18;
+	
+	public static final String MOMENT_RAW_GYRO_X = "raw_gyro_X";
+	public static final int MOMENT_COL_RAW_GYRO_X = MOMENT_COL_ID + 19;
+	
+	public static final String MOMENT_RAW_GYRO_Y = "raw_gyro_Y";
+	public static final int MOMENT_COL_RAW_GYRO_Y = MOMENT_COL_ID + 20;
+	
+	public static final String MOMENT_RAW_GYRO_Z = "raw_gyro_Z";
+	public static final int MOMENT_COL_RAW_GYRO_Z = MOMENT_COL_ID + 21;
+	
+	public static final String MOMENT_RAW_ACC_X = "raw_acc_X";
+	public static final int MOMENT_COL_RAW_ACC_X = MOMENT_COL_ID + 22;
+	
+	public static final String MOMENT_RAW_ACC_Y = "raw_acc_Y";
+	public static final int MOMENT_COL_RAW_ACC_Y = MOMENT_COL_ID + 23;
+	
+	public static final String MOMENT_RAW_ACC_Z = "raw_acc_Z";
+	public static final int MOMENT_COL_RAW_ACC_Z = MOMENT_COL_ID + 24;
+	
+	public static final String MOMENT_RAW_COMPASS_X = "raw_compass_X";
+	public static final int MOMENT_COL_RAW_COMPASS_X = MOMENT_COL_ID + 25;
+	
+	public static final String MOMENT_RAW_COMPASS_Y = "raw_compass_Y";
+	public static final int MOMENT_COL_RAW_COMPASS_Y = MOMENT_COL_ID + 26;
+	
+	public static final String MOMENT_RAW_COMPASS_Z = "raw_compas_Z";
+	public static final int MOMENT_COL_RAW_COMPASS_Z = MOMENT_COL_ID + 27;
 	
 	
 	public static final String[] MOMENT_COL_NAMES = {MOMENT_KEY_ID, MOMENT_TIMESTAMP,
 		MOMENT_REP_ID, MOMENT_QUAT_W, MOMENT_QUAT_X, MOMENT_QUAT_Y, MOMENT_QUAT_Z, MOMENT_LINACC_X,
-		MOMENT_LINACC_Y, MOMENT_LINACC_Z, MOMENT_COMPASS_X, MOMENT_COMPASS_Y, MOMENT_COMPASS_Z};
+		MOMENT_LINACC_Y, MOMENT_LINACC_Z, MOMENT_CORRECTED_GYRO_X, MOMENT_CORRECTED_GYRO_Y, MOMENT_CORRECTED_GYRO_Z,
+		MOMENT_CORRECTED_ACC_X, MOMENT_CORRECTED_ACC_Y, MOMENT_CORRECTED_ACC_Z,
+		MOMENT_CORRECTED_COMPASS_X, MOMENT_CORRECTED_COMPASS_Y, MOMENT_CORRECTED_COMPASS_Z,
+		MOMENT_RAW_GYRO_X, MOMENT_RAW_GYRO_Y, MOMENT_RAW_GYRO_Z,
+		MOMENT_RAW_ACC_X, MOMENT_RAW_ACC_Y, MOMENT_RAW_ACC_Z,
+		MOMENT_RAW_COMPASS_X, MOMENT_RAW_COMPASS_Y, MOMENT_RAW_COMPASS_Z,
+		};
 	
 	/** SQLite database creation statement. Auto-increments IDs of inserted jokes.
 	 * Joke IDs are set after insertion into the database. */
@@ -70,9 +121,24 @@ public class MomentTable {
 			MOMENT_LINACC_X	+ " float not null, " + 
 			MOMENT_LINACC_Y	+ " float not null, " + 
 			MOMENT_LINACC_Z	+ " float not null, "+
-			MOMENT_COMPASS_X	+ " float not null, " + 
-			MOMENT_COMPASS_Y	+ " float not null, " + 
-			MOMENT_COMPASS_Z	+ " float not null "+
+			MOMENT_CORRECTED_GYRO_X	+ " float not null, " + 
+			MOMENT_CORRECTED_GYRO_Y	+ " float not null, " + 
+			MOMENT_CORRECTED_GYRO_Z	+ " float not null, "+
+			MOMENT_CORRECTED_ACC_X	+ " float not null, " + 
+			MOMENT_CORRECTED_ACC_Y	+ " float not null, " + 
+			MOMENT_CORRECTED_ACC_Z	+ " float not null, "+
+			MOMENT_CORRECTED_COMPASS_X	+ " float not null, " + 
+			MOMENT_CORRECTED_COMPASS_Y	+ " float not null, " + 
+			MOMENT_CORRECTED_COMPASS_Z	+ " float not null, "+
+			MOMENT_RAW_GYRO_X	+ " float not null, " + 
+			MOMENT_RAW_GYRO_Y	+ " float not null, " + 
+			MOMENT_RAW_GYRO_Z	+ " float not null, "+
+			MOMENT_RAW_ACC_X	+ " float not null, " + 
+			MOMENT_RAW_ACC_Y	+ " float not null, " + 
+			MOMENT_RAW_ACC_Z	+ " float not null, "+
+			MOMENT_RAW_COMPASS_X	+ " float not null, " + 
+			MOMENT_RAW_COMPASS_Y	+ " float not null, " + 
+			MOMENT_RAW_COMPASS_Z	+ " float not null, "+
 			");";
 	
 	/** SQLite database table removal statement. Only used if upgrading database. */

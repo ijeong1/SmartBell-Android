@@ -440,9 +440,29 @@ public class RepClassificationFragment extends Fragment {
 				cv.put(MomentTable.MOMENT_LINACC_Y, m.getLinAcc()[Moment.Y]);
 				cv.put(MomentTable.MOMENT_LINACC_Z, m.getLinAcc()[Moment.Z]);
 				
-				cv.put(MomentTable.MOMENT_COMPASS_X, m.getCompass()[Moment.X]);
-				cv.put(MomentTable.MOMENT_COMPASS_Y, m.getCompass()[Moment.Y]);
-				cv.put(MomentTable.MOMENT_COMPASS_Z, m.getCompass()[Moment.Z]);
+				cv.put(MomentTable.MOMENT_CORRECTED_GYRO_X, m.getCorrectedGyro()[Moment.X]);
+				cv.put(MomentTable.MOMENT_CORRECTED_GYRO_Y, m.getCorrectedGyro()[Moment.Y]);
+				cv.put(MomentTable.MOMENT_CORRECTED_GYRO_Z, m.getCorrectedGyro()[Moment.Z]);
+				
+				cv.put(MomentTable.MOMENT_CORRECTED_ACC_X, m.getCorrectedAcc()[Moment.X]);
+				cv.put(MomentTable.MOMENT_CORRECTED_ACC_Y, m.getCorrectedAcc()[Moment.Y]);
+				cv.put(MomentTable.MOMENT_CORRECTED_ACC_Z, m.getCorrectedAcc()[Moment.Z]);
+				
+				cv.put(MomentTable.MOMENT_CORRECTED_COMPASS_X, m.getCorrectedCompass()[Moment.X]);
+				cv.put(MomentTable.MOMENT_CORRECTED_COMPASS_Y, m.getCorrectedCompass()[Moment.Y]);
+				cv.put(MomentTable.MOMENT_CORRECTED_COMPASS_Z, m.getCorrectedCompass()[Moment.Z]);
+				
+				cv.put(MomentTable.MOMENT_RAW_GYRO_X, m.getRawGyro()[Moment.X]);
+				cv.put(MomentTable.MOMENT_RAW_GYRO_Y, m.getRawGyro()[Moment.Y]);
+				cv.put(MomentTable.MOMENT_RAW_GYRO_Z, m.getRawGyro()[Moment.Z]);
+				
+				cv.put(MomentTable.MOMENT_RAW_ACC_X, m.getRawAcc()[Moment.X]);
+				cv.put(MomentTable.MOMENT_RAW_ACC_Y, m.getRawAcc()[Moment.Y]);
+				cv.put(MomentTable.MOMENT_RAW_ACC_Z, m.getRawAcc()[Moment.Z]);
+				
+				cv.put(MomentTable.MOMENT_RAW_COMPASS_X, m.getRawCompass()[Moment.X]);
+				cv.put(MomentTable.MOMENT_RAW_COMPASS_Y, m.getRawCompass()[Moment.Y]);
+				cv.put(MomentTable.MOMENT_RAW_COMPASS_Z, m.getRawCompass()[Moment.Z]);
 				
 				m_repIds.add(Integer.valueOf(activity.getContentResolver().insert(addRow, cv).getLastPathSegment()));
 				Log.d("RepClassificationFragment", "addMoment1: "+m_repIds.get(m_repIds.size()-1));

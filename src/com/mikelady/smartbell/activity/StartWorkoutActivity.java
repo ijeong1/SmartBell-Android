@@ -7,6 +7,7 @@ import com.mikelady.smartbell.R.menu;
 import com.mikelady.smartbell.R.string;
 import com.mikelady.smartbell.fragment.SelectExerciseFragment;
 import com.mikelady.smartbell.fragment.SelectExerciseFragment.OnFragmentInteractionListener;
+import com.mikelady.smartbell.sensor.TSSBTSensor;
 import com.parse.Parse;
 
 import android.content.Context;
@@ -66,4 +67,14 @@ public class StartWorkoutActivity extends FragmentActivity
 		
 	}
 
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		try {
+			TSSBTSensor.getInstance().stopStreaming();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

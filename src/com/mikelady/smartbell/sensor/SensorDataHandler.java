@@ -1,5 +1,7 @@
 package com.mikelady.smartbell.sensor;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,7 +34,7 @@ public class SensorDataHandler extends Handler {
 	
 	int dataLength = com.mikelady.smartbell.sensor.TSSBTSensor.TSS_QUAT_LEN +
 	com.mikelady.smartbell.sensor.TSSBTSensor.TSS_LIN_ACC_LEN +
-	com.mikelady.smartbell.sensor.TSSBTSensor.TSS_COMPASS_LEN+
+//	com.mikelady.smartbell.sensor.TSSBTSensor.TSS_COMPASS_LEN+
 	com.mikelady.smartbell.sensor.TSSBTSensor.TSS_CORRECTED_LEN+
 	com.mikelady.smartbell.sensor.TSSBTSensor.TSS_RAW_LEN;
 
@@ -45,17 +47,6 @@ public class SensorDataHandler extends Handler {
 			TSSBTSensor.getInstance().setupStreaming();
 
 			keep_going = true;
-			/*			int i = 0;
-			Log.d("ml", "start timestamp: "+System.currentTimeMillis());
-			while(keep_going && i < 100){
-				quat = TSSBTSensor.getInstance().getEulerAngles();
-				linacc = TSSBTSensor.getInstance().getLinAcc();
-				unixTime = System.currentTimeMillis();
-				moments.add(new Moment(unixTime, quat, linacc));
-//				Log.d("ML", "logging in memory");
-				i++;
-			}
-			Log.d("ml", "end timestamp: "+unixTime);*/
 
 			Toast.makeText(context, "Acquired Bluetooth Sensor", Toast.LENGTH_SHORT).show();
 		} catch (Exception e) {
@@ -137,15 +128,12 @@ public class SensorDataHandler extends Handler {
 			}
 		}
 
-		
-
-
 	}
 
 	public ArrayList<Moment> getMoments() {
 		if(moments.isEmpty()){
-			byte[] bytes, quat_bytes, linacc_bytes, compass_bytes, corrected_bytes, raw_bytes;
-			int j;
+			byte[] bytes, quat_bytes, linacc_bytes, corrected_bytes, raw_bytes;//compass_bytes,
+			int i, j;
 			//process collected bytes in timestamp_bytes_map and add them to moments
 			Long[] timestamps = timestamp_bytes_map.keySet().toArray(new Long[timestamp_bytes_map.keySet().size()]);
 			Arrays.sort(timestamps);
@@ -156,37 +144,38 @@ public class SensorDataHandler extends Handler {
 			Log.d("SensorDataHandler:getMoments()", "Sensor collected "+timestamps.length+" moments");
 			Double momentsPerSecond = timestamps.length / (time / 1000.0);
 			Log.d("SensorDataHandler:getMoments()", "Data rate is "+ momentsPerSecond +" moments/second");
-			for(int i =  0; i < timestamps.length; i++){
+			for(i =  0; i < timestamps.length; i++){
 				bytes = timestamp_bytes_map.get(timestamps[i]);
+				
+				ByteBuffer bb = ByteBuffer.wrap(bytes);
+				bb.order(ByteOrder.nativeOrder());
+				
 				quat_bytes = new byte[TSSBTSensor.TSS_QUAT_LEN];
+				bb.get(quat_bytes, 0, TSSBTSensor.TSS_QUAT_LEN);
+				
 				linacc_bytes = new byte[TSSBTSensor.TSS_LIN_ACC_LEN];
-				compass_bytes = new byte[TSSBTSensor.TSS_COMPASS_LEN];
+				bb.get(linacc_bytes, TSSBTSensor.TSS_QUAT_LEN, TSSBTSensor.TSS_LIN_ACC_LEN);
+				
+//				compass_bytes = new byte[TSSBTSensor.TSS_COMPASS_LEN];
+				
 				corrected_bytes = new byte[TSSBTSensor.TSS_CORRECTED_LEN];
+				bb.get(corrected_bytes, TSSBTSensor.TSS_QUAT_LEN + TSSBTSensor.TSS_LIN_ACC_LEN, TSSBTSensor.TSS_CORRECTED_LEN);
+				
 				raw_bytes = new byte[TSSBTSensor.TSS_RAW_LEN];
-				/*for(j = 0; j < bytes.length; j++){
-					if(j < TSSBTSensor.TSS_QUAT_LEN){
-						quat_bytes[j] = bytes[j];
-					}
-					else if(j > TSSBTSensor.TSS_QUAT_LEN &&
-							j < TSSBTSensor.TSS_QUAT_LEN + TSSBTSensor.TSS_LIN_ACC_LEN){ //also include raw values
-						linacc_bytes[j - TSSBTSensor.TSS_QUAT_LEN] = bytes[j];
-					}
-					else{
-						compass_bytes[j - TSSBTSensor.TSS_QUAT_LEN - TSSBTSensor.TSS_LIN_ACC_LEN] = bytes[j];
-					}
-				}*/
+				bb.get(raw_bytes, TSSBTSensor.TSS_QUAT_LEN + TSSBTSensor.TSS_LIN_ACC_LEN + TSSBTSensor.TSS_CORRECTED_LEN, TSSBTSensor.TSS_RAW_LEN);
+				
 				try {
-/*					quat = TSSBTSensor.getInstance().binToFloat(quat_bytes);
+					
+					quat = TSSBTSensor.getInstance().binToFloat(quat_bytes);
 					linacc = TSSBTSensor.getInstance().binToFloat(linacc_bytes);
-					compass = TSSBTSensor.getInstance().binToFloat(compass_bytes);
+//					compass = TSSBTSensor.getInstance().binToFloat(compass_bytes);
 					corrected = TSSBTSensor.getInstance().binToFloat(corrected_bytes);
 					raw = TSSBTSensor.getInstance().binToFloat(raw_bytes);
-					moments.add(new Moment(timestamps[i], quat, linacc, compass, corrected, raw));*/
+					moments.add(new Moment(timestamps[i], quat, linacc, corrected, raw));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
 			}
 		}
 		
