@@ -146,24 +146,28 @@ public class SensorDataHandler extends Handler {
 			Log.d("SensorDataHandler:getMoments()", "Data rate is "+ momentsPerSecond +" moments/second");
 			for(i =  0; i < timestamps.length; i++){
 				bytes = timestamp_bytes_map.get(timestamps[i]);
-				
+//				Log.d("SensorDataHandler:getMoments()", "timestamp: "+timestamps[i]+" bytes.length: "+bytes.length);
 				ByteBuffer bb = ByteBuffer.wrap(bytes);
 				bb.order(ByteOrder.nativeOrder());
 				
+//				Log.d("SensorDataHandler:getMoments()", "bb.capacity(): "+bb.capacity());
+//				Log.d("SensorDataHandler:getMoments()", "bb.position(): "+bb.position());
 				quat_bytes = new byte[TSSBTSensor.TSS_QUAT_LEN];
 				bb.get(quat_bytes, 0, TSSBTSensor.TSS_QUAT_LEN);
+//				Log.d("SensorDataHandler:getMoments()", "bb.position(): "+bb.position());
 				
 				linacc_bytes = new byte[TSSBTSensor.TSS_LIN_ACC_LEN];
-				bb.get(linacc_bytes, TSSBTSensor.TSS_QUAT_LEN, TSSBTSensor.TSS_LIN_ACC_LEN);
-				
+				bb.get(linacc_bytes, 0, TSSBTSensor.TSS_LIN_ACC_LEN);
+//				Log.d("SensorDataHandler:getMoments()", "bb.position(): "+bb.position());
 //				compass_bytes = new byte[TSSBTSensor.TSS_COMPASS_LEN];
 				
 				corrected_bytes = new byte[TSSBTSensor.TSS_CORRECTED_LEN];
-				bb.get(corrected_bytes, TSSBTSensor.TSS_QUAT_LEN + TSSBTSensor.TSS_LIN_ACC_LEN, TSSBTSensor.TSS_CORRECTED_LEN);
+				bb.get(corrected_bytes, 0, TSSBTSensor.TSS_CORRECTED_LEN);
+//				Log.d("SensorDataHandler:getMoments()", "bb.position(): "+bb.position());
 				
 				raw_bytes = new byte[TSSBTSensor.TSS_RAW_LEN];
-				bb.get(raw_bytes, TSSBTSensor.TSS_QUAT_LEN + TSSBTSensor.TSS_LIN_ACC_LEN + TSSBTSensor.TSS_CORRECTED_LEN, TSSBTSensor.TSS_RAW_LEN);
-				
+				bb.get(raw_bytes, 0, TSSBTSensor.TSS_RAW_LEN);
+//				Log.d("SensorDataHandler:getMoments()", "bb.position(): "+bb.position());
 				try {
 					
 					quat = TSSBTSensor.getInstance().binToFloat(quat_bytes);

@@ -70,11 +70,5 @@ public class StartWorkoutActivity extends FragmentActivity
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
-		try {
-			TSSBTSensor.getInstance().stopStreaming();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }

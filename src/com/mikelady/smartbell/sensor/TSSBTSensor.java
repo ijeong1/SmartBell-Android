@@ -14,9 +14,11 @@ import java.util.concurrent.locks.ReentrantLock;
 
 
 
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.os.Handler;
 import android.util.Log;
 
 public class TSSBTSensor{
@@ -100,15 +102,15 @@ public class TSSBTSensor{
 
 	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
 	public static String bytesToHex(byte[] bytes) {
-	    char[] hexChars = new char[bytes.length * 2];
-	    for ( int j = 0; j < bytes.length; j++ ) {
-	        int v = bytes[j] & 0xFF;
-	        hexChars[j * 2] = hexArray[v >>> 4];
-	        hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-	    }
-	    return new String(hexChars);
+		char[] hexChars = new char[bytes.length * 2];
+		for ( int j = 0; j < bytes.length; j++ ) {
+			int v = bytes[j] & 0xFF;
+			hexChars[j * 2] = hexArray[v >>> 4];
+			hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+		}
+		return new String(hexChars);
 	}
-	
+
 	public void write(byte[] data)
 	{
 		byte[] msgBuffer = new byte[data.length + 2];
@@ -123,6 +125,7 @@ public class TSSBTSensor{
 			BTOutStream.flush();
 		} 
 		catch (IOException e) {
+			Log.d("TSSBTSensor:write()", "error with write?");
 		}
 	}
 
@@ -147,17 +150,17 @@ public class TSSBTSensor{
 		int amnt_read = 0;
 		while (amnt_read < amnt)
 		{
-			
+
 			try {
 				amnt_read += BTInStream.read(response, amnt_read, amnt - amnt_read);
 			}
 			catch (IOException e) {
-				Log.d("TSSBTSensor", "IOException e: "+e.getMessage());
+				Log.d("TSSBTSensor:read()", "IOException e: "+e.getMessage());
 			}
-//			Log.d("TSSBTSensor", "amnt: "+amnt);
-			
+			//			Log.d("TSSBTSensor", "amnt: "+amnt);
+
 		}
-//		Log.d("TSSBTSensor", "amnt_read: "+amnt_read);
+		//		Log.d("TSSBTSensor", "amnt_read: "+amnt_read);
 		//    	Log.d("TSSBTSensor", "length of incoming packet is: "+response.length);//check to see if anywhere near 2.1Mbps
 		return response;
 	}
@@ -169,6 +172,7 @@ public class TSSBTSensor{
 			btSocket.close();
 		}
 		catch (IOException e) {
+			Log.d("TSSBTSensor:close()", "error with close?");
 		}
 	}
 
@@ -555,7 +559,7 @@ public class TSSBTSensor{
 
 	public Float[] getLinAcc()
 	{
-		
+
 		call_lock.lock();
 		byte[] send_data = new byte[]{(byte)0x29};
 		write(send_data);
@@ -585,7 +589,7 @@ public class TSSBTSensor{
 	public static byte TSS_SET_STREAMING_TIMING = 0x52;
 	public static byte TSS_START_STREAMING = 0x55;
 	public static byte TSS_STOP_STREAMING = 0x56;
-	
+
 
 	public static int TSS_QUAT_LEN = 16;
 	public static int TSS_LIN_ACC_LEN = 12;
@@ -600,11 +604,11 @@ public class TSSBTSensor{
 
 		byte[] send_data = {TSS_SET_STREAMING_SLOTS, TSS_GET_TARED_ORIENTATION_AS_QUATERNION, TSS_GET_CORRECTED_LINEAR_ACCELERATION_IN_GLOBAL_SPACE,
 				TSS_GET_CORRECTED_VALUES, TSS_GET_RAW_VALUES, TSS_NULL, TSS_NULL, TSS_NULL, TSS_NULL};
-		
+
 		Log.d("TSSBTSensor","setupStreaming send_data");
 		write(send_data);
 		call_lock.unlock();
-		
+
 		call_lock.lock();
 		//Interval determines how often the streaming session will output data from the requested commands
 		//An interval of 0 will output data at the max filter rate
@@ -640,20 +644,31 @@ public class TSSBTSensor{
 		clearInputStream();
 		call_lock.unlock();
 	}
-	
+
 	private void clearInputStream(){
-		try {
+		/*try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
-		try {
-			long skipped = BTInStream.skip(10000);
-			Log.d("TSSBTSensor:clearInputStream()", "skipped "+skipped+" bytes");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		}*/
+
+		Handler handler = new Handler(); 
+		handler.postDelayed(new Runnable() { 
+			public void run() { 
+
+				try {
+					long skipped = BTInStream.skip(10000);
+					Log.d("TSSBTSensor:clearInputStream()", "skipped "+skipped+" bytes");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					Log.d("TSSBTSensor:clearInputStream()", "error with skip?");
+					e.printStackTrace();
+				}
+
+
+			} 
+		}, 1000); 
+
 	}
 }

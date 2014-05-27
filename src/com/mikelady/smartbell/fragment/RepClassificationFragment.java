@@ -150,7 +150,7 @@ public class RepClassificationFragment extends Fragment {
 		Log.d("RepClassificationFragment", "newInstance currentRep: "+currentRep);
 		Log.d("RepClassificationFragment", "newInstance setId: "+setId);
 		Log.d("RepClassificationFragment", "newInstance actualReps: "+actualReps);
-		Log.d("RepClassificationFragment", "newInstance m_moments: "+m_moments);
+//		Log.d("RepClassificationFragment", "newInstance m_moments: "+m_moments);
 		Log.d("RepClassificationFragment", "newInstance m_repTimestamps: "+m_repTimestamps);
 		
 		return fragment;
@@ -348,8 +348,8 @@ public class RepClassificationFragment extends Fragment {
 		
 		
 		String categoryString = buildCategoryString();
-		Log.d("RepClassificationFragment", "addRep categoryString: "+categoryString);
-		Log.d("RepClassificationFragment", "addRep m_setId: "+m_setId);
+		Log.d("RepClassificationFragment:handleFragmentLogic()", "addRep categoryString: "+categoryString);
+		Log.d("RepClassificationFragment:handleFragmentLogic()", "addRep m_setId: "+m_setId);
 		
 		int repId = addRep(categoryString, m_setId, m_moments, m_repTimestamps);
 		m_repIds.add(repId); 
@@ -358,22 +358,24 @@ public class RepClassificationFragment extends Fragment {
 		
 		String setClassificationTag = getResources().getString(R.string.set_classification_tag) + currentRep;
 		currentRep++;
-		Log.d("RepClassificationFragment","continueButton currentRep:"+currentRep);
+		Log.d("RepClassificationFragment:handleFragmentLogic()","continueButton currentRep:"+currentRep);
 		
 		if(currentRep < actualReps){
+			Log.d("RepClassificationFragment:handleFragmentLogic()", "currentRep < actualReps");
 			RepClassificationFragment repClassificationFragment = RepClassificationFragment.newInstance(exerciseName, currentRep, m_setId, actualReps, m_moments, m_repTimestamps);
 			android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-			fragmentTransaction.replace(R.id.start_workout_activity_layout, repClassificationFragment);
+
+			fragmentTransaction.replace(R.id.start_workout_activity_layout, repClassificationFragment); //replace
 			fragmentTransaction.addToBackStack(setClassificationTag);
 			fragmentTransaction.commit();
 		}
 		else{
 
-			Log.d("RepClassificationFragment", "getActivity(): "+getActivity());
-			Log.d("RepClassificationFragment", "activity: "+activity);
-			Log.d("RepClassificationFragment", "activity.getFilesDir(): "+activity.getFilesDir());
-			Log.d("RepClassificationFragment", "activity.getFilesDir().getPath(): "+activity.getFilesDir().getPath());
-			Log.d("RepClassificationFragment", "db path: "+activity.getFilesDir().getPath()+"/"+SmartBellDatabaseHelper.DATABASE_NAME);
+			Log.d("RepClassificationFragment:handleFragmentLogic()", "getActivity(): "+getActivity());
+			Log.d("RepClassificationFragment:handleFragmentLogic()", "activity: "+activity);
+			Log.d("RepClassificationFragment:handleFragmentLogic()", "activity.getFilesDir(): "+activity.getFilesDir());
+			Log.d("RepClassificationFragment:handleFragmentLogic()", "activity.getFilesDir().getPath(): "+activity.getFilesDir().getPath());
+			Log.d("RepClassificationFragment:handleFragmentLogic()", "db path: "+activity.getFilesDir().getPath()+"/"+SmartBellDatabaseHelper.DATABASE_NAME);
 			File databaseFile = activity.getDatabasePath(SmartBellDatabaseHelper.DATABASE_NAME);
 			byte[] databaseBytes = null;
 			try {
@@ -382,12 +384,12 @@ public class RepClassificationFragment extends Fragment {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Log.d("RepClassificationFragment","databaseBytes: "+databaseBytes);
+			Log.d("RepClassificationFragment:handleFragmentLogic()","databaseBytes: "+databaseBytes);
 			ParseFile databaseParseFile = new ParseFile("database.sqlite",databaseBytes);
 			ParseObject databaseObject = new ParseObject("database");
 			databaseObject.put("database", databaseParseFile);
 			databaseObject.saveInBackground();
-			Log.d("RepClassificationFragment","saved database to parse");
+			Log.d("RepClassificationFragment:handleFragmentLogic()","saved database to parse");
 			
 			getActivity().finish();
 			

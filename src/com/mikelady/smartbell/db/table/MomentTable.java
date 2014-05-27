@@ -138,7 +138,7 @@ public class MomentTable {
 			MOMENT_RAW_ACC_Z	+ " float not null, "+
 			MOMENT_RAW_COMPASS_X	+ " float not null, " + 
 			MOMENT_RAW_COMPASS_Y	+ " float not null, " + 
-			MOMENT_RAW_COMPASS_Z	+ " float not null, "+
+			MOMENT_RAW_COMPASS_Z	+ " float not null "+
 			");";
 	
 	/** SQLite database table removal statement. Only used if upgrading database. */

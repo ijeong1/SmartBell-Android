@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -54,23 +55,23 @@ public class RecordSetFragment extends Fragment {
 	private int weight;
 	private int targetedReps;
 	private int m_setId;
-	
+
 	private TextView recordTextView;
 	private TextView repsTextView;
 	private Button startSetButton;
 	private Button endSetButton;
 	private Button nextRepButton;
 	private android.support.v4.app.FragmentManager fragmentManager;
-	
+
 	private boolean startClicked = false;
-	
+
 	private OnFragmentInteractionListener mListener;
 	private SensorDataHandler sensorDataHandler;
 	private ArrayList<Long> repTimestamps;
 	private boolean is_polling = false;
-	
+
 	public static ArrayList<Double[]> positions;
-	
+
 	/**
 	 * Use this factory method to create a new instance of this fragment using
 	 * the provided parameters.
@@ -103,14 +104,14 @@ public class RecordSetFragment extends Fragment {
 			workoutId = getArguments().getInt(ARG_WORKOUT_ID);
 			weight = getArguments().getInt(ARG_WEIGHT);
 			targetedReps = getArguments().getInt(ARG_REPS);
-			
+
 			Log.d("RecordSetFragment", "onCreate exerciseName: "+exerciseName);
 			Log.d("RecordSetFragment", "onCreate workoutId: "+workoutId);
 			Log.d("RecordSetFragment", "onCreate weight: "+weight);
 			Log.d("RecordSetFragment", "onCreate targetedReps: "+targetedReps);
 		}
 		repTimestamps = new ArrayList<Long>();
-		
+
 	}
 
 	@Override
@@ -118,13 +119,13 @@ public class RecordSetFragment extends Fragment {
 			Bundle savedInstanceState) {
 		return (LinearLayout) inflater.inflate(R.layout.fragment_record_set, container, false);
 	}
-	
+
 	@Override
 	public void onStart(){
 		super.onStart();
 		initLayout();
 	}
-	
+
 	private void initLayout(){
 		recordTextView = (TextView)this.getView().findViewById(R.id.record_exercise_text);
 		recordTextView.setText(exerciseName);
@@ -134,52 +135,59 @@ public class RecordSetFragment extends Fragment {
 		nextRepButton = (Button)this.getView().findViewById(R.id.next_rep_button);
 		setClickListeners();
 	}
-	
+
 	private void setClickListeners(){
-		
+
 		startSetButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if(!Moment.TEST && !startClicked){
 					//1 is default
 					sensorDataHandler = new SensorDataHandler(1, getActivity()); // make new thread?
-					
-			   		//Start the sensor updating
-			        Message start_again_message = new Message();
-			    	start_again_message.what = 287;
-			    	sensorDataHandler.sendMessage(start_again_message);
-			        is_polling = true;
-			        startClicked = true;
-			        startSetButton.setVisibility(View.GONE);
-			        repsTextView.setVisibility(View.VISIBLE);
-			        endSetButton.setVisibility(View.VISIBLE);
-			        nextRepButton.setVisibility(View.VISIBLE);
-			        
-			        
-		        }
+
+					//Start the sensor updating
+					Message start_again_message = new Message();
+					start_again_message.what = 287;
+					sensorDataHandler.sendMessage(start_again_message);
+					is_polling = true;
+					startClicked = true;
+					startSetButton.setVisibility(View.GONE);
+					repsTextView.setVisibility(View.VISIBLE);
+					endSetButton.setVisibility(View.VISIBLE);
+					nextRepButton.setVisibility(View.VISIBLE);
+
+
+				}
 			}
 		});
-		
+
 		endSetButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if(!Moment.TEST){
 					if(is_polling)
-			    	{
-				    	Message stop_message = new Message();
-				    	stop_message.what = -1;
-				    	sensorDataHandler.sendMessage(stop_message);
-				    	is_polling = false;
-				    	try {
-							TSSBTSensor.getInstance().stopStreaming();
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-			    	}
+					{
+						Message stop_message = new Message();
+						stop_message.what = -1;
+						sensorDataHandler.sendMessage(stop_message);
+						is_polling = false;
+
+						Handler handler = new Handler(); 
+						handler.postDelayed(new Runnable() { 
+							public void run() { 
+								try {
+									TSSBTSensor.getInstance().stopStreaming();
+								} catch (Exception e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							} 
+						}, 0); 
+
+					}
 					ArrayList<Moment> moments = sensorDataHandler.getMoments();
-					Log.d("RecordSetFragment", "num moments: "+moments.size());
-					
+					Log.d("RecordSetFragment:endSet():onClick()", "num moments: "+moments.size());
+
 					// remove any noise from startup
 					if(moments.size() > 3){
 						moments.remove(0);
@@ -187,43 +195,44 @@ public class RecordSetFragment extends Fragment {
 						moments.remove(0);
 					}
 
-					Log.d("RecordSetFragment", "addLiftingSet exerciseName: "+exerciseName);
-					Log.d("RecordSetFragment", "addLiftingSet workoutId: "+workoutId);
-					Log.d("RecordSetFragment", "addLiftingSet weight: "+weight);
-					Log.d("RecordSetFragment", "addLiftingSet targetedReps: "+targetedReps);
-					Log.d("RecordSetFragment", "addLiftingSet moments: "+moments);
+					Log.d("RecordSetFragment:endSet():onClick()", "addLiftingSet exerciseName: "+exerciseName);
+					Log.d("RecordSetFragment:endSet():onClick()", "addLiftingSet workoutId: "+workoutId);
+					Log.d("RecordSetFragment:endSet():onClick()", "addLiftingSet weight: "+weight);
+					Log.d("RecordSetFragment:endSet():onClick()", "addLiftingSet targetedReps: "+targetedReps);
+					/*					Log.d("RecordSetFragment", "addLiftingSet moments: "+moments);
 					for(Moment m : moments){
 						Log.d("RecordSetFragment", "addLiftingSet moment: "+m);
 					}
-					m_setId = addLiftingSet(exerciseName, workoutId, weight, targetedReps, moments, repTimestamps);
-					
-					repTimestamps.add(0, moments.get(0).getTimestamp());
-					
-					Log.d("RecordSetFragment","repTimestamps: "+repTimestamps);
-					Log.d("RecordSetFragment","repTimestamps.size(): "+repTimestamps.size());
-//					for(Long timestamp: repTimestamps){
-//						Log.d("RecordSetFragment", "repTimestamp: "+timestamp);
-//					}
-					
-//					BarPathTracker barPathTracker = new BarPathTracker(moments);
-//					positions = barPathTracker.determinePosition();
-					
-					fragmentManager = getFragmentManager();
-					RepClassificationFragment repClassificationFragment = RepClassificationFragment.newInstance(exerciseName, 0, m_setId, repTimestamps.size()-1, moments, repTimestamps);
-					
-	//				BarPathFragment barPathFragment = BarPathFragment.newInstance(moments);
-	//				
-					android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-					fragmentTransaction.replace(R.id.start_workout_activity_layout, repClassificationFragment);
-	//				fragmentTransaction.replace(R.id.start_workout_activity_layout, barPathFragment);
-//					fragmentTransaction.addToBackStack(null);
-					fragmentTransaction.commit();
-					
-	//				String selectExerciseTag = getResources().getString(R.string.exercise_detail_tag);
-	//				fragmentManager.popBackStackImmediate(selectExerciseTag, 1);
-//					Intent intent = new Intent(getActivity(), BarPathActivity.class);
-					
-//					startActivity(intent);
+					 */					m_setId = addLiftingSet(exerciseName, workoutId, weight, targetedReps, moments, repTimestamps);
+
+					 repTimestamps.add(0, moments.get(0).getTimestamp());
+
+					 Log.d("RecordSetFragment","repTimestamps: "+repTimestamps);
+					 Log.d("RecordSetFragment","repTimestamps.size(): "+repTimestamps.size());
+					 //					for(Long timestamp: repTimestamps){
+					 //						Log.d("RecordSetFragment", "repTimestamp: "+timestamp);
+					 //					}
+
+					 //					BarPathTracker barPathTracker = new BarPathTracker(moments);
+					 //					positions = barPathTracker.determinePosition();
+
+					 //Sleep timing issue with clearing bluetoot input buffer.
+					 fragmentManager = getFragmentManager();
+					 RepClassificationFragment repClassificationFragment = RepClassificationFragment.newInstance(exerciseName, 0, m_setId, repTimestamps.size()-1, moments, repTimestamps);
+					 Log.d("RepClassificationFragment:endSet():onClick()", "repClassificationFragment "+repClassificationFragment);
+					 //				BarPathFragment barPathFragment = BarPathFragment.newInstance(moments);
+
+					 android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+					 fragmentTransaction.replace(R.id.start_workout_activity_layout, repClassificationFragment);
+					 //				fragmentTransaction.replace(R.id.start_workout_activity_layout, barPathFragment);
+					 //					fragmentTransaction.addToBackStack(null);
+					 fragmentTransaction.commit();
+
+					 //				String selectExerciseTag = getResources().getString(R.string.exercise_detail_tag);
+					 //				fragmentManager.popBackStackImmediate(selectExerciseTag, 1);
+					 //					Intent intent = new Intent(getActivity(), BarPathActivity.class);
+
+					 //					startActivity(intent);
 				}
 				else{
 					Log.d("RecordSetFragment", "In test mode");
@@ -237,14 +246,14 @@ public class RecordSetFragment extends Fragment {
 					fragmentTransaction.replace(R.id.start_workout_activity_layout, barPathFragment); //setQuestionFragment
 					fragmentTransaction.addToBackStack(null);
 					fragmentTransaction.commit();
-					
-					
+
+
 					String selectExerciseTag = getResources().getString(R.string.exercise_detail_tag);*/
-//					fragmentManager.popBackStackImmediate(selectExerciseTag, 1);
-//					fragmentManager.popBackStackImmediate();
+					//					fragmentManager.popBackStackImmediate(selectExerciseTag, 1);
+					//					fragmentManager.popBackStackImmediate();
 				}
 			}
-			
+
 			protected int addLiftingSet(String exerciseName, int workoutId, int weight, int reps, ArrayList<Moment> moments, ArrayList<Long> repTimestamps) {
 				Activity activity = getActivity();
 				Uri addRow = Uri.parse(SmartBellContentProvider.SET_CONTENT_URI+"/lifting_set/"+0);
@@ -257,29 +266,29 @@ public class RecordSetFragment extends Fragment {
 				cv.put(LiftingSetTable.SET_WEIGHT_LIFTED, weight);
 				cv.put(LiftingSetTable.SET_TARGETED_REPS, reps);
 				cv.put(LiftingSetTable.SET_ACTUAL_REPS, repTimestamps.size());
-				
-				Log.d("RepClassificationFragment", "activity: "+activity);
-				Log.d("RepClassificationFragment", "activity.getContentResolver(): "+activity.getContentResolver());
-				Log.d("RepClassificationFragment", "addRow: "+addRow);
-				Log.d("RepClassificationFragment", "cv: "+cv);
+
+				Log.d("RepClassificationFragment:addLiftingSet()", "activity: "+activity);
+				Log.d("RepClassificationFragment:addLiftingSet()", "activity.getContentResolver(): "+activity.getContentResolver());
+				Log.d("RepClassificationFragment:addLiftingSet()", "addRow: "+addRow);
+				Log.d("RepClassificationFragment:addLiftingSet()", "cv: "+cv);
 
 				int setId = Integer.valueOf(activity.getContentResolver().insert(addRow, cv).getLastPathSegment());
 				Log.d("RepClassificationFragment", "addLiftingSet: "+setId);
 
 				return setId;
 			}
-			
+
 		});
-		
+
 		nextRepButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				repTimestamps.add(System.currentTimeMillis());
-			
+
 				repsTextView.setText(""+repTimestamps.size()+" reps");
 			}
 		});
-		
+
 	}
 
 	// TODO: Rename method, update argument and hook method into UI event
@@ -315,9 +324,9 @@ public class RecordSetFragment extends Fragment {
 	 * "http://developer.android.com/training/basics/fragments/communicating.html"
 	 * >Communicating with Other Fragments</a> for more information.
 	 */
-//	public interface OnFragmentInteractionListener {
-//		// TODO: Update argument type and name
-//		public void onFragmentInteraction(Uri uri);
-//	}
+	//	public interface OnFragmentInteractionListener {
+	//		// TODO: Update argument type and name
+	//		public void onFragmentInteraction(Uri uri);
+	//	}
 
 }
